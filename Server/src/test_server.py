@@ -1,8 +1,9 @@
-import PySide6
+import PySide6  # noqa: F401
 from __feature__ import snake_case, true_property  # type: ignore  # noqa: F401
 from PySide6.QtCore import QByteArray, QDataStream, QMutex, QThread, QWaitCondition
 from PySide6.QtNetwork import QTcpServer, QTcpSocket
 from PySide6.QtWidgets import QApplication
+from Sockets import ServerSocketThread, SocketThreadFactory
 
 
 class SocketHandler(QThread):
@@ -31,25 +32,10 @@ class SocketHandler(QThread):
 
         login = recieve_stream.read_string()
         password = recieve_stream.read_string()
-        print(login, password)
         if not recieve_stream.commit_transaction():
             return
 
         self.send_answer(socket, login, password)
-
-    def handle_login_request(self, socket: QTcpSocket) -> bool:
-        recieve_stream = QDataStream(socket)
-        recieve_stream.set_version(QDataStream.Version.Qt_6_4)
-        recieve_stream.start_transaction()
-
-        login = recieve_stream.read_string()
-        password = recieve_stream.read_string()
-        print(login, password)
-        if not recieve_stream.commit_transaction():
-            return False
-
-        self.send_answer(socket, login, password)
-        return True
 
     def send_answer(self, socket: QTcpSocket, login: str, password: str) -> None:
         block = QByteArray()
@@ -67,16 +53,21 @@ class Server(QTcpServer):
     def __init__(self, parent=None) -> None:
         super().__init__(parent)
 
-        self._sockets: list[SocketHandler] = []
+        self._sockets: list[ServerSocketThread] = []
+
+        self._socket_thread_factory = SocketThreadFactory()
+        self._socket_thread_factory.result.connect(self.socket_thread_received)
 
         if not self.listen(port=8888):
             print(self.error_string())
             sys.exit(self.error_string())
 
     def incoming_connection(self, handle: int) -> None:
-        thread = SocketHandler(handle, self)
-        thread.start()
-        self._sockets.append(thread)
+        self._socket_thread_factory.define_socket_thread(handle)
+
+    def socket_thread_received(self, socket_thread: ServerSocketThread) -> None:
+        socket_thread.start()
+        self._sockets.append(socket_thread)
 
 
 if __name__ == "__main__":

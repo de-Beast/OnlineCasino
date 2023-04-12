@@ -1,4 +1,4 @@
-import PySide6
+import PySide6 # noqa: F401
 from __feature__ import snake_case, true_property  # type: ignore  # noqa: F401
 from PySide6.QtCore import QByteArray, QDataStream, QMutex, QThread, Signal
 from PySide6.QtNetwork import QHostAddress, QTcpSocket
@@ -91,6 +91,7 @@ class MainWindow(QDialog):
         self.set_layout(main_layout)
 
         self.window_title = "Client"
+        self._sign_in_button.enabled = False
         self._login_line_edit.set_focus()
 
     def set_enabled_sign_in_button(self) -> None:
