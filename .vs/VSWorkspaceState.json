@@ -1,7 +1,13 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\Client",
+    "\\Client\\src",
+    "\\Client\\src\\Sockets",
+    "\\Server",
+    "\\Server\\src",
+    "\\Server\\src\\Sockets"
   ],
-  "SelectedNode": "\\C:\\Users\\Лина\\Source\\Repos\\OnlineCasino",
+  "SelectedNode": "\\.gitignore",
   "PreviewInSolutionExplorer": false
 }
