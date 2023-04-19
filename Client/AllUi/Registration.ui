@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Мир фишек</string>
+   <string>Form</string>
   </property>
   <property name="styleSheet">
    <string notr="true">image: url(:/Money/pngegg (1) 1.png);
@@ -19,8 +19,26 @@
 background-color: rgb(255, 241, 191);</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
+   <item>
+    <widget class="QPushButton" name="backButton">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>20</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Назад</string>
+     </property>
+    </widget>
+   </item>
    <item alignment="Qt::AlignHCenter">
-    <widget class="QLabel" name="Necasino">
+    <widget class="QLabel" name="Logo1">
      <property name="font">
       <font>
        <pointsize>45</pointsize>
@@ -39,7 +57,7 @@ background-color: rgb(255, 241, 191);</string>
     <layout class="QVBoxLayout" name="verticalLayout"/>
    </item>
    <item alignment="Qt::AlignHCenter">
-    <widget class="QLabel" name="Registr">
+    <widget class="QLabel" name="Registr1">
      <property name="font">
       <font>
        <pointsize>20</pointsize>
@@ -50,7 +68,7 @@ background-color: rgb(255, 241, 191);</string>
       <string notr="true">color: rgb(70, 34, 8);</string>
      </property>
      <property name="text">
-      <string>ВХОД В ЛИЧНЫЙ КАБИНЕТ</string>
+      <string>ЗАРЕГИСТРИРУЙСЯ И ПОЛУЧИ БОНУС! </string>
      </property>
     </widget>
    </item>
@@ -133,7 +151,7 @@ background-color: rgb(255, 241, 191);</string>
       </font>
      </property>
      <property name="text">
-      <string>ВОЙТИ</string>
+      <string>ЗАРЕГИСТРИРОВАТЬСЯ</string>
      </property>
     </widget>
    </item>
