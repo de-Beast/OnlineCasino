@@ -124,3 +124,6 @@ dmypy.json
 .pyre/
 
 *.code-workspace
+.vs*
+.idea
+.ruff_cache
