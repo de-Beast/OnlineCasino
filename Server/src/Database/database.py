@@ -1,15 +1,14 @@
 from enum import Enum
+
+from pymongo.collection import Collection
+
 from .ABC import DatabaseABC
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    from pymongo.collection import Collection
 
 
-class CheckAccount(Enum):
-    OK: int
-    WRONG_LOGIN: int
-    WRONG_PASSWORD: int
+class CheckAccountResponse(Enum):
+    OK: int = 0
+    WRONG_LOGIN: int = 1
+    WRONG_PASSWORD: int = 2
 
 
 class AccountsDB(DatabaseABC):
@@ -17,20 +16,52 @@ class AccountsDB(DatabaseABC):
     def accounts_collection(self) -> Collection:
         return self.DB.Accounts
 
-    def check_account(self, account: dict) -> CheckAccount:
-        data = self.accounts_collection.find_one(
-            {"login": account["login"]}, {"_id": 0, "password": account["password"]}
-        )
+    def check_account(self, account: dict) -> CheckAccountResponse:
+        """
+        Проверяет, совпадают ли логин и пароль данной учетной записи с теми, которые
+        хранятся в базе данных
+
+        ### Параметры
+
+        - `account: dict`
+
+        Параметр `account` представляет собой словарь, который содержит информацию о логине и пароле
+        учетной записи пользователя вида `{"login": <login>, "password": <password>}`
+
+        ### Возвращает
+
+        Значение типа CheckAccountResponse, которое может быть одним из следующих вариантов:
+        WRONG_LOGIN, WRONG_PASSWORD или OK.
+        """
+
+        data = self.accounts_collection.find_one({"login": account["login"]}, {"_id": 0, "password": 1})
         if data is None:
-            return CheckAccount.WRONG_LOGIN
+            return CheckAccountResponse.WRONG_LOGIN
         elif data["password"] != account["password"]:
-            return CheckAccount.WRONG_PASSWORD
-        
-        return CheckAccount.OK
-    
+            return CheckAccountResponse.WRONG_PASSWORD
+
+        return CheckAccountResponse.OK
+
     def register_account(self, account: dict) -> bool:
-        if not self.check_account(account):
-            return False
+        """
+        Принимает словарь, содержащий данные о логине и пароле пользователя,
+        и пробует сохранить их в базе данных
+
+        ### Параметры
+
+        - `account: dict`
+
+        Параметр `account` представляет собой словарь, который содержит информацию о логине и пароле
+        учетной записи пользователя вида `{"login": <login>, "password": <password>}`
         
+        ### Возвращает
+
+        `True`, если данные пользователя успешно сохранены в базе данных.
+        `False`, если пользователь с таким логином уже есть в базе данных
+        """
+
+        if self.check_account(account) is not CheckAccountResponse.WRONG_LOGIN:
+            return False
+
         self.accounts_collection.insert_one(account)
         return True
