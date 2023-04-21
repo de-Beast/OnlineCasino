@@ -5,7 +5,7 @@ from pymongo.collection import Collection
 from .ABC import DatabaseABC
 
 
-class CheckAccountResponse(Enum):
+class DB_CheckAccountResponse(Enum):
     OK: int = 0
     WRONG_LOGIN: int = 1
     WRONG_PASSWORD: int = 2
@@ -16,7 +16,7 @@ class AccountsDB(DatabaseABC):
     def accounts_collection(self) -> Collection:
         return self.DB.Accounts
 
-    def check_account(self, account: dict) -> CheckAccountResponse:
+    def check_account(self, account: dict) -> DB_CheckAccountResponse:
         """
         Проверяет, совпадают ли логин и пароль данной учетной записи с теми, которые
         хранятся в базе данных
@@ -36,11 +36,11 @@ class AccountsDB(DatabaseABC):
 
         data = self.accounts_collection.find_one({"login": account["login"]}, {"_id": 0, "password": 1})
         if data is None:
-            return CheckAccountResponse.WRONG_LOGIN
+            return DB_CheckAccountResponse.WRONG_LOGIN
         elif data["password"] != account["password"]:
-            return CheckAccountResponse.WRONG_PASSWORD
+            return DB_CheckAccountResponse.WRONG_PASSWORD
 
-        return CheckAccountResponse.OK
+        return DB_CheckAccountResponse.OK
 
     def register_account(self, account: dict) -> bool:
         """
@@ -53,14 +53,14 @@ class AccountsDB(DatabaseABC):
 
         Параметр `account` представляет собой словарь, который содержит информацию о логине и пароле
         учетной записи пользователя вида `{"login": <login>, "password": <password>}`
-        
+
         ### Возвращает
 
         `True`, если данные пользователя успешно сохранены в базе данных.
         `False`, если пользователь с таким логином уже есть в базе данных
         """
 
-        if self.check_account(account) is not CheckAccountResponse.WRONG_LOGIN:
+        if self.check_account(account) is not DB_CheckAccountResponse.WRONG_LOGIN:
             return False
 
         self.accounts_collection.insert_one(account)

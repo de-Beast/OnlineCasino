@@ -1,3 +1,3 @@
-__all__ = ["AccountsDB", "CheckAccountResponse"]
+__all__ = ["AccountsDB", "DB_CheckAccountResponse"]
 
-from .database import AccountsDB, CheckAccountResponse
+from .database import AccountsDB, DB_CheckAccountResponse

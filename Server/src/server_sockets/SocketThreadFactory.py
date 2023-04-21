@@ -3,20 +3,44 @@ from __feature__ import snake_case, true_property  # type: ignore  # noqa: F401
 from PySide6.QtCore import QByteArray, QDataStream, QMutexLocker, Signal
 from PySide6.QtNetwork import QTcpSocket
 
-# from .ABC import ServerSocketThreadABC
-# from .socket_threads import AccountSocketThread, AuthenticationSocketThread
-from Shared.sockets import SocketThreadABC, SocketThreadType
+from Shared.sockets import SocketThreadABC
+from Shared.sockets.enums import SocketThreadType
+
+from . import socket_threads
+from .socket_threads import ServerSocketThread
 
 
 class ServerSocketThreadFactory(SocketThreadABC):
     """
     Специальный класс для определения необходимого для корректной
     связи с клиентом потока. Рабочий процесс заключен в цикл, постоянно обрабатывая
-    поступающие серверу сокеты 
+    поступающие серверу сокеты
     """
 
     # Активируется, когда класс определил необходимый типа потока, передаёт типа потока и дескриптор сокета
     socketIdentified = Signal(SocketThreadType, int)
+
+    @staticmethod
+    def create_socket_thread(socket_thread_type: SocketThreadType, socket_descriptor: int) -> ServerSocketThread:
+        """
+        Создает поток сокета указанного типа, используя заданный дескриптор.
+        После активации сигнала `socketIdentified`, в подключенном слоте следует вызвать данный метод,
+        чтобы получить нужный поток
+
+        ### Параметры
+        - `socket_thread_type: SocketThreadType`
+        - `socket_descriptor: int`
+
+        ### Возвращает
+        Потомка класса `ServerSocketThread`
+        """
+
+        match socket_thread_type:
+            case SocketThreadType.AUTHORIZATION:
+                return socket_threads.AccountInitialSocketThread(socket_descriptor)
+            case SocketThreadType.ACCOUNT:
+                return socket_threads.AccountSocketThread(socket_descriptor)
+        raise RuntimeError
 
     def thread_workflow(self, *args) -> None:
         """

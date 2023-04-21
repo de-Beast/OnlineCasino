@@ -1,8 +1,11 @@
+from abc import abstractmethod
+
 import PySide6  # type: ignore # noqa: F401
 from __feature__ import snake_case, true_property  # type: ignore  # noqa: F401;
-
-from abc import abstractmethod
+from PySide6.QtCore import QObject
 from PySide6.QtNetwork import QTcpSocket
+
+from Shared import SlotStorage
 from Shared.abstract import ThreadABC
 
 
@@ -16,10 +19,19 @@ class SocketThreadABC(ThreadABC):
     >>> _create_socket(self, *args, **kwargs) -> QTcpSocket | None
     """
 
+    def __init__(self, parent: QObject | None = None) -> None:
+        super().__init__(parent)
+
+        self._slot_storage: SlotStorage = SlotStorage()
+
+    @property
+    def slot_storage(self) -> SlotStorage:
+        return self._slot_storage
+
     @abstractmethod
     def thread_workflow(self, socket: QTcpSocket) -> None:
         raise NotImplementedError
-    
+
     @abstractmethod
     def _create_socket(self, *args, **kwargs) -> QTcpSocket | None:
         raise NotImplementedError
@@ -41,11 +53,12 @@ class SocketThreadABC(ThreadABC):
         или когда случится ошибка, или когда сработает таймаут
         >>> def thread_workflow(self, *args, **kwargs):
         >>>     ...
-        >>>     socket.readyRead.connect(lambda: self.on_readyRead(socket))
+        >>>     socket.readyRead.connect(self.on_readyRead)
         >>>     self.wait_for_readyRead(socket)
         >>>     ...
         >>>
-        >>> def on_readyRead(self, socket):
+        >>> def on_readyRead(self):
+        >>>     socket = self.get_socket()
         >>>     recieve_stream = QDataStream(socket)
         >>>     recieve_stream.start_transaction()
         >>>     socket_thread_type_value = recieve_stream.read_int32()

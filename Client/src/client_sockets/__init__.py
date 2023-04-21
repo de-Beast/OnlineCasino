@@ -1,5 +1,5 @@
 __all__ = [
-    "AuthorizationSocketThread",
+    "AccountInitialSocketThread",
 ]
 
-from .socket_threads import AuthorizationSocketThread
+from .socket_threads import AccountInitialSocketThread

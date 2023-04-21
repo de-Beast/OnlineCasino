@@ -1,10 +1,17 @@
-import PySide6  # type: ignore # noqa: F401
-from __feature__ import snake_case, true_property  # type: ignore  # noqa: F401;
-
 from abc import ABC, ABCMeta, abstractmethod
 from typing import Self
+
 import debugpy  # type: ignore
-from PySide6.QtCore import Signal, QObject, QThread, QMutex, QWaitCondition, QMutexLocker
+import PySide6  # type: ignore # noqa: F401
+from __feature__ import snake_case, true_property  # type: ignore  # noqa: F401;
+from PySide6.QtCore import (
+    QMutex,
+    QMutexLocker,
+    QObject,
+    QThread,
+    QWaitCondition,
+    Signal,
+)
 
 _ShibokenObjectType: type = type(QObject)
 
@@ -43,7 +50,7 @@ class QABC(ABC, metaclass=_ResolverMeta):
 class ThreadABC(QABC, QThread):
     """
     Абстрактный базовый класс для потоков.
-    
+
 
     ### Абстрактные методы
     >>> def thread_workflow(self, *args, **kwargs) -> None: ...
@@ -53,6 +60,10 @@ class ThreadABC(QABC, QThread):
     wait_timeout: int = 10000  # milliseconds
 
     error = Signal(str)
+
+    @abstractmethod
+    def thread_workflow(self, *args, **kwargs) -> None:
+        raise NotImplementedError
 
     def __init__(self, parent: QObject | None = None) -> None:
         super().__init__(parent)
@@ -78,12 +89,11 @@ class ThreadABC(QABC, QThread):
     def cond(self) -> QWaitCondition:
         return self._cond
 
-    @abstractmethod
-    def thread_workflow(self, *args, **kwargs) -> None:
-        raise NotImplementedError
-
     def run(self) -> None:
-        debugpy.debug_this_thread()
+        import sys
+
+        if sys.argv.count("debug_threads") > 0:
+            debugpy.debug_this_thread()
 
         self._is_working = True
         self.thread_workflow()
@@ -94,10 +104,10 @@ class ThreadABC(QABC, QThread):
         Останавливает работу потока, если в методе `thread_workflow`
         был релизован цикл с использованием атрибута `is_working`.
         Также пробудит поток один раз, неважно, был ли он остановлен
-        
+
         ### Пример 1
-        
-        В данном примере после `on_readyRead` атрибут `_is_working` переключится 
+
+        В данном примере после `on_readyRead` атрибут `_is_working` переключится
         на значение `False`, и после того, как завершится метод `wait_for_readyRead`,
         цикл прервётся, поток закончит свою работу. Помните, что не стоит после такого цикла
         писать еще какой-либо код, не связанный с очисткой данных (сокет трогать не нужно)
@@ -111,9 +121,9 @@ class ThreadABC(QABC, QThread):
         >>> def on_readyRead(self):
         >>>     ...
         >>>     self.stop_work()
-        
+
         ### Пример 2
-        
+
         В данном примере наш поток блокируется, пускай есть метод, пробуждающий этот поток,
         после чего начинается новая итерация цикла. Из другого потока мы вызываем метод `stop_work`,
         из-за этого атрибут `_is_working` переключается в состояние `False`,
