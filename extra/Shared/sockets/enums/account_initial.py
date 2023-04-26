@@ -1,15 +1,17 @@
-from enum import IntEnum
+from enum import auto
+
+from .ABC import EnumBase
 
 
-class AccountInitialRequest(IntEnum):
-    AUTH = 0
-    REGISTER = 1
+class AccountInitialRequest(EnumBase):
+    AUTH = auto()
+    REGISTER = auto()
 
 
-class AccountInitialResponse(IntEnum):
-    AUTH_SUCCESS = 0
-    AUTH_FAILURE_LOGIN = 1
-    AUTH_FAILURE_PASSWORD = 2
+class AccountInitialResponse(EnumBase):
+    AUTH_SUCCESS = auto()
+    AUTH_FAILURE_LOGIN = auto()
+    AUTH_FAILURE_PASSWORD = auto()
 
-    REGISTER_SUCCESS = 3
-    REGISTER_FAILURE = 4
+    REGISTER_SUCCESS = auto()
+    REGISTER_FAILURE = auto()

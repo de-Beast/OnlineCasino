@@ -4,15 +4,16 @@ __all__ = [
     "AccountInitialResponse",
 ]
 
-from enum import IntEnum
+from enum import auto
 
+from .ABC import EnumBase
 from .account_initial import AccountInitialRequest, AccountInitialResponse
 
 
-class SocketThreadType(IntEnum):
+class SocketThreadType(EnumBase):
     """
     Перечисление, определяющее различные типы сокетов для клиента и сервера
     """
 
-    AUTHORIZATION = 0
-    ACCOUNT = 1
+    AUTHORIZATION = auto()
+    ACCOUNT = auto()

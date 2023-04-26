@@ -1,5 +1,4 @@
 # from abc import abstractmethod
-import debugpy  # type:ignore
 import PySide6  # type: ignore # noqa: F401
 from __feature__ import snake_case, true_property  # type: ignore  # noqa: F401;
 from PySide6.QtCore import QMutexLocker, QObject
@@ -32,6 +31,7 @@ class ServerSocketThreadABC(SocketThreadABC):
         import sys
 
         if sys.argv.count("debug_threads") > 0:
+            import debugpy  # type: ignore
             debugpy.debug_this_thread()
 
         if (socket := self._create_socket()) is None:

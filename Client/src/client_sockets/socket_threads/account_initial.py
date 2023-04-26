@@ -1,9 +1,13 @@
 import PySide6  # type: ignore # noqa: F401
 from __feature__ import snake_case, true_property  # type: ignore  # noqa: F401;
-from PySide6.QtCore import QByteArray, QDataStream, QMutexLocker, QObject, Signal
+from PySide6.QtCore import QMutexLocker, QObject, Signal
 from PySide6.QtNetwork import QTcpSocket
 
-from Shared.sockets.enums import AccountInitialRequest, AccountInitialResponse, SocketThreadType
+from Shared.sockets.enums import (
+    AccountInitialRequest,
+    AccountInitialResponse,
+    SocketThreadType,
+)
 
 from .ABC import ClientSocketThreadABC
 
@@ -84,32 +88,25 @@ class AccountInitialSocketThread(ClientSocketThreadABC):
             password = self.password
             request_method = self.request_method
 
-        block = QByteArray()
-        send_stream = QDataStream(block, QDataStream.OpenModeFlag.WriteOnly)
-        send_stream.write_int32(request_method)
-        send_stream.write_string(login)
-        send_stream.write_string(password)
-        socket.write(block)
+        self.send_data_package(socket, request_method, login, password)
 
         slot = self.slot_storage.create_and_store_slot("get_response", self.get_response, socket, request_method)
         socket.readyRead.connect(slot)
         self.wait_for_readyRead(socket)
 
     def get_response(self, socket: QTcpSocket, method: AccountInitialRequest) -> None:
-        recieve_stream = QDataStream(socket)
-        recieve_stream.start_transaction()
-
-        raw_response = recieve_stream.read_int32()
-        if not recieve_stream.commit_transaction():
+        data: tuple[AccountInitialResponse] | None = self.recieve_data_package(socket, AccountInitialResponse)
+        if data is None:
             return
 
-        response = AccountInitialResponse(raw_response)
+        (response,) = data
+
         match method:
             case AccountInitialRequest.AUTH:
                 self.proccess_auth_response(response)
             case AccountInitialRequest.REGISTER:
                 self.proccess_register_response(response)
-        
+
     def proccess_auth_response(self, response: AccountInitialResponse) -> None:
         match response:
             case AccountInitialResponse.AUTH_SUCCESS:
@@ -118,14 +115,14 @@ class AccountInitialSocketThread(ClientSocketThreadABC):
                 message = "Говно твой логин"
             case AccountInitialResponse.AUTH_FAILURE_PASSWORD:
                 message = "Говно твой пароль"
-        
+
         self.answerRecieved.emit(message)
-    
+
     def proccess_register_response(self, response: AccountInitialResponse) -> None:
         match response:
             case AccountInitialResponse.REGISTER_SUCCESS:
                 message = "Вы успешно зарегистрировались"
             case AccountInitialResponse.REGISTER_FAILURE:
                 message = "Имя пользователя занято"
-        
+
         self.answerRecieved.emit(message)

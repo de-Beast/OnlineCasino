@@ -1,10 +1,9 @@
 # from abc import abstractmethod
 from typing import ClassVar
 
-import debugpy  # type: ignore
 import PySide6  # type: ignore # noqa: F401
 from __feature__ import snake_case, true_property  # type: ignore  # noqa: F401;
-from PySide6.QtCore import QByteArray, QDataStream, QObject, Signal
+from PySide6.QtCore import QMutexLocker, QObject, Signal
 from PySide6.QtNetwork import QHostAddress, QTcpSocket
 
 from Shared.sockets import SocketThreadABC
@@ -58,6 +57,8 @@ class ClientSocketThreadABC(SocketThreadABC):
         import sys
 
         if sys.argv.count("debug_threads") > 0:
+            import debugpy  # type: ignore
+
             debugpy.debug_this_thread()
 
         if (socket := self._create_socket()) is None:
@@ -108,11 +109,10 @@ class ClientSocketThreadABC(SocketThreadABC):
         - `socket: QTcpSocket`
         """
 
-        block = QByteArray()
-        send_stream = QDataStream(block, QDataStream.OpenModeFlag.WriteOnly)
-        send_stream.write_int32(self.socket_type)
-        socket.write(block)
+        with QMutexLocker(self.mutex):
+            socket_type = self.socket_type
 
+        self.send_data_package(socket, socket_type)
         slot = self.slot_storage.create_and_store_slot(
             "_recieve_server_socket_connection", self._recieve_server_socket_connection, socket
         )
@@ -126,10 +126,11 @@ class ClientSocketThreadABC(SocketThreadABC):
         - `socket: QTcpSocket`
         """
 
-        recieve_stream = QDataStream(socket)
-        recieve_stream.start_transaction()
-        is_connected = recieve_stream.read_bool()
-        if not recieve_stream.commit_transaction():
+        data: tuple[bool] | None = self.recieve_data_package(socket, bool)
+        if data is None:
             return
+
+        (is_connected,) = data
+
         self.__is_connected = is_connected
         socket.readyRead.disconnect(self.slot_storage.pop("_recieve_server_socket_connection"))

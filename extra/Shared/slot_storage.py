@@ -1,5 +1,5 @@
 from functools import partial
-from typing import Callable, TypeAlias, TypeVar
+from typing import Callable, TypeAlias, TypeVar, overload
 
 from PySide6.QtCore import QObject
 
@@ -101,7 +101,24 @@ class SlotStorage:
 
         self.__storage.update({name: value})
 
-    def pop(self, name: str) -> Slot:
+    @overload
+    def pop(self, name_or_slot: str) -> Slot:
+        ...
+
+    @overload
+    def pop(self, name_or_slot: Slot) -> Slot:
+        ...
+
+    def pop(self, name_or_slot: str | Slot) -> Slot:
         """Возвращает сохраненный слот и удалаяет его из хранилища"""
 
-        return self.__storage.pop(name)
+        if isinstance(name_or_slot, str):
+            return self.__storage.pop(name_or_slot)
+
+        if isinstance(name_or_slot, partial):
+            slot = name_or_slot
+            for _name, _slot in self.__storage.items():
+                if _slot == slot:
+                    return self.__storage.pop(_name)
+
+        raise ValueError("Slot is not in the storage")

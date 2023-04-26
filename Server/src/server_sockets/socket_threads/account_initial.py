@@ -1,7 +1,6 @@
 import PySide6  # type: ignore # noqa: F401
 from __feature__ import snake_case, true_property  # type: ignore # noqa: F401
 from database import AccountsDB, DB_CheckAccountResponse
-from PySide6.QtCore import QByteArray, QDataStream
 from PySide6.QtNetwork import QTcpSocket
 
 from Shared.sockets.enums import AccountInitialRequest, AccountInitialResponse
@@ -16,18 +15,16 @@ class AccountInitialSocketThread(ServerSocketThreadABC):
         self.wait_for_readyRead(socket)
 
     def recieve_request(self, socket: QTcpSocket) -> None:
-        recieve_stream = QDataStream(socket)
-        recieve_stream.set_version(QDataStream.Version.Qt_6_4)
-
-        recieve_stream.start_transaction()
-        method = recieve_stream.read_int32()
-        login = recieve_stream.read_string()
-        password = recieve_stream.read_string()
-        if not recieve_stream.commit_transaction():
+        data: tuple[AccountInitialRequest, str, str] | None = self.recieve_data_package(
+            socket, AccountInitialRequest, str, str
+        )
+        if data is None:
             return
 
-        response = self.proccess_authorization(AccountInitialRequest(method), login, password)
-        self.send_response(socket, response)
+        method, login, password = data
+
+        response = self.proccess_authorization(method, login, password)
+        self.send_data_package(socket, response)
 
     def proccess_authorization(
         self, method: AccountInitialRequest, login: str, password: str
@@ -50,10 +47,3 @@ class AccountInitialSocketThread(ServerSocketThreadABC):
                         response = AccountInitialResponse.AUTH_FAILURE_PASSWORD
 
         return response
-
-    def send_response(self, socket: QTcpSocket, response: AccountInitialResponse) -> None:
-        block = QByteArray()
-        send_stream = QDataStream(block, QDataStream.OpenModeFlag.WriteOnly)
-        send_stream.write_int32(response)
-        socket.write(block)
-        socket.wait_for_bytes_written(self.wait_timeout)
