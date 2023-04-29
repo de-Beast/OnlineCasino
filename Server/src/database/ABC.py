@@ -18,6 +18,6 @@ class DatabaseABC(ABC):
     @property
     def DB(self) -> Database:
         if DatabaseABC.__database is None:
-            raise RuntimeError("Database is not initialized")
+            raise RuntimeError("database is not initialized")
 
         return DatabaseABC.__database

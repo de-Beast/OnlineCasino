@@ -110,6 +110,7 @@ class SlotStorage:
         ...
 
     def pop(self, name_or_slot: str | Slot) -> Slot:
+        
         """Возвращает сохраненный слот и удалаяет его из хранилища"""
 
         if isinstance(name_or_slot, str):
