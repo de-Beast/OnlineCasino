@@ -10,7 +10,7 @@ from PySide6.QtWidgets import (
     QVBoxLayout,
 )
 
-from client_sockets import AccountInitialSocketThread
+from client_sockets import AccountInitialSocketThread, AccountInfoSocketThread
 
 
 class MainWindow(QDialog):
@@ -66,12 +66,15 @@ class MainWindow(QDialog):
         self._answer_label.text = ""
         self._sign_up_button.enabled = False
         self._sign_in_button.enabled = False
-        self.socket = AccountInitialSocketThread(self)
+        #self.socket = AccountInitialSocketThread(self)
+        #self.socket.answerRecieved.connect(self.get_answer)
+        #self.socket.auth(self._login_line_edit.text, self._password_line_edit.text)
+        self.socket = AccountInfoSocketThread(self)
         self.socket.answerRecieved.connect(self.get_answer)
-        self.socket.auth(self._login_line_edit.text, self._password_line_edit.text)
+        self.socket.get_account_info(self._login_line_edit.text)
 
-    def get_answer(self, answer: str) -> None:
-        self._answer_label.text = answer
+    def get_answer(self, answer: dict) -> None:
+        self._answer_label.text = f"balance: {answer['balance']}, nickname: {answer['nickname']}"
 
 
 if __name__ == "__main__":

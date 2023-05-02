@@ -18,8 +18,8 @@ class SocketThreadABC(ThreadABC):
 
     ### Абстрактные методы
 
-    >>> thread_workflow(self, socket: QTcpSocket) -> None
-    >>> _create_socket(self, *args, **kwargs) -> QTcpSocket | None
+    #>>> thread_workflow(self, socket: QTcpSocket) -> None
+    #>>> _create_socket(self, *args, **kwargs) -> QTcpSocket | None
     """
 
     def __init__(self, parent: QObject | None = None) -> None:
@@ -116,10 +116,10 @@ class SocketThreadABC(ThreadABC):
 
         Чтобы при расспаковке переменные были соответствующего типа,
         следует предварительно сделать аннотацию для кортежа:
-        >>> data: tuple[int, int, str, float] | None = self.recieve_data_package(socket, int, int, str, float)
-        >>> if data is None:
-        >>>     return
-        >>> num, index, string, delta = data
+        #>>> data: tuple[int, int, str, float] | None = self.recieve_data_package(socket, int, int, str, float)
+        #>>> if data is None:
+        #>>>     return
+        #>>> num, index, string, delta = data
         Так перменные `num`, `index`, `string`, `delta` будут, соответственно, с аннотациями `int`, `int`, `str` и `float`
 
         ### Параметры
