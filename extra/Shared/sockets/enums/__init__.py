@@ -17,3 +17,4 @@ class SocketThreadType(EnumBase):
 
     AUTHORIZATION = auto()
     ACCOUNT = auto()
+    ACCOUNT_INFO = auto()

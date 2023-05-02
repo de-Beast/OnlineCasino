@@ -40,6 +40,8 @@ class ServerSocketThreadFactory(SocketThreadABC):
                 return socket_threads.AccountInitialSocketThread(socket_descriptor)
             case SocketThreadType.ACCOUNT:
                 return socket_threads.AccountSocketThread(socket_descriptor)
+            case SocketThreadType.ACCOUNT_INFO:
+                return socket_threads.AccountInfoSocketThread(socket_descriptor)
         raise RuntimeError
 
     def thread_workflow(self, *args) -> None:

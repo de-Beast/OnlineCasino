@@ -26,7 +26,8 @@ class AccountsDB(DatabaseABC):
         - `account: dict`
 
         Параметр `account` представляет собой словарь, который содержит информацию о логине и пароле
-        учетной записи пользователя вида `{"login": <login>, "password": <password>}`
+        учетной записи пользователя вида `{"login": <login>, "password": <password>,
+                                            "balance": <balance>, "nickname": <nickname>}`
 
         ### Возвращает
 
@@ -34,7 +35,8 @@ class AccountsDB(DatabaseABC):
         WRONG_LOGIN, WRONG_PASSWORD или OK.
         """
 
-        data = self.accounts_collection.find_one({"login": account["login"]}, {"_id": 0, "password": 1})
+        data = self.accounts_collection.find_one({"login": account["login"]},
+                                                 {"_id": 0, "password": 1})
         if data is None:
             return DB_CheckAccountResponse.WRONG_LOGIN
         elif data["password"] != account["password"]:
@@ -62,6 +64,11 @@ class AccountsDB(DatabaseABC):
 
         if self.check_account(account) is not DB_CheckAccountResponse.WRONG_LOGIN:
             return False
-
-        self.accounts_collection.insert_one(account)
+        extended_account = {**account, "balance": 0, "nickname": ""}
+        self.accounts_collection.insert_one(extended_account)
         return True
+
+    def get_account_info(self, login: str)-> dict:
+        data = self.accounts_collection.find_one({"login": login},
+                                                 {"_id": 0, "balance": 1, "nickname": 1})
+        return data
