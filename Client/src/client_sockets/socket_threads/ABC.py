@@ -31,14 +31,14 @@ class ClientSocketThreadABC(SocketThreadABC):
 
     # В наследнике должен быть инициализирован, иначе выкинется исключение.
     # Принимаемый(-ые) типы у наследников могут быть разные
-    answerRecieved: ClassVar[Signal]
+    responseRecieved: ClassVar[Signal]
 
     @classmethod
     def __init_subclass__(cls, **kwargs) -> None:
         super().__init_subclass__(**kwargs)
 
-        if not hasattr(cls, "answerRecieved") or not isinstance(cls.answerRecieved, Signal):
-            raise TypeError("answerRecieved must be a Class variable of Signal type")
+        if not hasattr(cls, "responseRecieved") or not isinstance(cls.responseRecieved, Signal):
+            raise TypeError("responseRecieved must be a Class variable of Signal type")
 
         if not hasattr(cls, "socket_type") or not isinstance(cls.socket_type, SocketThreadType):
             raise TypeError("socket_type must be a Class variable of SocketThreadType enum")

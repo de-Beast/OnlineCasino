@@ -1,4 +1,4 @@
-from abc import abstractmethod
+from abc import ABC, abstractmethod
 from typing import Type, TypeVar
 
 import PySide6  # type: ignore # noqa: F401
@@ -12,7 +12,7 @@ from Shared.abstract import ThreadABC
 T = TypeVar("T", bound=object)
 
 
-class SocketThreadABC(ThreadABC):
+class SocketThreadABC(ThreadABC, ABC):
     """
     Абстрактный базовый класс для потоков сокетов
 

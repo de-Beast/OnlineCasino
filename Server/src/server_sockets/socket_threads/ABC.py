@@ -1,13 +1,17 @@
 # from abc import abstractmethod
+from abc import ABC
+from typing import ClassVar, Type
+
 import PySide6  # type: ignore # noqa: F401
 from __feature__ import snake_case, true_property  # type: ignore  # noqa: F401;
 from PySide6.QtCore import QMutexLocker, QObject
 from PySide6.QtNetwork import QTcpSocket
 
 from Shared.sockets import SocketThreadABC
+from Shared.sockets.enums import SocketThreadType
 
 
-class ServerSocketThreadABC(SocketThreadABC):
+class ServerSocketThreadABC(SocketThreadABC, ABC):
     """
     Базовый класс для серверных сокетов.
 
@@ -17,6 +21,22 @@ class ServerSocketThreadABC(SocketThreadABC):
     Главный метод, в котором происходят основные вычисления потока.
     Должен быть обязательно переопределён. Не имеет базовой реализации
     """
+
+    _socket_type_bindings: dict[SocketThreadType, Type["ServerSocketThreadABC"]] = {}
+
+    socket_type: ClassVar[SocketThreadType]
+
+    @classmethod
+    def __init_subclass__(cls, **kwards) -> None:
+        super().__init_subclass__(**kwards)
+
+        if not hasattr(cls, "socket_type") or not isinstance(cls.socket_type, SocketThreadType):
+            raise TypeError("socket_type must be a Class variable of SocketThreadType enum")
+
+        if ServerSocketThreadABC._socket_type_bindings.get(cls.socket_type, None) is not None:
+            raise RuntimeError("Can not create subclass with the same socket type")
+
+        ServerSocketThreadABC._socket_type_bindings.update({cls.socket_type: cls})
 
     def __init__(self, socket_descriptor: int, parent: QObject | None = None) -> None:
         super().__init__(parent)
@@ -32,6 +52,7 @@ class ServerSocketThreadABC(SocketThreadABC):
 
         if sys.argv.count("debug_threads") > 0:
             import debugpy  # type: ignore
+
             debugpy.debug_this_thread()
 
         if (socket := self._create_socket()) is None:

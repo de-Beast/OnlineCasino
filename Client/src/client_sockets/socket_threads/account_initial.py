@@ -23,11 +23,11 @@ class AccountInitialSocketThread(ClientSocketThreadABC):
 
     # Активируется после того, как сервер прислал ответ о попытке войти или зарегистрироваться.
     # Передаёт в сигнал ответ сервера в виде строки
-    answerRecieved = Signal(str)
+    responseRecieved = Signal(str)
 
     # Переменная класса, определяющая тип потока, передаётся серверу.
     # Не может быть двух классов с одинаковым типом потока
-    socket_type = SocketThreadType.AUTHORIZATION
+    socket_type = SocketThreadType.ACCOUNT_INITIAL
 
     def __init__(self, parent: QObject | None = None) -> None:
         super().__init__(parent)
@@ -116,7 +116,7 @@ class AccountInitialSocketThread(ClientSocketThreadABC):
             case AccountInitialResponse.AUTH_FAILURE_PASSWORD:
                 message = "Говно твой пароль"
 
-        self.answerRecieved.emit(message)
+        self.responseRecieved.emit(message)
 
     def proccess_register_response(self, response: AccountInitialResponse) -> None:
         match response:
@@ -125,4 +125,4 @@ class AccountInitialSocketThread(ClientSocketThreadABC):
             case AccountInitialResponse.REGISTER_FAILURE:
                 message = "Имя пользователя занято"
 
-        self.answerRecieved.emit(message)
+        self.responseRecieved.emit(message)

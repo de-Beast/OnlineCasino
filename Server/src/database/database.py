@@ -68,7 +68,7 @@ class AccountsDB(DatabaseABC):
         self.accounts_collection.insert_one(extended_account)
         return True
 
-    def get_account_info(self, login: str)-> dict:
-        data = self.accounts_collection.find_one({"login": login},
+    def get_account_info(self, login: str) -> dict | None:
+        data: dict | None = self.accounts_collection.find_one({"login": login},
                                                  {"_id": 0, "balance": 1, "nickname": 1})
         return data

@@ -3,16 +3,13 @@ from __feature__ import snake_case, true_property  # type: ignore  # noqa: F401;
 from PySide6.QtCore import QMutexLocker, QObject, Signal
 from PySide6.QtNetwork import QTcpSocket
 
-from Shared.sockets.enums import (
-    AccountInitialRequest,
-    AccountInitialResponse,
-    SocketThreadType,
-)
+from Shared.sockets.enums import SocketThreadType
 
 from .ABC import ClientSocketThreadABC
 
+
 class AccountInfoSocketThread(ClientSocketThreadABC):
-    answerRecieved = Signal(dict)
+    responseRecieved = Signal(dict)
 
     socket_type = SocketThreadType.ACCOUNT_INFO
 
@@ -35,9 +32,9 @@ class AccountInfoSocketThread(ClientSocketThreadABC):
         if data is None:
             return
 
-        info, = data
+        (info,) = data
 
-        self.answerRecieved.emit(info)
+        self.responseRecieved.emit(info)
 
     def get_account_info(self, login: str) -> None:
         with QMutexLocker(self.mutex):

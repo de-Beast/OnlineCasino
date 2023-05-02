@@ -3,12 +3,18 @@ from __feature__ import snake_case, true_property  # type: ignore # noqa: F401
 from database import AccountsDB, DB_CheckAccountResponse
 from PySide6.QtNetwork import QTcpSocket
 
-from Shared.sockets.enums import AccountInitialRequest, AccountInitialResponse
+from Shared.sockets.enums import (
+    AccountInitialRequest,
+    AccountInitialResponse,
+    SocketThreadType,
+)
 
 from .ABC import ServerSocketThreadABC
 
 
 class AccountInitialSocketThread(ServerSocketThreadABC):
+    socket_type = SocketThreadType.ACCOUNT_INITIAL
+
     def thread_workflow(self, socket: QTcpSocket) -> None:
         slot = self.slot_storage.create_and_store_slot("recieve_request", self.recieve_request, socket)
         socket.readyRead.connect(slot)

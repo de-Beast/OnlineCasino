@@ -10,12 +10,17 @@ from PySide6.QtWidgets import (
     QVBoxLayout,
 )
 
-from client_sockets import AccountInitialSocketThread, AccountInfoSocketThread
+from client_sockets import (
+    AccountInfoSocketThread,
+    AccountInitialSocketThread,
+    ClientSocketThread,
+)
 
 
 class MainWindow(QDialog):
     def __init__(self, parent=None) -> None:
         super().__init__(parent)
+        self.socket: ClientSocketThread
 
         self._login_line_edit = QLineEdit()
         self._password_line_edit = QLineEdit()
@@ -59,18 +64,18 @@ class MainWindow(QDialog):
         self._sign_up_button.enabled = False
         self._sign_in_button.enabled = False
         self.socket = AccountInitialSocketThread(self)
-        self.socket.answerRecieved.connect(self.get_answer)
+        self.socket.responseRecieved.connect(self.get_answer)
         self.socket.register(self._login_line_edit.text, self._password_line_edit.text)
 
     def sign_in(self) -> None:
         self._answer_label.text = ""
         self._sign_up_button.enabled = False
         self._sign_in_button.enabled = False
-        #self.socket = AccountInitialSocketThread(self)
-        #self.socket.answerRecieved.connect(self.get_answer)
-        #self.socket.auth(self._login_line_edit.text, self._password_line_edit.text)
+        # self.socket = AccountInitialSocketThread(self)
+        # self.socket.answerRecieved.connect(self.get_answer)
+        # self.socket.auth(self._login_line_edit.text, self._password_line_edit.text)
         self.socket = AccountInfoSocketThread(self)
-        self.socket.answerRecieved.connect(self.get_answer)
+        self.socket.responseRecieved.connect(self.get_answer)
         self.socket.get_account_info(self._login_line_edit.text)
 
     def get_answer(self, answer: dict) -> None:

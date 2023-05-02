@@ -15,6 +15,5 @@ class SocketThreadType(EnumBase):
     Перечисление, определяющее различные типы сокетов для клиента и сервера
     """
 
-    AUTHORIZATION = auto()
-    ACCOUNT = auto()
+    ACCOUNT_INITIAL = auto()
     ACCOUNT_INFO = auto()

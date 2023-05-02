@@ -6,7 +6,6 @@ from PySide6.QtNetwork import QTcpSocket
 from Shared.sockets import SocketThreadABC
 from Shared.sockets.enums import SocketThreadType
 
-from . import socket_threads
 from .socket_threads import ServerSocketThread
 
 
@@ -35,14 +34,7 @@ class ServerSocketThreadFactory(SocketThreadABC):
         Потомка класса `ServerSocketThread`
         """
 
-        match socket_thread_type:
-            case SocketThreadType.AUTHORIZATION:
-                return socket_threads.AccountInitialSocketThread(socket_descriptor)
-            case SocketThreadType.ACCOUNT:
-                return socket_threads.AccountSocketThread(socket_descriptor)
-            case SocketThreadType.ACCOUNT_INFO:
-                return socket_threads.AccountInfoSocketThread(socket_descriptor)
-        raise RuntimeError
+        return ServerSocketThread._socket_type_bindings[socket_thread_type](socket_descriptor)
 
     def thread_workflow(self, *args) -> None:
         """
