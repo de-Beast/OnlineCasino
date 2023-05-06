@@ -14,6 +14,7 @@ from Client.AllUi.ui_MainWindow import Ui_MainWindow
 from Client.AllUi.ui_StartWidget import Ui_Start
 from Client.AllUi.ui_Enter import Ui_Enter
 from Client.AllUi.ui_Registration import Ui_Registration
+# from client_sockets import AuthorizationSocketThread
 
 def OnRegisterClicked():
     SavePageToHistory(StartWidget)
@@ -33,9 +34,21 @@ def SetBackButtons():
     enterUi.backButton.clicked.connect(GoBack)
     registerUi.backButton.clicked.connect(GoBack)
 
+def Register():
+    email = registerUi.lineEdit.text()
+    password = registerUi.lineEdit_2.text()
+    #thread.auth(email, password, sign_up=True)
+
+def Enter():
+    email = registerUi.lineEdit.text()
+    password = registerUi.lineEdit_2.text()
+    #thread.auth(email, password)
+
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
+
+    # thread = AuthorizationSocketThread()
 
     MainWindow = QtWidgets.QMainWindow()
     mainUi = Ui_MainWindow()
@@ -52,12 +65,14 @@ if __name__ == "__main__":
     registerUi.setupUi(RegisterWidget)
     startUi.RegistrButton.clicked.connect(OnRegisterClicked)
     mainUi.stackedWidget.addWidget(RegisterWidget)
+    registerUi.Login1.clicked.connect(Register)
 
     EnterWidget = QtWidgets.QWidget()
     enterUi = Ui_Enter()
     enterUi.setupUi(EnterWidget)
     startUi.EnterButton.clicked.connect(OnEnterClicked)
     mainUi.stackedWidget.addWidget(EnterWidget)
+    enterUi.Login1.clicked.connect(Enter)
 
     history = []
     SetBackButtons()

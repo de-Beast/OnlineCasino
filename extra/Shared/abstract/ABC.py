@@ -2,7 +2,7 @@ import PySide6  # type: ignore # noqa: F401
 from __feature__ import snake_case, true_property  # type: ignore  # noqa: F401;
 
 from abc import ABC, ABCMeta, abstractmethod
-from typing import Self
+# from typing import Self
 import debugpy  # type: ignore
 from PySide6.QtCore import Signal, QObject, QThread, QMutex, QWaitCondition, QMutexLocker
 

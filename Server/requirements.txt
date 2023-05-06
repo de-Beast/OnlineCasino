@@ -1,5 +1,6 @@
-PySide6
+PySide6~=6.4.2
 
-pymongo
+pymongo~=4.3.3
 
 -e ./extra
+setuptools~=65.5.1
