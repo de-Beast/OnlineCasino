@@ -1,22 +1,40 @@
 import PySide6  # type: ignore # noqa: F401
 from __feature__ import snake_case, true_property  # type: ignore  # noqa: F401
-from PySide6.QtCore import QByteArray, QDataStream, QMutexLocker, Signal
+from PySide6.QtCore import QMutexLocker, Signal
 from PySide6.QtNetwork import QTcpSocket
 
-# from .ABC import ServerSocketThreadABC
-# from .socket_threads import AccountSocketThread, AuthenticationSocketThread
-from Shared.sockets import SocketThreadABC, SocketThreadType
+from Shared.sockets import SocketThreadABC
+from Shared.sockets.enums import SocketThreadType
+
+from .socket_threads import ServerSocketThread
 
 
 class ServerSocketThreadFactory(SocketThreadABC):
     """
     Специальный класс для определения необходимого для корректной
     связи с клиентом потока. Рабочий процесс заключен в цикл, постоянно обрабатывая
-    поступающие серверу сокеты 
+    поступающие серверу сокеты
     """
 
     # Активируется, когда класс определил необходимый типа потока, передаёт типа потока и дескриптор сокета
     socketIdentified = Signal(SocketThreadType, int)
+
+    @staticmethod
+    def create_socket_thread(socket_thread_type: SocketThreadType, socket_descriptor: int) -> ServerSocketThread:
+        """
+        Создает поток сокета указанного типа, используя заданный дескриптор.
+        После активации сигнала `socketIdentified`, в подключенном слоте следует вызвать данный метод,
+        чтобы получить нужный поток
+
+        ### Параметры
+        - `socket_thread_type: SocketThreadType`
+        - `socket_descriptor: int`
+
+        ### Возвращает
+        Потомка класса `ServerSocketThread`
+        """
+
+        return ServerSocketThread._socket_type_bindings[socket_thread_type](socket_descriptor)
 
     def thread_workflow(self, *args) -> None:
         """
@@ -35,8 +53,12 @@ class ServerSocketThreadFactory(SocketThreadABC):
         while self.is_working:
             socket = self._create_socket(socket_descriptor)
             if socket is not None:
-                socket.readyRead.connect(lambda: self._recieve_socket_thread_type(socket))
+                slot = self.slot_storage.create_and_store_slot(
+                    "_recieve_socket_thread_type", self._recieve_socket_thread_type, socket
+                )
+                socket.readyRead.connect(slot)
                 self.wait_for_readyRead(socket)
+                socket.readyRead.disconnect(self.slot_storage.pop(slot))
 
             with QMutexLocker(self.mutex):
                 self.cond.wait(self.mutex)
@@ -86,28 +108,18 @@ class ServerSocketThreadFactory(SocketThreadABC):
         Сокет, в котором есть данные, готовые для чтения.
         """
 
-        recieve_stream = QDataStream(socket)
-        recieve_stream.start_transaction()
-        socket_thread_type_value = recieve_stream.read_int32()
-        if not recieve_stream.commit_transaction():
+        data: tuple[SocketThreadType] | None = self.recieve_data_package(socket, SocketThreadType)
+        if data is None:
             return
 
+        (socket_thread_type,) = data
         connection_status = True
-        try:
-            socket_thread_type = SocketThreadType(socket_thread_type_value)
-        except ValueError:
+        if not isinstance(socket_thread_type, SocketThreadType):
             self.error.emit("Invalid socket thread type")
             connection_status = False
 
-        self._send_socket_connection(socket, connection_status)
+        self.send_data_package(socket, connection_status)
         if not connection_status:
             return
 
         self.socketIdentified.emit(socket_thread_type, socket.socket_descriptor())
-
-    def _send_socket_connection(self, socket: QTcpSocket, connection_status: bool) -> None:
-        block = QByteArray()
-        send_stream = QDataStream(block, QDataStream.OpenModeFlag.WriteOnly)
-        send_stream.write_bool(connection_status)
-        socket.write(block)
-        socket.wait_for_bytes_written(self.wait_timeout)
