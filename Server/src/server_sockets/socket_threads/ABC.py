@@ -22,7 +22,7 @@ class ServerSocketThreadABC(SocketThreadABC, ABC):
     Должен быть обязательно переопределён. Не имеет базовой реализации
     """
 
-    _socket_type_bindings: dict[SocketThreadType, Type["ServerSocketThreadABC"]] = {}
+    __socket_type_bindings: dict[SocketThreadType, Type["ServerSocketThreadABC"]] = {}
 
     socket_type: ClassVar[SocketThreadType]
 
@@ -33,10 +33,10 @@ class ServerSocketThreadABC(SocketThreadABC, ABC):
         if not hasattr(cls, "socket_type") or not isinstance(cls.socket_type, SocketThreadType):
             raise TypeError("socket_type must be a Class variable of SocketThreadType enum")
 
-        if ServerSocketThreadABC._socket_type_bindings.get(cls.socket_type, None) is not None:
+        if ServerSocketThreadABC.__socket_type_bindings.get(cls.socket_type, None) is not None:
             raise RuntimeError("Can not create subclass with the same socket type")
 
-        ServerSocketThreadABC._socket_type_bindings.update({cls.socket_type: cls})
+        ServerSocketThreadABC.__socket_type_bindings.update({cls.socket_type: cls})
 
     def __init__(self, socket_descriptor: int, parent: QObject | None = None) -> None:
         super().__init__(parent)
@@ -46,6 +46,21 @@ class ServerSocketThreadABC(SocketThreadABC, ABC):
             return
 
         self._socket_descriptor = socket_descriptor
+    
+    @staticmethod
+    def from_socket_type(socket_type: SocketThreadType, socket_descriptor: int) -> "ServerSocketThreadABC":
+        """
+        Создает поток сокета указанного типа, используя заданный дескриптор.
+
+        ### Параметры
+        - `socket_thread_type: SocketThreadType`
+        - `socket_descriptor: int`
+
+        ### Возвращает
+        Потомка класса `ServerSocketThreadABC`
+        """
+        
+        return ServerSocketThreadABC.__socket_type_bindings[socket_type](socket_descriptor)
 
     def run(self) -> None:
         import sys

@@ -6,8 +6,6 @@ from PySide6.QtNetwork import QTcpSocket
 from Shared.sockets import SocketThreadABC
 from Shared.sockets.enums import SocketThreadType
 
-from .socket_threads import ServerSocketThread
-
 
 class ServerSocketThreadFactory(SocketThreadABC):
     """
@@ -18,23 +16,6 @@ class ServerSocketThreadFactory(SocketThreadABC):
 
     # Активируется, когда класс определил необходимый типа потока, передаёт типа потока и дескриптор сокета
     socketIdentified = Signal(SocketThreadType, int)
-
-    @staticmethod
-    def create_socket_thread(socket_thread_type: SocketThreadType, socket_descriptor: int) -> ServerSocketThread:
-        """
-        Создает поток сокета указанного типа, используя заданный дескриптор.
-        После активации сигнала `socketIdentified`, в подключенном слоте следует вызвать данный метод,
-        чтобы получить нужный поток
-
-        ### Параметры
-        - `socket_thread_type: SocketThreadType`
-        - `socket_descriptor: int`
-
-        ### Возвращает
-        Потомка класса `ServerSocketThread`
-        """
-
-        return ServerSocketThread._socket_type_bindings[socket_thread_type](socket_descriptor)
 
     def thread_workflow(self, *args) -> None:
         """

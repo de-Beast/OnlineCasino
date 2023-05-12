@@ -2,12 +2,9 @@ __all__ = [
     "ClientSocketThread",
     "AccountInitialSocketThread",
     "AccountInfoSocketThread",
+    "Client",
 ]
 
-from typing import TypeAlias
-
-from .ABC import ClientSocketThreadABC
 from .account_info import AccountInfoSocketThread
 from .account_initial import AccountInitialSocketThread
-
-ClientSocketThread: TypeAlias = ClientSocketThreadABC
+from .Client import Client, ClientSocketThread
