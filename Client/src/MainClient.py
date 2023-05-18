@@ -14,68 +14,65 @@ from Client.AllUi.ui_MainWindow import Ui_MainWindow
 from Client.AllUi.ui_StartWidget import Ui_Start
 from Client.AllUi.ui_Enter import Ui_Enter
 from Client.AllUi.ui_Registration import Ui_Registration
-# from client_sockets import AuthorizationSocketThread
+from Client.src.client_sockets.socket_threads.account_initial import AccountInitialSocketThread
 
-def OnRegisterClicked():
-    SavePageToHistory(StartWidget)
-    mainUi.stackedWidget.setCurrentWidget(RegisterWidget)
+from Client.src.AccountWindow import AccountWindow
+from Client.src.StartWindow import StartWindow
+from Client.src.EnterWindow import EnterWindow
+from Client.src.RegistrationWindow import RegistrationWindow
 
-def OnEnterClicked():
-    SavePageToHistory(StartWidget)
-    mainUi.stackedWidget.setCurrentWidget(EnterWidget)
-
-def SavePageToHistory(widget):
+def SavePageToHistory(widget : QWidget):
     history.append(widget)
+def SaveLastPageToHistory():
+    SavePageToHistory(mainUi.stackedWidget.currentWidget())
 
 def GoBack():
     mainUi.stackedWidget.setCurrentWidget(history.pop())
 
-def SetBackButtons():
-    enterUi.backButton.clicked.connect(GoBack)
-    registerUi.backButton.clicked.connect(GoBack)
+def ToRegistrWindow():
+   SaveLastPageToHistory()
+   mainUi.stackedWidget.setCurrentWidget(RegistrationWindow.widget)
 
-def Register():
-    email = registerUi.lineEdit.text()
-    password = registerUi.lineEdit_2.text()
-    #thread.auth(email, password, sign_up=True)
+def ToEnterWindow():
+    SaveLastPageToHistory()
+    mainUi.stackedWidget.setCurrentWidget(EnterWindow.widget)
 
-def Enter():
-    email = registerUi.lineEdit.text()
-    password = registerUi.lineEdit_2.text()
-    #thread.auth(email, password)
+def ToAccountWindow():
+    SaveLastPageToHistory()
+    mainUi.stackedWidget.setCurrentWidget(AccountWindow.widget)
 
+def RegisterNavigation():
+    StartWindow.UI.EnterButton.clicked.connect(ToEnterWindow)
+    StartWindow.UI.RegistrButton.clicked.connect(ToRegistrWindow)
+
+    EnterWindow.UI.Enter_Button.clicked.connect(GoBack)
+
+    RegistrationWindow.UI.Sign_up.clicked.connect(ToAccountWindow)
+
+    AccountWindow.UI.pushButton.clicked.connect(GoBack)
+
+history = []
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
-
-    # thread = AuthorizationSocketThread()
 
     MainWindow = QtWidgets.QMainWindow()
     mainUi = Ui_MainWindow()
     mainUi.setupUi(MainWindow)
 
-    StartWidget = QtWidgets.QWidget()
-    startUi = Ui_Start()
-    startUi.setupUi(StartWidget)
+    StartWindow = StartWindow()
+    RegistrationWindow = RegistrationWindow()
+    EnterWindow = EnterWindow()
+    AccountWindow = AccountWindow()
 
-    mainUi.stackedWidget.addWidget(StartWidget)
+    mainUi.stackedWidget.addWidget(StartWindow.widget)
+    mainUi.stackedWidget.addWidget(RegistrationWindow.widget)
+    mainUi.stackedWidget.addWidget(EnterWindow.widget)
+    mainUi.stackedWidget.addWidget(AccountWindow.widget)
 
-    RegisterWidget = QtWidgets.QWidget()
-    registerUi = Ui_Registration()
-    registerUi.setupUi(RegisterWidget)
-    startUi.RegistrButton.clicked.connect(OnRegisterClicked)
-    mainUi.stackedWidget.addWidget(RegisterWidget)
-    registerUi.Login1.clicked.connect(Register)
+    RegisterNavigation()
 
-    EnterWidget = QtWidgets.QWidget()
-    enterUi = Ui_Enter()
-    enterUi.setupUi(EnterWidget)
-    startUi.EnterButton.clicked.connect(OnEnterClicked)
-    mainUi.stackedWidget.addWidget(EnterWidget)
-    enterUi.Login1.clicked.connect(Enter)
 
-    history = []
-    SetBackButtons()
 
     MainWindow.show()
     sys.exit(app.exec())
