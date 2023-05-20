@@ -10,13 +10,12 @@ from PySide6.QtWidgets import (
     QVBoxLayout,
 )
 
-from client_sockets import Client
+from client_sockets import Client, ChatSocketThread
 
 
 class MainWindow(QDialog):
     def __init__(self, parent=None) -> None:
         super().__init__(parent)
-        self.client: Client = Client()
 
         self._login_line_edit = QLineEdit()
         self._password_line_edit = QLineEdit()
@@ -59,9 +58,13 @@ class MainWindow(QDialog):
         self._answer_label.text = ""
         self._sign_up_button.enabled = False
         self._sign_in_button.enabled = False
-        self.client.register(
-            self._login_line_edit.text, self._password_line_edit.text, responseReceived_slot=self.get_answer
-        )
+        self.socket = ChatSocketThread(self, "roulette")
+        self.socket.responseRecieved.connect(self.get_answer)
+        self.socket.send_message(self._login_line_edit.text, self._password_line_edit.text)
+
+        #self.client.register(
+        #    self._login_line_edit.text, self._password_line_edit.text, responseReceived_slot=self.get_answer
+        #)
         # self.client = AccountInitialSocketThread(self)
         # self.client.responseRecieved.connect(self.get_answer)
         # self.client.register(self._login_line_edit.text, self._password_line_edit.text)
@@ -80,9 +83,9 @@ class MainWindow(QDialog):
         # self.client.responseRecieved.connect(self.get_answer)
         # self.client.get_account_info(self._login_line_edit.text)
 
-    def get_answer(self, answer: str) -> None:
-        self._answer_label.text = answer
-        # self._answer_label.text = f"balance: {answer['balance']}, nickname: {answer['nickname']}"
+    def get_answer(self, nickname: str, message: str) -> None:
+        #self._answer_label.text = answer
+        self._answer_label.text = f"{nickname}: {message}"
 
 
 if __name__ == "__main__":

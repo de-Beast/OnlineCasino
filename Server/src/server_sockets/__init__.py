@@ -3,8 +3,10 @@ __all__ = [
     "ServerSocketThread",
     "AccountInitialSocketThread",
     "AccountSocketThread",
+    "ChatManager",
 ]
 
 
 from .socket_threads import AccountInitialSocketThread, ServerSocketThread
 from .SocketThreadFactory import ServerSocketThreadFactory
+from .chat_manager import ChatManager
