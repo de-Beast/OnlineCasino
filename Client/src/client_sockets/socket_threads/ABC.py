@@ -32,6 +32,8 @@ class ClientSocketThreadABC(SocketThreadABC):
     # В наследнике должен быть инициализирован, иначе выкинется исключение.
     # Принимаемый(-ые) типы у наследников могут быть разные
     responseRecieved: ClassVar[Signal]
+    
+    client_token: ClassVar[str | None] = None
 
     @classmethod
     def __init_subclass__(cls, **kwargs) -> None:

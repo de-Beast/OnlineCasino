@@ -39,6 +39,7 @@ class ServerSocketThreadFactory(SocketThreadABC):
                 )
                 socket.readyRead.connect(slot)
                 self.wait_for_readyRead(socket)
+
                 socket.readyRead.disconnect(self.slot_storage.pop(slot))
 
             with QMutexLocker(self.mutex):

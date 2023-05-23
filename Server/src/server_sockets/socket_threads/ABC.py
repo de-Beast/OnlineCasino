@@ -3,7 +3,7 @@ from abc import ABC
 from typing import ClassVar, Type
 
 import PySide6  # type: ignore # noqa: F401
-from __feature__ import snake_case, true_property  # type: ignore  # noqa: F401;
+from __feature__ import snake_case, true_property  # type: ignore  # noqa: F401
 from PySide6.QtCore import QMutexLocker, QObject
 from PySide6.QtNetwork import QTcpSocket
 
