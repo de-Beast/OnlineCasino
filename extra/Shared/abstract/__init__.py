@@ -1,5 +1,5 @@
 __all__ = [
-    "ThreadABC",
+    "ThreadBase",
 ]
 
 from abc import ABC, ABCMeta, abstractmethod
@@ -50,7 +50,7 @@ class QABC(ABC, metaclass=_ResolverMeta):
         return super().__new__(cls, *args, **kwargs)
 
 
-class ThreadABC(QABC, QThread):
+class ThreadBase(QABC, QThread):
     """
     Абстрактный базовый класс для потоков.
 
@@ -58,9 +58,6 @@ class ThreadABC(QABC, QThread):
     ### Абстрактные методы
     >>> def thread_workflow(self, *args, **kwargs) -> None: ...
     """
-
-    # Таймаут, используемый в `wait_` методах
-    wait_timeout: int = 10_000  # milliseconds
 
     error = Signal(str)
 
@@ -70,7 +67,7 @@ class ThreadABC(QABC, QThread):
 
     def __init__(self, parent: QObject | None = None) -> None:
         super().__init__(parent)
-        self.finished.connect(self.delete_later)
+        # self.finished.connect(self.delete_later)
 
         self._mutex = QMutex()
         self._cond = QWaitCondition()
@@ -79,6 +76,7 @@ class ThreadABC(QABC, QThread):
 
     def __del__(self) -> None:
         self.stop_work()
+        self.delete_later()
 
     @property
     def is_working(self) -> bool:
@@ -144,6 +142,8 @@ class ThreadABC(QABC, QThread):
         >>> thread.stop_work()
         """
 
+        self._is_working = False
+        self.quit()
+
         with QMutexLocker(self.mutex):
-            self._is_working = False
             self.cond.wake_one()

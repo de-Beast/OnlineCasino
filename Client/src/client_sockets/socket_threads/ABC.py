@@ -6,13 +6,13 @@ from __feature__ import snake_case, true_property  # type: ignore  # noqa: F401;
 from PySide6.QtCore import QMutexLocker, QObject, Signal
 from PySide6.QtNetwork import QHostAddress, QTcpSocket
 
-from Shared.sockets import SocketThreadABC
+from Shared.sockets import SocketThreadBase
 from Shared.sockets.enums import SocketThreadType
 
 # TODO Класс для хранения и работы с лямбда-функциями, которые можно к объектам SignalInstance присоединять
 
 
-class ClientSocketThreadABC(SocketThreadABC):
+class ClientSocketThread(SocketThreadBase):
     """
     Базовый класс для клиентских сокетов.
 
@@ -45,10 +45,10 @@ class ClientSocketThreadABC(SocketThreadABC):
         if not hasattr(cls, "socket_type") or not isinstance(cls.socket_type, SocketThreadType):
             raise TypeError("socket_type must be a Class variable of SocketThreadType enum")
 
-        if cls.socket_type in ClientSocketThreadABC.__socket_types:
+        if cls.socket_type in ClientSocketThread.__socket_types:
             raise RuntimeError("Can not create subclass with the same socket type")
 
-        ClientSocketThreadABC.__socket_types.add(cls.socket_type)
+        ClientSocketThread.__socket_types.add(cls.socket_type)
 
     def __init__(self, parent: QObject | None = None) -> None:
         super().__init__(parent)
@@ -67,13 +67,12 @@ class ClientSocketThreadABC(SocketThreadABC):
             return
 
         self._send_socket_type(socket)
-        if not self.wait_for_readyRead(socket):
-            print("Can not get connection answer from host")
-            return
-
-        if not self.__is_connected:
+        if not self.wait_for_readyRead(socket) or not self.__is_connected:
+            print("ClientSocketThreadABC.run: Can not get connection answer from host")
             self._disconnect_socket(socket)
             return
+
+        socket.disconnected.connect(self.stop_work)
 
         self._is_working = True
         self.thread_workflow(socket)
@@ -83,7 +82,7 @@ class ClientSocketThreadABC(SocketThreadABC):
     def _create_socket(self) -> QTcpSocket | None:
         """
         Создает сокет и присодиняет его к хосту.
-        Должен быть использован только в методе `run`.
+        Должен быть использован только в методе `run` или во всех волженных методах.
 
         ### Возвращает
 

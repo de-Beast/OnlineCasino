@@ -1,12 +1,13 @@
 from functools import partial
 from types import MethodType
-from typing import Callable, Self, TypeAlias
+from typing import Callable, ParamSpec, Self, Type, TypeAlias, TypeVar
 
 from Shared.slot_storage import SlotCallableWithoutSender, SlotStorage
 
-from .ABC import ClientSocketThreadABC
+from .ABC import ClientSocketThread
 
-ClientSocketThread: TypeAlias = ClientSocketThreadABC
+T = TypeVar("T", bound=ClientSocketThread)
+R = TypeVar("R")
 
 
 class Client:
@@ -23,7 +24,7 @@ class Client:
         self._token: str | None = None
 
     @staticmethod
-    def register_socket_thread_class(cls: type) -> type:
+    def register_socket_thread_class(cls: Type[T]) -> Type[T]:
         if not issubclass(cls, ClientSocketThread):
             return cls
 
@@ -46,7 +47,7 @@ class Client:
         return cls
 
     @staticmethod
-    def mark_socket_thread_method(func: Callable) -> Callable:
+    def mark_socket_thread_method(func: Callable[..., R]) -> Callable[..., R]:
         setattr(func, "_for_client", True)
         return func
 

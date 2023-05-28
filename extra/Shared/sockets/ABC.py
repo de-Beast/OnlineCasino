@@ -7,12 +7,12 @@ from PySide6.QtCore import QByteArray, QDataStream, QObject
 from PySide6.QtNetwork import QTcpSocket
 
 from Shared import SlotStorage
-from Shared.abstract import ThreadABC
+from Shared.abstract import ThreadBase
 
 T = TypeVar("T", bound=object)
 
 
-class SocketThreadABC(ThreadABC, ABC):
+class SocketThreadBase(ThreadBase, ABC):
     """
     Абстрактный базовый класс для потоков сокетов
 
@@ -21,6 +21,9 @@ class SocketThreadABC(ThreadABC, ABC):
     #>>> thread_workflow(self, socket: QTcpSocket) -> None
     #>>> _create_socket(self, *args, **kwargs) -> QTcpSocket | None
     """
+
+    # Таймаут, используемый в `wait_` методах
+    wait_timeout: int = 10_000  # milliseconds
 
     def __init__(self, parent: QObject | None = None) -> None:
         super().__init__(parent)
@@ -73,7 +76,7 @@ class SocketThreadABC(ThreadABC, ABC):
 
         while True:
             if not socket.wait_for_ready_read(self.wait_timeout if msecs is None else msecs):
-                print(socket.error_string())
+                # print(socket.error_string())
                 self.error.emit(socket.error_string())
                 return False
             if socket.bytes_available() == 0:

@@ -9,10 +9,10 @@ from Shared.sockets.enums import (
     SocketThreadType,
 )
 
-from .ABC import ServerSocketThreadABC
+from .ABC import ServerSocketThread
 
 
-class AccountInitialSocketThread(ServerSocketThreadABC):
+class AccountInitialSocketThread(ServerSocketThread):
     socket_type = SocketThreadType.ACCOUNT_INITIAL
 
     def thread_workflow(self, socket: QTcpSocket) -> None:

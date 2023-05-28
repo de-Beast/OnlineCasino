@@ -3,11 +3,11 @@ from __feature__ import snake_case, true_property  # type: ignore  # noqa: F401
 from PySide6.QtCore import QMutexLocker, Signal
 from PySide6.QtNetwork import QTcpSocket
 
-from Shared.sockets import SocketThreadABC
+from Shared.sockets import SocketThreadBase
 from Shared.sockets.enums import SocketThreadType
 
 
-class ServerSocketThreadFactory(SocketThreadABC):
+class SocketThreadFactory(SocketThreadBase):
     """
     Специальный класс для определения необходимого для корректной
     связи с клиентом потока. Рабочий процесс заключен в цикл, постоянно обрабатывая
@@ -34,13 +34,15 @@ class ServerSocketThreadFactory(SocketThreadABC):
         while self.is_working:
             socket = self._create_socket(socket_descriptor)
             if socket is not None:
-                slot = self.slot_storage.create_and_store_slot(
-                    "_recieve_socket_thread_type", self._recieve_socket_thread_type, socket
-                )
+                slot = self.slot_storage.create_slot(self._recieve_socket_thread_type, socket)
                 socket.readyRead.connect(slot)
                 self.wait_for_readyRead(socket)
+<<<<<<< Updated upstream:Server/src/server_sockets/SocketThreadFactory.py
 
                 socket.readyRead.disconnect(self.slot_storage.pop(slot))
+=======
+                socket.readyRead.disconnect(slot)
+>>>>>>> Stashed changes:Server/src/server_sockets/socket_thread_factory.py
 
             with QMutexLocker(self.mutex):
                 self.cond.wait(self.mutex)

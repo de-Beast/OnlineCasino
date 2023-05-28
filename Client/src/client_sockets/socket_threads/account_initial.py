@@ -9,12 +9,10 @@ from Shared.sockets.enums import (
     SocketThreadType,
 )
 
-from .ABC import ClientSocketThreadABC
-from .Client import Client
+from .ABC import ClientSocketThread
 
 
-@Client.register_socket_thread_class
-class AccountInitialSocketThread(ClientSocketThreadABC):
+class AccountInitialSocketThread(ClientSocketThread):
     """
     Поток для обработки запросов, связанных с авторизацией и регистрацией
 
@@ -38,7 +36,6 @@ class AccountInitialSocketThread(ClientSocketThreadABC):
         self.password: str
         self.request_method: AccountInitialRequest
 
-    @Client.mark_socket_thread_method
     def auth(self, login: str, password: str) -> None:
         """
         Принимает и сохраняет логин и пароль для последующего входа в систему. Запускает поток.
@@ -53,16 +50,15 @@ class AccountInitialSocketThread(ClientSocketThreadABC):
         Строка, представляющая пароль пользователя
         """
 
-        with QMutexLocker(self.mutex):
-            if self.is_running():
-                return
+        if self.is_running():
+            return
 
+        with QMutexLocker(self.mutex):
             self.login = login
             self.password = password
             self.request_method = AccountInitialRequest.AUTH
             self.start()
 
-    @Client.mark_socket_thread_method
     def register(self, login: str, password: str) -> None:
         """
         Принимает и сохраняет логин и пароль для последующей регистрации пользователя в системе. Запускает поток.
@@ -77,10 +73,10 @@ class AccountInitialSocketThread(ClientSocketThreadABC):
         Строка, представляющая пароль пользователя
         """
 
-        with QMutexLocker(self.mutex):
-            if self.is_running():
-                return
+        if self.is_running():
+            return
 
+        with QMutexLocker(self.mutex):
             self.login = login
             self.password = password
             self.request_method = AccountInitialRequest.REGISTER

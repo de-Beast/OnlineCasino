@@ -3,7 +3,7 @@ import sys
 import PySide6  # type: ignore # noqa: F401
 from __feature__ import snake_case, true_property  # type: ignore  # noqa: F401
 from PySide6.QtNetwork import QTcpServer
-from server_sockets import ServerSocketThread, ServerSocketThreadFactory
+from server_sockets import ChatManager, ServerSocketThread, SocketThreadFactory
 
 from Shared.slot_storage import SlotStorage
 from Shared.sockets.enums import SocketThreadType
@@ -15,7 +15,7 @@ class Server(QTcpServer):
 
         self._socket_threads: list[ServerSocketThread] = []
 
-        self._socket_thread_factory = ServerSocketThreadFactory()
+        self._socket_thread_factory = SocketThreadFactory()
         self._socket_thread_factory.socketIdentified.connect(self.create_socket_thread)
 
         if not self.listen(port=8888):

@@ -5,10 +5,10 @@ from PySide6.QtNetwork import QTcpSocket
 
 from Shared.sockets.enums import SocketThreadType
 
-from .ABC import ServerSocketThreadABC
+from .ABC import ServerSocketThread
 
 
-class AccountInfoSocketThread(ServerSocketThreadABC):
+class AccountInfoSocketThread(ServerSocketThread):
     socket_type = SocketThreadType.ACCOUNT_INFO
 
     def thread_workflow(self, socket: QTcpSocket) -> None:
