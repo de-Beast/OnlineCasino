@@ -5,22 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c8a4d5d5-91d8-4665-893e-489d7ff6627b" name="Changes" comment="Simple ui">
-      <change afterPath="$PROJECT_DIR$/Client/src/AccountWindow.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Client/src/EnterWindow.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Client/src/RegistrationWindow.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Client/src/StartWindow.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/OnlineCasino.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/OnlineCasino.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/AllUi/Enter.ui" beforeDir="false" afterPath="$PROJECT_DIR$/Client/AllUi/Enter.ui" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/AllUi/Registration.ui" beforeDir="false" afterPath="$PROJECT_DIR$/Client/AllUi/Registration.ui" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/AllUi/ui_Enter.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client/AllUi/ui_Enter.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/AllUi/ui_Registration.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client/AllUi/ui_Registration.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/images/project.qrc" beforeDir="false" afterPath="$PROJECT_DIR$/Client/images/project.qrc" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Client/src/MainClient.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/MainClient.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/main_client.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/ui_untitled.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/untitled.ui" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

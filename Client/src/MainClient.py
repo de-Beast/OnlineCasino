@@ -30,8 +30,8 @@ def GoBack():
     mainUi.stackedWidget.setCurrentWidget(history.pop())
 
 def ToRegistrWindow():
-   SaveLastPageToHistory()
-   mainUi.stackedWidget.setCurrentWidget(RegistrationWindow.widget)
+    SaveLastPageToHistory()
+    mainUi.stackedWidget.setCurrentWidget(RegistrationWindow.widget)
 
 def ToEnterWindow():
     SaveLastPageToHistory()
