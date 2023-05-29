@@ -6,8 +6,10 @@ from PySide6.QtNetwork import QTcpSocket
 from Shared.sockets.enums import SocketThreadType
 
 from .ABC import ClientSocketThreadABC
+from .Client import Client
 
 
+@Client.register_socket_thread_class
 class AccountInfoSocketThread(ClientSocketThreadABC):
     responseRecieved = Signal(dict)
 
@@ -36,6 +38,7 @@ class AccountInfoSocketThread(ClientSocketThreadABC):
 
         self.responseRecieved.emit(info)
 
+    @Client.mark_socket_thread_method
     def get_account_info(self, login: str) -> None:
         with QMutexLocker(self.mutex):
             if self.is_running():

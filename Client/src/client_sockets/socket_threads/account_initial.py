@@ -10,8 +10,10 @@ from Shared.sockets.enums import (
 )
 
 from .ABC import ClientSocketThreadABC
+from .Client import Client
 
 
+@Client.register_socket_thread_class
 class AccountInitialSocketThread(ClientSocketThreadABC):
     """
     Поток для обработки запросов, связанных с авторизацией и регистрацией
@@ -36,6 +38,7 @@ class AccountInitialSocketThread(ClientSocketThreadABC):
         self.password: str
         self.request_method: AccountInitialRequest
 
+    @Client.mark_socket_thread_method
     def auth(self, login: str, password: str) -> None:
         """
         Принимает и сохраняет логин и пароль для последующего входа в систему. Запускает поток.
@@ -59,6 +62,7 @@ class AccountInitialSocketThread(ClientSocketThreadABC):
             self.request_method = AccountInitialRequest.AUTH
             self.start()
 
+    @Client.mark_socket_thread_method
     def register(self, login: str, password: str) -> None:
         """
         Принимает и сохраняет логин и пароль для последующей регистрации пользователя в системе. Запускает поток.

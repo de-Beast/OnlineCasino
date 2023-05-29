@@ -39,7 +39,7 @@ class SocketThreadABC(ThreadABC, ABC):
     def _create_socket(self, *args, **kwargs) -> QTcpSocket | None:
         raise NotImplementedError
 
-    def wait_for_readyRead(self, socket: QTcpSocket) -> bool:
+    def wait_for_readyRead(self, socket: QTcpSocket, msecs: int | None = None) -> bool:
         """
         Ожидает прибытия полного пакета данных
 
@@ -72,7 +72,7 @@ class SocketThreadABC(ThreadABC, ABC):
         """
 
         while True:
-            if not socket.wait_for_ready_read(self.wait_timeout):
+            if not socket.wait_for_ready_read(self.wait_timeout if msecs is None else msecs):
                 print(socket.error_string())
                 self.error.emit(socket.error_string())
                 return False

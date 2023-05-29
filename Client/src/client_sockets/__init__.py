@@ -2,10 +2,8 @@ __all__ = [
     "ClientSocketThread",
     "AccountInitialSocketThread",
     "AccountInfoSocketThread",
+    "Client",
+    "ChatSocketThread",
 ]
 
-from .socket_threads import (
-    AccountInfoSocketThread,
-    AccountInitialSocketThread,
-    ClientSocketThread,
-)
+from .socket_threads import *
