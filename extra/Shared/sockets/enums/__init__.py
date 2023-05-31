@@ -18,3 +18,4 @@ class SocketThreadType(EnumBase):
     ACCOUNT_INITIAL = auto()
     ACCOUNT_INFO = auto()
     CHAT = auto()
+    BET = auto()

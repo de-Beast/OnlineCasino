@@ -10,6 +10,7 @@ from Shared.sockets.enums import SocketThreadType
 from server_sockets import ChatManager
 
 class Server(QTcpServer):
+
     def __init__(self, parent=None) -> None:
         super().__init__(parent)
 

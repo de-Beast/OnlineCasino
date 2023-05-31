@@ -70,5 +70,5 @@ class AccountsDB(DatabaseABC):
 
     def get_account_info(self, login: str) -> dict | None:
         data: dict | None = self.accounts_collection.find_one({"login": login},
-                                                 {"_id": 0, "balance": 1, "nickname": 1})
+                                                 {"_id": 0, "balance": 1})
         return data
