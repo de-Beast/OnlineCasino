@@ -5,7 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c8a4d5d5-91d8-4665-893e-489d7ff6627b" name="Changes" comment="Simple ui">
+      <change afterPath="$PROJECT_DIR$/Client/src/GameWindow.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/AllUi/Game.ui" beforeDir="false" afterPath="$PROJECT_DIR$/Client/AllUi/Game.ui" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Client/src/MainClient.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/MainClient.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -38,6 +40,7 @@
   </component>
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;D:/Projects/OnlineCasino/extra&quot;,

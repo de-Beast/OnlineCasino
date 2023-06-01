@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>865</width>
-    <height>599</height>
+    <width>839</width>
+    <height>552</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -118,7 +118,7 @@ background-color: rgba(140, 101, 65, 0.6)
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <layout class="QVBoxLayout" name="verticalLayout_2">
+      <layout class="QVBoxLayout" name="verticalLayout_2" stretch="1,2">
        <item>
         <widget class="QWidget" name="widget" native="true">
          <property name="minimumSize">
@@ -138,13 +138,17 @@ background-color: rgba(140, 101, 65, 0.6)
           <string notr="true">background: rgba(248, 224, 140, 1);
 border-radius: 20px;</string>
          </property>
-         <layout class="QHBoxLayout" name="horizontalLayout_3">
+         <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="0,0">
           <item>
            <widget class="QLabel" name="circle">
+            <property name="maximumSize">
+             <size>
+              <width>300</width>
+              <height>300</height>
+             </size>
+            </property>
             <property name="styleSheet">
-             <string notr="true">border-radius: 100px;
-background: rgba(41, 20, 4, 1);
-</string>
+             <string notr="true">border-radius: 100px;</string>
             </property>
             <property name="text">
              <string>Circle</string>
@@ -173,6 +177,13 @@ background: rgba(41, 20, 4, 1);
                  <width>16777215</width>
                  <height>40</height>
                 </size>
+               </property>
+               <property name="font">
+                <font>
+                 <family>Manrope</family>
+                 <pointsize>12</pointsize>
+                 <bold>true</bold>
+                </font>
                </property>
                <property name="styleSheet">
                 <string notr="true">background: rgba(255, 241, 191, 1);
@@ -286,32 +297,13 @@ color: rgba(255, 241, 191, 1);
               </widget>
              </item>
              <item>
-              <widget class="QWidget" name="history" native="true">
-               <layout class="QHBoxLayout" name="horizontalLayout_6">
-                <item>
-                 <widget class="QLabel" name="label_4">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="minimumSize">
-                   <size>
-                    <width>20</width>
-                    <height>20</height>
-                   </size>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">background: rgba(87, 187, 52, 1);
-border-radius: 10px</string>
-                  </property>
-                  <property name="text">
-                   <string/>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
+              <widget class="QListWidget" name="history">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
               </widget>
              </item>
             </layout>
@@ -322,7 +314,7 @@ border-radius: 10px</string>
        </item>
        <item>
         <widget class="QWidget" name="bets" native="true">
-         <layout class="QHBoxLayout" name="horizontalLayout_4">
+         <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="2,2,2">
           <property name="leftMargin">
            <number>0</number>
           </property>
@@ -367,28 +359,12 @@ layoutMargins: 0px;</string>
              </property>
              <item>
               <widget class="QWidget" name="widget_4" native="true">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="autoFillBackground">
-                <bool>false</bool>
-               </property>
                <property name="styleSheet">
-                <string notr="true">background: rgba(248, 224, 140, 1);
-position: absolute;</string>
+                <string notr="true">background: rgba(248, 224, 140, 1);</string>
                </property>
                <layout class="QVBoxLayout" name="verticalLayout_8">
                 <item>
                  <widget class="QLabel" name="label_5">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
                   <property name="font">
                    <font>
                     <family>Manrope</family>
@@ -397,13 +373,15 @@ position: absolute;</string>
                    </font>
                   </property>
                   <property name="styleSheet">
-                   <string notr="true">position: absolute;
-top: 0px;</string>
+                   <string notr="true"/>
                   </property>
                   <property name="text">
-                   <string>ОБЩАЯ СТАВКА: 4000</string>
+                   <string>ОБЩАЯ СТАВКА</string>
                   </property>
                  </widget>
+                </item>
+                <item>
+                 <widget class="QTextBrowser" name="redBets"/>
                 </item>
                </layout>
               </widget>
@@ -432,10 +410,36 @@ border-radius: 26px;</string>
              </property>
              <item>
               <widget class="QWidget" name="widget_5" native="true">
+               <property name="font">
+                <font>
+                 <family>Manrope</family>
+                 <pointsize>10</pointsize>
+                 <bold>true</bold>
+                </font>
+               </property>
                <property name="styleSheet">
                 <string notr="true">background: rgba(248, 224, 140, 1);
 </string>
                </property>
+               <layout class="QVBoxLayout" name="verticalLayout_9">
+                <item>
+                 <widget class="QLabel" name="label_6">
+                  <property name="font">
+                   <font>
+                    <family>Manrope</family>
+                    <pointsize>10</pointsize>
+                    <bold>true</bold>
+                   </font>
+                  </property>
+                  <property name="text">
+                   <string>ОБЩАЯ СТАВКА</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QTextBrowser" name="blackBets"/>
+                </item>
+               </layout>
               </widget>
              </item>
             </layout>
@@ -466,6 +470,25 @@ border-radius: 26px;</string>
                 <string notr="true">background: rgba(248, 224, 140, 1);
 </string>
                </property>
+               <layout class="QVBoxLayout" name="verticalLayout_10">
+                <item>
+                 <widget class="QLabel" name="label_7">
+                  <property name="font">
+                   <font>
+                    <family>Manrope</family>
+                    <pointsize>10</pointsize>
+                    <bold>true</bold>
+                   </font>
+                  </property>
+                  <property name="text">
+                   <string>ОБЩАЯ СТАВКА</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QTextBrowser" name="greenBets"/>
+                </item>
+               </layout>
               </widget>
              </item>
             </layout>
@@ -484,6 +507,12 @@ border-radius: 26px;</string>
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
+       <property name="minimumSize">
+        <size>
+         <width>200</width>
+         <height>0</height>
+        </size>
+       </property>
        <property name="maximumSize">
         <size>
          <width>300</width>
@@ -499,22 +528,16 @@ border-radius: 26px;</string>
          <widget class="QTextBrowser" name="chat"/>
         </item>
         <item>
-         <widget class="QTextEdit" name="messageEdit">
-          <property name="maximumSize">
+         <widget class="QLineEdit" name="lineEdit">
+          <property name="minimumSize">
            <size>
-            <width>16777215</width>
-            <height>42</height>
+            <width>0</width>
+            <height>30</height>
            </size>
-          </property>
-          <property name="font">
-           <font>
-            <family>Manrope</family>
-            <pointsize>12</pointsize>
-           </font>
           </property>
           <property name="styleSheet">
            <string notr="true">background: rgba(255, 241, 191, 1);
-border-radius: 20px;</string>
+border-radius: 15px;</string>
           </property>
          </widget>
         </item>

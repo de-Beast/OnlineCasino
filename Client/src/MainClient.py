@@ -20,6 +20,7 @@ from Client.src.AccountWindow import AccountWindow
 from Client.src.StartWindow import StartWindow
 from Client.src.EnterWindow import EnterWindow
 from Client.src.RegistrationWindow import RegistrationWindow
+from Client.src.GameWindow import GameWindow
 
 def SavePageToHistory(widget : QWidget):
     history.append(widget)
@@ -41,13 +42,17 @@ def ToAccountWindow():
     SaveLastPageToHistory()
     mainUi.stackedWidget.setCurrentWidget(AccountWindow.widget)
 
+def ToGameWindow():
+    SaveLastPageToHistory()
+    mainUi.stackedWidget.setCurrentWidget(GameWindow.widget)
+
 def RegisterNavigation():
     StartWindow.UI.EnterButton.clicked.connect(ToEnterWindow)
     StartWindow.UI.RegistrButton.clicked.connect(ToRegistrWindow)
 
     EnterWindow.UI.Enter_Button.clicked.connect(GoBack)
 
-    RegistrationWindow.UI.Sign_up.clicked.connect(ToAccountWindow)
+    RegistrationWindow.UI.Sign_up.clicked.connect(ToGameWindow)
 
     AccountWindow.UI.pushButton.clicked.connect(GoBack)
 
@@ -64,11 +69,13 @@ if __name__ == "__main__":
     RegistrationWindow = RegistrationWindow()
     EnterWindow = EnterWindow()
     AccountWindow = AccountWindow()
+    GameWindow = GameWindow()
 
     mainUi.stackedWidget.addWidget(StartWindow.widget)
     mainUi.stackedWidget.addWidget(RegistrationWindow.widget)
     mainUi.stackedWidget.addWidget(EnterWindow.widget)
     mainUi.stackedWidget.addWidget(AccountWindow.widget)
+    mainUi.stackedWidget.addWidget(GameWindow.widget)
 
     RegisterNavigation()
 
