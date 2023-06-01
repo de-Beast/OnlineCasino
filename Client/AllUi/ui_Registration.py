@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'RegistrationKPCNei.ui'
+## Form generated from reading UI file 'RegistrationoRVIOm.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.5.0
 ##
@@ -18,17 +18,19 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
 from PySide6.QtWidgets import (QApplication, QFormLayout, QHBoxLayout, QLabel,
     QLineEdit, QPushButton, QSizePolicy, QVBoxLayout,
     QWidget)
+from Client.images import project_rc
 
 class Ui_Registration(object):
     def setupUi(self, Form):
         if not Form.objectName():
             Form.setObjectName(u"Form")
-        Form.resize(687, 652)
+        Form.resize(664, 661)
         Form.setStyleSheet(u"\n"
 "\n"
 "background-color: rgb(255, 241, 191);")
         self.verticalLayout_4 = QVBoxLayout(Form)
         self.verticalLayout_4.setObjectName(u"verticalLayout_4")
+        self.verticalLayout_4.setContentsMargins(-1, -1, -1, 0)
         self.horizontalLayout = QHBoxLayout()
         self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.Icon1 = QLabel(Form)
@@ -41,6 +43,7 @@ class Ui_Registration(object):
         self.Logo = QLabel(Form)
         self.Logo.setObjectName(u"Logo")
         font = QFont()
+        font.setFamilies([u"Manrope"])
         font.setPointSize(45)
         font.setBold(True)
         self.Logo.setFont(font)
@@ -89,6 +92,7 @@ class Ui_Registration(object):
 
         self.formLayout = QFormLayout()
         self.formLayout.setObjectName(u"formLayout")
+        self.formLayout.setLabelAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignVCenter)
         self.formLayout.setHorizontalSpacing(5)
         self.formLayout.setVerticalSpacing(15)
         self.Email = QLabel(Form)
@@ -120,7 +124,9 @@ class Ui_Registration(object):
 
         self.Edit_Email = QLineEdit(Form)
         self.Edit_Email.setObjectName(u"Edit_Email")
-        self.Edit_Email.setStyleSheet(u"background-color: rgb(244, 216, 116);")
+        self.Edit_Email.setMinimumSize(QSize(0, 30))
+        self.Edit_Email.setStyleSheet(u"background-color: rgb(244, 216, 116);\n"
+"border-radius: 15px;")
 
         self.formLayout.setWidget(0, QFormLayout.FieldRole, self.Edit_Email)
 
@@ -148,7 +154,9 @@ class Ui_Registration(object):
 
         self.Edit_Password = QLineEdit(Form)
         self.Edit_Password.setObjectName(u"Edit_Password")
-        self.Edit_Password.setStyleSheet(u"background-color: rgb(244, 216, 116);")
+        self.Edit_Password.setMinimumSize(QSize(0, 30))
+        self.Edit_Password.setStyleSheet(u"background-color: rgb(244, 216, 116);\n"
+"border-radius: 15px")
 
         self.formLayout.setWidget(1, QFormLayout.FieldRole, self.Edit_Password)
 
@@ -162,9 +170,10 @@ class Ui_Registration(object):
 "font-style: normal;\n"
 "\n"
 "text-align: center;\n"
-"background-color: rgb(244, 216, 116);\n"
 "\n"
-"")
+"background: rgba(140, 101, 65, 0.7);\n"
+"border: 2px solid rgba(140, 101, 65, 0.7);\n"
+"border-radius: 10px;")
 
         self.verticalLayout_4.addWidget(self.Sign_up)
 
@@ -178,6 +187,7 @@ class Ui_Registration(object):
 "top: 686px;\n"
 "\n"
 "")
+        self.Chips.setScaledContents(True)
         self.Chips.setAlignment(Qt.AlignBottom|Qt.AlignHCenter)
 
         self.verticalLayout_4.addWidget(self.Chips)

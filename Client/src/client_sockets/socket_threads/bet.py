@@ -3,7 +3,8 @@ from __feature__ import snake_case, true_property  # type: ignore  # noqa: F401;
 from PySide6.QtCore import QMutexLocker, QObject, Signal
 from PySide6.QtNetwork import QTcpSocket
 
-from Shared.sockets.enums import SocketThreadType, RouletteColor
+from Shared.sockets.enums import SocketThreadType
+from Shared.sockets.enums.roulette import RouletteColor
 
 from .ABC import ClientSocketThreadABC
 from .Client import Client

@@ -11,10 +11,6 @@ from PySide6.QtWidgets import (QApplication, QLabel, QMainWindow, QPushButton,
     QSizePolicy, QSpacerItem, QVBoxLayout, QWidget)
 
 from Client.AllUi.ui_MainWindow import Ui_MainWindow
-from Client.AllUi.ui_StartWidget import Ui_Start
-from Client.AllUi.ui_Enter import Ui_Enter
-from Client.AllUi.ui_Registration import Ui_Registration
-from Client.src.client_sockets.socket_threads.account_initial import AccountInitialSocketThread
 
 from Client.src.AccountWindow import AccountWindow
 from Client.src.StartWindow import StartWindow

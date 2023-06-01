@@ -5,6 +5,7 @@ from PySide6.QtGui import QMovie
 
 from Client.AllUi.ui_Game import Ui_Game
 from Client.src.client_sockets.socket_threads.chat import ChatSocketThread
+from Shared.sockets.enums.roulette import RouletteColor
 
 class GameWindow(object):
     def __init__(self):
@@ -19,9 +20,9 @@ class GameWindow(object):
         self.UI.messageEdit.returnPressed.connect(self.SendMessage)
 
         #TODO connect dis shit
-        self.UI.blackBetButton.clicked.connect(lambda : self.OnBetMaked("black"))
-        self.UI.redBetButton.clicked.connect(lambda : self.OnRedBetMaked("red"))
-        self.UI.greenBetButton.clicked.connect(lambda : self.OnBetMaked("green"))
+        self.UI.blackBetButton.clicked.connect(lambda : self.OnBetMaked(RouletteColor.BLACK))
+        self.UI.redBetButton.clicked.connect(lambda : self.OnBetMaked(RouletteColor.RED))
+        self.UI.greenBetButton.clicked.connect(lambda : self.OnBetMaked(RouletteColor.GREEN))
 
         self.RegisterGifs()
 
@@ -29,6 +30,8 @@ class GameWindow(object):
         self.UI.circle.setScaledContents(True)
         self.UI.circle.setMovie(self.startGif)
         self.startGif.jumpToFrame(0)
+
+        self.OnBetTaken(RouletteColor.GREEN)
 
     def RegisterGifs(self):
         self.gifs = []
@@ -42,12 +45,25 @@ class GameWindow(object):
         self.gifs.append(QMovie("gifs//zero-stop.gif"))   #7
         self.gifs.append(QMovie("gifs//zero2-stop.gif"))  #8
 
-    def OnBetMaked(self, type):
+    def OnBetMaked(self, type : RouletteColor):
         ...
         self.PlayGif(random.randint(0, len(self.gifs) - 1))
+        self.OnBetTaken(type)
 
-    def OnBetTaken(self, type):
-        pass
+    def OnBetTaken(self, type : RouletteColor):
+        if type == RouletteColor.RED:
+            betSum = self.UI.redBetsSum
+            betCont = self.UI.redBets
+        elif type == RouletteColor.BLACK:
+            betSum = self.UI.blackBetsSum
+            betCont = self.UI.blackBets
+        else:
+            betSum = self.UI.greenBetsSum
+            betCont = self.UI.greenBets
+
+        betSize = 333
+        betSum.setText("ОБЩАЯ СТАВКА: " + str(betSize))
+        betCont.append("<b>nick:</b> " + str(betSize))
 
     def OnMessageRecieved(self, nickname : str, message : str):
         self.UI.chat.append("<b>" + nickname + ":</b>")
@@ -60,7 +76,7 @@ class GameWindow(object):
 
         self.chatThread.send_message("bagel", self.UI.messageEdit.text) #TODO get nickname
 
-        self.OnMessageRecieved("<b>bagel:</b>", self.UI.messageEdit.text())
+        self.OnMessageRecieved("bagel", self.UI.messageEdit.text())
         self.UI.messageEdit.clear()
 
     def PlayGif(self, indOfGif : int):

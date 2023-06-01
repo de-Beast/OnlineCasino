@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'GameTBzlmj.ui'
+## Form generated from reading UI file 'GamebHPfay.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.5.0
 ##
@@ -40,43 +40,44 @@ class Ui_Game(object):
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.horizontalLayout_2 = QHBoxLayout()
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
-        self.pushButton_2 = QPushButton(Form)
-        self.pushButton_2.setObjectName(u"pushButton_2")
+        self.backButton = QPushButton(Form)
+        self.backButton.setObjectName(u"backButton")
         sizePolicy1 = QSizePolicy(QSizePolicy.Maximum, QSizePolicy.Fixed)
         sizePolicy1.setHorizontalStretch(0)
         sizePolicy1.setVerticalStretch(0)
-        sizePolicy1.setHeightForWidth(self.pushButton_2.sizePolicy().hasHeightForWidth())
-        self.pushButton_2.setSizePolicy(sizePolicy1)
-        self.pushButton_2.setMinimumSize(QSize(120, 0))
+        sizePolicy1.setHeightForWidth(self.backButton.sizePolicy().hasHeightForWidth())
+        self.backButton.setSizePolicy(sizePolicy1)
+        self.backButton.setMinimumSize(QSize(120, 0))
         font1 = QFont()
         font1.setFamilies([u"Manrope"])
         font1.setPointSize(14)
         font1.setBold(True)
-        self.pushButton_2.setFont(font1)
-        self.pushButton_2.setStyleSheet(u"background-color: rgba(140, 101, 65, 0.6);\n"
+        self.backButton.setFont(font1)
+        self.backButton.setStyleSheet(u"background-color: rgba(140, 101, 65, 0.6);\n"
 "border-radius: 13px;")
 
-        self.horizontalLayout_2.addWidget(self.pushButton_2)
+        self.horizontalLayout_2.addWidget(self.backButton)
 
-        self.label = QLabel(Form)
-        self.label.setObjectName(u"label")
-        self.label.setFont(font1)
-        self.label.setStyleSheet(u"background: radial-gradient(50% 50% at 50% 50%, rgba(244, 216, 116, 0.63) 60.42%, rgba(244, 216, 116, 0) 100%);\n"
+        self.balanceLabel = QLabel(Form)
+        self.balanceLabel.setObjectName(u"balanceLabel")
+        self.balanceLabel.setFont(font1)
+        self.balanceLabel.setStyleSheet(u"background: radial-gradient(50% 50% at 50% 50%, rgba(244, 216, 116, 0.63) 60.42%, rgba(244, 216, 116, 0) 100%);\n"
 "text-align: center;")
+        self.balanceLabel.setAlignment(Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignHCenter)
 
-        self.horizontalLayout_2.addWidget(self.label)
+        self.horizontalLayout_2.addWidget(self.balanceLabel)
 
-        self.pushButton = QPushButton(Form)
-        self.pushButton.setObjectName(u"pushButton")
-        sizePolicy1.setHeightForWidth(self.pushButton.sizePolicy().hasHeightForWidth())
-        self.pushButton.setSizePolicy(sizePolicy1)
-        self.pushButton.setMinimumSize(QSize(120, 0))
-        self.pushButton.setFont(font1)
-        self.pushButton.setStyleSheet(u"border-radius: 25px;\n"
+        self.accountButton = QPushButton(Form)
+        self.accountButton.setObjectName(u"accountButton")
+        sizePolicy1.setHeightForWidth(self.accountButton.sizePolicy().hasHeightForWidth())
+        self.accountButton.setSizePolicy(sizePolicy1)
+        self.accountButton.setMinimumSize(QSize(120, 0))
+        self.accountButton.setFont(font1)
+        self.accountButton.setStyleSheet(u"border-radius: 25px;\n"
 "background-color: rgba(140, 101, 65, 0.6)\n"
 "")
 
-        self.horizontalLayout_2.addWidget(self.pushButton)
+        self.horizontalLayout_2.addWidget(self.accountButton)
 
 
         self.verticalLayout.addLayout(self.horizontalLayout_2)
@@ -222,16 +223,16 @@ class Ui_Game(object):
         self.widget_4.setStyleSheet(u"background: rgba(248, 224, 140, 1);")
         self.verticalLayout_8 = QVBoxLayout(self.widget_4)
         self.verticalLayout_8.setObjectName(u"verticalLayout_8")
-        self.label_5 = QLabel(self.widget_4)
-        self.label_5.setObjectName(u"label_5")
+        self.redBetsSum = QLabel(self.widget_4)
+        self.redBetsSum.setObjectName(u"redBetsSum")
         font6 = QFont()
         font6.setFamilies([u"Manrope"])
         font6.setPointSize(10)
         font6.setBold(True)
-        self.label_5.setFont(font6)
-        self.label_5.setStyleSheet(u"")
+        self.redBetsSum.setFont(font6)
+        self.redBetsSum.setStyleSheet(u"")
 
-        self.verticalLayout_8.addWidget(self.label_5)
+        self.verticalLayout_8.addWidget(self.redBetsSum)
 
         self.redBets = QTextBrowser(self.widget_4)
         self.redBets.setObjectName(u"redBets")
@@ -258,11 +259,11 @@ class Ui_Game(object):
 "")
         self.verticalLayout_9 = QVBoxLayout(self.widget_5)
         self.verticalLayout_9.setObjectName(u"verticalLayout_9")
-        self.label_6 = QLabel(self.widget_5)
-        self.label_6.setObjectName(u"label_6")
-        self.label_6.setFont(font6)
+        self.blackBetsSum = QLabel(self.widget_5)
+        self.blackBetsSum.setObjectName(u"blackBetsSum")
+        self.blackBetsSum.setFont(font6)
 
-        self.verticalLayout_9.addWidget(self.label_6)
+        self.verticalLayout_9.addWidget(self.blackBetsSum)
 
         self.blackBets = QTextBrowser(self.widget_5)
         self.blackBets.setObjectName(u"blackBets")
@@ -288,11 +289,11 @@ class Ui_Game(object):
 "")
         self.verticalLayout_10 = QVBoxLayout(self.widget_6)
         self.verticalLayout_10.setObjectName(u"verticalLayout_10")
-        self.label_7 = QLabel(self.widget_6)
-        self.label_7.setObjectName(u"label_7")
-        self.label_7.setFont(font6)
+        self.greenBetsSum = QLabel(self.widget_6)
+        self.greenBetsSum.setObjectName(u"greenBetsSum")
+        self.greenBetsSum.setFont(font6)
 
-        self.verticalLayout_10.addWidget(self.label_7)
+        self.verticalLayout_10.addWidget(self.greenBetsSum)
 
         self.greenBets = QTextBrowser(self.widget_6)
         self.greenBets.setObjectName(u"greenBets")
@@ -356,9 +357,9 @@ class Ui_Game(object):
 
     def retranslateUi(self, Form):
         Form.setWindowTitle(QCoreApplication.translate("Form", u"Form", None))
-        self.pushButton_2.setText(QCoreApplication.translate("Form", u"\u041d\u0410\u0417\u0410\u0414", None))
-        self.label.setText(QCoreApplication.translate("Form", u"\u0411\u0410\u041b\u0410\u041d\u0421", None))
-        self.pushButton.setText(QCoreApplication.translate("Form", u"\u041b\u0418\u0427\u041d\u042b\u0419\n"
+        self.backButton.setText(QCoreApplication.translate("Form", u"\u041d\u0410\u0417\u0410\u0414", None))
+        self.balanceLabel.setText(QCoreApplication.translate("Form", u"\u0411\u0410\u041b\u0410\u041d\u0421", None))
+        self.accountButton.setText(QCoreApplication.translate("Form", u"\u041b\u0418\u0427\u041d\u042b\u0419\n"
 "\u041a\u0410\u0411\u0418\u041d\u0415\u0422", None))
         self.circle.setText(QCoreApplication.translate("Form", u"Circle", None))
         self.label_2.setText(QCoreApplication.translate("Form", u"\u0421\u0414\u0415\u041b\u0410\u0422\u042c \u0421\u0422\u0410\u0412\u041a\u0423", None))
@@ -366,8 +367,8 @@ class Ui_Game(object):
         self.blackBetButton.setText(QCoreApplication.translate("Form", u"\u0416\u041c\u0418", None))
         self.greenBetButton.setText(QCoreApplication.translate("Form", u"\u0416\u041c\u0418", None))
         self.label_3.setText(QCoreApplication.translate("Form", u"\u0418\u0421\u0422\u041e\u0420\u0418\u042f \u0412\u042b\u041f\u0410\u0414\u0415\u041d\u0418\u0419", None))
-        self.label_5.setText(QCoreApplication.translate("Form", u"\u041e\u0411\u0429\u0410\u042f \u0421\u0422\u0410\u0412\u041a\u0410", None))
-        self.label_6.setText(QCoreApplication.translate("Form", u"\u041e\u0411\u0429\u0410\u042f \u0421\u0422\u0410\u0412\u041a\u0410", None))
-        self.label_7.setText(QCoreApplication.translate("Form", u"\u041e\u0411\u0429\u0410\u042f \u0421\u0422\u0410\u0412\u041a\u0410", None))
+        self.redBetsSum.setText(QCoreApplication.translate("Form", u"\u041e\u0411\u0429\u0410\u042f \u0421\u0422\u0410\u0412\u041a\u0410", None))
+        self.blackBetsSum.setText(QCoreApplication.translate("Form", u"\u041e\u0411\u0429\u0410\u042f \u0421\u0422\u0410\u0412\u041a\u0410", None))
+        self.greenBetsSum.setText(QCoreApplication.translate("Form", u"\u041e\u0411\u0429\u0410\u042f \u0421\u0422\u0410\u0412\u041a\u0410", None))
     # retranslateUi
 

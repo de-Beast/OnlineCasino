@@ -34,7 +34,7 @@ margin: 0px;</string>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
-      <widget class="QPushButton" name="pushButton_2">
+      <widget class="QPushButton" name="backButton">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
          <horstretch>0</horstretch>
@@ -64,7 +64,7 @@ border-radius: 13px;</string>
       </widget>
      </item>
      <item>
-      <widget class="QLabel" name="label">
+      <widget class="QLabel" name="balanceLabel">
        <property name="font">
         <font>
          <family>Manrope</family>
@@ -82,7 +82,7 @@ text-align: center;</string>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton">
+      <widget class="QPushButton" name="accountButton">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
          <horstretch>0</horstretch>
@@ -364,7 +364,7 @@ layoutMargins: 0px;</string>
                </property>
                <layout class="QVBoxLayout" name="verticalLayout_8">
                 <item>
-                 <widget class="QLabel" name="label_5">
+                 <widget class="QLabel" name="redBetsSum">
                   <property name="font">
                    <font>
                     <family>Manrope</family>
@@ -423,7 +423,7 @@ border-radius: 26px;</string>
                </property>
                <layout class="QVBoxLayout" name="verticalLayout_9">
                 <item>
-                 <widget class="QLabel" name="label_6">
+                 <widget class="QLabel" name="blackBetsSum">
                   <property name="font">
                    <font>
                     <family>Manrope</family>
@@ -472,7 +472,7 @@ border-radius: 26px;</string>
                </property>
                <layout class="QVBoxLayout" name="verticalLayout_10">
                 <item>
-                 <widget class="QLabel" name="label_7">
+                 <widget class="QLabel" name="greenBetsSum">
                   <property name="font">
                    <font>
                     <family>Manrope</family>
@@ -528,7 +528,7 @@ border-radius: 26px;</string>
          <widget class="QTextBrowser" name="chat"/>
         </item>
         <item>
-         <widget class="QLineEdit" name="lineEdit">
+         <widget class="QLineEdit" name="messageEdit">
           <property name="minimumSize">
            <size>
             <width>0</width>

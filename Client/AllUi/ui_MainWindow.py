@@ -70,6 +70,6 @@ class Ui_MainWindow(object):
     # setupUi
 
     def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"\u043a\u0430\u0437\u0438\u043d\u043e", None))
+        MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"Мир Фишек", None))
     # retranslateUi
 
