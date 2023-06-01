@@ -10,7 +10,7 @@ from PySide6.QtWidgets import (
     QVBoxLayout,
 )
 
-from client_sockets import Client, ChatSocketThread
+from client_sockets import Client, ChatSocketThread, BetSocketThread
 
 
 class MainWindow(QDialog):
@@ -58,9 +58,13 @@ class MainWindow(QDialog):
         self._answer_label.text = ""
         self._sign_up_button.enabled = False
         self._sign_in_button.enabled = False
-        self.socket = ChatSocketThread(self, "roulette")
+
+        self.socket = BetSocketThread(self)
         self.socket.responseRecieved.connect(self.get_answer)
-        self.socket.send_message(self._login_line_edit.text, self._password_line_edit.text)
+        self.socket.make_a_bet(5000, self._login_line_edit.text, self._password_line_edit.text)
+        #self.socket = ChatSocketThread(self, "roulette")
+        #self.socket.responseRecieved.connect(self.get_answer)
+        #self.socket.send_message(self._login_line_edit.text, self._password_line_edit.text)
 
         #self.client.register(
         #    self._login_line_edit.text, self._password_line_edit.text, responseReceived_slot=self.get_answer
@@ -83,9 +87,9 @@ class MainWindow(QDialog):
         # self.client.responseRecieved.connect(self.get_answer)
         # self.client.get_account_info(self._login_line_edit.text)
 
-    def get_answer(self, nickname: str, message: str) -> None:
+    def get_answer(self, result: bool, bet: int, login: str, color: str) -> None:
         #self._answer_label.text = answer
-        self._answer_label.text = f"{nickname}: {message}"
+        self._answer_label.text = f"{login}: {bet}, {color}, {result}"
 
 
 if __name__ == "__main__":
