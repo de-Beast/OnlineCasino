@@ -4,7 +4,14 @@ group_by_package = true
 combine_as_imports = true
 combine_star = true
 known_third_party = ["PySide6", "pymongo"]
-known_first_party = ["Shared", "client_sockets"]
+known_first_party = [
+    "Shared",
+    "abstract",
+    "account",
+    "chat",
+    "games",
+    "database",
+]
 
 [tool.ruff]
 ignore-init-module-imports = true

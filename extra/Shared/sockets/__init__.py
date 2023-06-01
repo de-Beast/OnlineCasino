@@ -1,4 +1,5 @@
-__all__ = ["SocketThreadBase", "SocketThreadType", "enums"]
+__all__ = [
+    "SocketThreadType",
+]
 
-from . import enums
-from .ABC import SocketThreadBase
+from .enums import SocketThreadType

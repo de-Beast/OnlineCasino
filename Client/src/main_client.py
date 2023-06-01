@@ -10,35 +10,31 @@ from PySide6.QtWidgets import (
     QVBoxLayout,
 )
 
-from client_sockets import (
-    AccountInfoSocketThread,
-    AccountInitialSocketThread,
-    ChatSocketThread,
-)
+from account import AccountAPI
+from chat import ChatAPI
 
 
 class MainWindow(QDialog):
     def __init__(self, parent=None) -> None:
         super().__init__(parent)
-        self.client: Client = Client()
 
         self._login_line_edit = QLineEdit()
         self._password_line_edit = QLineEdit()
 
-        self._login_line_edit.textChanged.connect(self.set_enabled_sign_buttons)
-        self._password_line_edit.textChanged.connect(self.set_enabled_sign_buttons)
-
-        self._sign_up_button = QPushButton("Sign up")
         self._sign_in_button = QPushButton("Sign in")
-        quit_button = QPushButton("Quit")
+        self._connect_button = QPushButton("Connect")
+        self._send_button = QPushButton("Send")
+        quit_button = QPushButton("Disconnect")
 
-        self._sign_up_button.clicked.connect(self.sign_up)
         self._sign_in_button.clicked.connect(self.sign_in)
-        quit_button.clicked.connect(self.close)
+        self._connect_button.clicked.connect(self.connect_to_chat_room)
+        self._send_button.clicked.connect(self.send)
+        quit_button.clicked.connect(self.disconnect_from_chat_room)
 
         button_box = QDialogButtonBox()
-        button_box.add_button(self._sign_up_button, QDialogButtonBox.ButtonRole.ActionRole)
         button_box.add_button(self._sign_in_button, QDialogButtonBox.ButtonRole.ActionRole)
+        button_box.add_button(self._connect_button, QDialogButtonBox.ButtonRole.ActionRole)
+        button_box.add_button(self._send_button, QDialogButtonBox.ButtonRole.ActionRole)
         button_box.add_button(quit_button, QDialogButtonBox.ButtonRole.RejectRole)
 
         self._answer_label = QLabel()
@@ -51,64 +47,44 @@ class MainWindow(QDialog):
         self.set_layout(main_layout)
 
         self.window_title = "Client"
-        self._sign_up_button.enabled = False
-        self._sign_in_button.enabled = False
         self._login_line_edit.set_focus()
-        
-        # self.socket: AccountInitialSocketThread | AccountInfoSocketThread | None = None
-        # self.socket = AccountInitialSocketThread(self)
-        # self.socket.responseRecieved.connect(self.get_answer)
-        # self.socket2 = AccountInfoSocketThread(self)
-        # self.socket2.responseRecieved.connect(self.get_answer)
-
-    def set_enabled_sign_buttons(self) -> None:
-        enabled = self._login_line_edit.text != "" and self._password_line_edit.text != ""
-        self._sign_in_button.enabled = self._sign_up_button.enabled = enabled
-
-    def sign_up(self) -> None:
-        self._answer_label.text = ""
-        # self._sign_up_button.enabled = False
-        # self._sign_in_button.enabled = False
-
-        self.socket = ChatSocketThread("roulette", self)
-        # self.socket = AccountInitialSocketThread(self)
-        self.socket.responseRecieved.connect(self.get_answer)
-        self.socket.start()
-        # self.socket.auth(self._login_line_edit.text, self._password_line_edit.text)
-        # self.client.register(
-        #    self._login_line_edit.text, self._password_line_edit.text, responseReceived_slot=self.get_answer
-        # )
-        # self.client = AccountInitialSocketThread(self)
-        # self.client.responseRecieved.connect(self.get_answer)
-        # self.client.register(self._login_line_edit.text, self._password_line_edit.text)
 
     def sign_in(self) -> None:
         self._answer_label.text = ""
-        # self._sign_up_button.enabled = False
-        # self._sign_in_button.enabled = False
-        self.socket.send_message(self._login_line_edit.text, self._password_line_edit.text)
 
-        # self.client.auth(
-        #     self._login_line_edit.text, self._password_line_edit.text, responseReceived_slot=self.get_answer
-        # )
-        # self.socket = AccountInitialSocketThread(self)
-        # self.socket.answerRecieved.connect(self.get_answer)
-        # self.socket.auth(self._login_line_edit.text, self._password_line_edit.text)
-        # self.socket = AccountInfoSocketThread(self)
-        # self.socket.responseRecieved.connect(self.get_answer)
-        # self.socket2.get_account_info(self._login_line_edit.text)
+        api = AccountAPI()
+        api.responseAccountInitial.connect(self.get_answer)
+        api.auth(self._login_line_edit.text, self._password_line_edit.text)
 
-    def get_answer(self, nickname: str, message: str) -> None:
-        # self._answer_label.text = answer
-        self._answer_label.text = f"{nickname}: {message}"
+    def connect_to_chat_room(self) -> None:
+        self._answer_label.text = ""
 
-    # def get_answer(self, info: str | dict) -> None:
-    #     if isinstance(info, dict):
-    #         nickname = info["nickname"]
-    #         balance = info["balance"]
-    #         self._answer_label.text = f"{nickname}: {balance}"
-    #     else:
-    #         self._answer_label.text = f"{info}"
+        api = ChatAPI()
+        api.recievedMessage.connect(self.get_answer)
+        api.connect_to_chat_room("roulette")
+
+    def send(self) -> None:
+        self._answer_label.text = ""
+
+        api = ChatAPI()
+        api.send_message(self._login_line_edit.text, self._password_line_edit.text)
+
+    def disconnect_from_chat_room(self) -> None:
+        self._answer_label.text = ""
+
+        api = ChatAPI()
+        api.disconnect_from_chat_room()
+        api.recievedMessage.disconnect(self.get_answer)
+
+    def get_answer(self, info: str, bonus_info: str | None = None) -> None:
+        # if isinstance(info, str):
+        #     self._answer_label.text = f"{info}"
+        # elif isinstance(info, dict):
+        #     self._answer_label.text = f"{info['nickname']}: {info['balance']}"
+        if bonus_info is not None:
+            self._answer_label.text = f"{info}: {bonus_info}"
+        else:
+            self._answer_label.text = f"{info}"
 
 
 if __name__ == "__main__":
