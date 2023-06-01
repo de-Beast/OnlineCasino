@@ -72,3 +72,7 @@ class AccountsDB(DatabaseABC):
         data: dict | None = self.accounts_collection.find_one({"login": login},
                                                  {"_id": 0, "balance": 1})
         return data
+    def change_balance(self, login: str, new_balance: int) -> None:
+        filter = {'login': login}
+        newvalue = {"$set": {"balance" : new_balance}}
+        self.accounts_collection.update_one(filter, newvalue)

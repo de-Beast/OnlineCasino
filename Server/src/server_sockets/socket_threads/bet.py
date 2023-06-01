@@ -5,9 +5,11 @@ from PySide6.QtNetwork import QTcpSocket
 from PySide6.QtCore import Signal, QMutexLocker, QObject
 
 from roulette import Roulette
-from Shared.sockets.enums import SocketThreadType
-
+from Shared.sockets.enums import SocketThreadType, RouletteColor
+from collections import namedtuple
 from .ABC import ServerSocketThreadABC
+
+BetAndColor = namedtuple("BetAndColor", ["bet", "color", "balance"])
 
 class BetSocketThread(ServerSocketThreadABC):
     socket_type = SocketThreadType.BET
@@ -18,7 +20,7 @@ class BetSocketThread(ServerSocketThreadABC):
         self.wait_for_readyRead(socket)
 
     def recieve_request(self, socket: QTcpSocket) -> None:
-        data: tuple[int, str, str] | None = self.recieve_data_package(socket, int, str, str)
+        data: tuple[int, str, RouletteColor] | None = self.recieve_data_package(socket, int, str, RouletteColor)
         if data is None:
             return
 
@@ -26,12 +28,15 @@ class BetSocketThread(ServerSocketThreadABC):
 
         info = AccountsDB().get_account_info(login)
 
-        if info["balance"] < bet:
+        balance = info["balance"]
+
+        if balance < bet:
             self.send_data_package(socket, False, bet, login, color)
             return
 
-        bet_n_color: tuple[int, str] = (bet, color)
+        bet_n_color: BetAndColor[int, RouletteColor, int] = BetAndColor(bet, color, balance)
         bets_update = {login: bet_n_color}
         Roulette().bets.update(bets_update)
 
         self.send_data_package(socket, True, bet, login, color)
+
