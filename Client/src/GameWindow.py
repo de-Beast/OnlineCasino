@@ -33,6 +33,10 @@ class GameWindow(object):
 
         self.OnBetTaken(RouletteColor.GREEN)
 
+        self.UI.balanceLabel.setText("БАЛАНС: 21")
+
+        self.OnMessageRecieved("sopernik_vrazhina", "тебе конец!!!")
+
     def RegisterGifs(self):
         self.gifs = []
         self.gifs.append(QMovie("gifs//infspinning.gif")) #0

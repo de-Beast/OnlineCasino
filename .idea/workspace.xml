@@ -7,14 +7,14 @@
     <list default="true" id="c8a4d5d5-91d8-4665-893e-489d7ff6627b" name="Changes" comment="Simple ui">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Client/AllUi/Account.ui" beforeDir="false" afterPath="$PROJECT_DIR$/Client/AllUi/Account.ui" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/AllUi/Enter.ui" beforeDir="false" afterPath="$PROJECT_DIR$/Client/AllUi/Enter.ui" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Client/AllUi/Game.ui" beforeDir="false" afterPath="$PROJECT_DIR$/Client/AllUi/Game.ui" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/AllUi/Registration.ui" beforeDir="false" afterPath="$PROJECT_DIR$/Client/AllUi/Registration.ui" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/AllUi/ui_Account.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client/AllUi/ui_Account.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/AllUi/ui_Enter.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client/AllUi/ui_Enter.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Client/AllUi/ui_Game.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client/AllUi/ui_Game.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/AllUi/ui_MainWindow.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client/AllUi/ui_MainWindow.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/AllUi/ui_Registration.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client/AllUi/ui_Registration.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/src/AccountWindow.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/AccountWindow.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Client/src/GameWindow.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/GameWindow.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Client/src/MainClient.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/MainClient.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/client_sockets/socket_threads/bet.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/client_sockets/socket_threads/bet.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

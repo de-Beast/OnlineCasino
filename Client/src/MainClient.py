@@ -46,11 +46,15 @@ def RegisterNavigation():
     StartWindow.UI.EnterButton.clicked.connect(ToEnterWindow)
     StartWindow.UI.RegistrButton.clicked.connect(ToRegistrWindow)
 
-    EnterWindow.UI.Enter_Button.clicked.connect(GoBack)
+    EnterWindow.UI.Enter_Button.clicked.connect(ToGameWindow)
+    EnterWindow.UI.backButton.clicked.connect(GoBack)
 
     RegistrationWindow.UI.Sign_up.clicked.connect(ToGameWindow)
 
     AccountWindow.UI.pushButton.clicked.connect(GoBack)
+
+    GameWindow.UI.accountButton.clicked.connect(ToAccountWindow)
+    GameWindow.UI.backButton.clicked.connect(GoBack)
 
 history = []
 if __name__ == "__main__":

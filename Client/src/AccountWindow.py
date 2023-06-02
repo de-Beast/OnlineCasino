@@ -13,14 +13,15 @@ class AccountWindow():
         self.thread.responseRecieved.connect(self.OnUpdateAccountInfo)
 
     def OnUpdateAccountInfo(self, info : dict):
-        self.UI.emailEdit.setText(info['email'])
+        self.UI.emailEdit.setText(info['login'])
         self.UI.passwordEdit.setText(info['password'])
-        self.UI.balanceLabel.setText(info['balance'])
+        self.UI.balanceLabel.setText(str(info['balance']))
 
-        history = self.UI.historyTable
-        history.clear()
+        #history = self.UI.historyTable
+        #history.clear()
 
-        for ind, operation in enumerate(info['operations']):
-            history.setItem(ind, 0, operation[0]) #тип операции
-            history.setItem(ind, 1, operation[1]) #откуда
-            history.setItem(ind, 2, operation[2]) #цена
+        #for ind, operation in enumerate(info['operations']):
+        #    history.setItem(ind, 0, QtWidgets.QTableWidgetItem(operation[0])) #тип операции
+        #    history.setItem(ind, 1, QtWidgets.QTableWidgetItem(operation[1])) #откуда
+        #    history.setItem(ind, 2, QtWidgets.QTableWidgetItem(operation[2])) #цена
+        #    print(ind, operation)

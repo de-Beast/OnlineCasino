@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'EnterfaIARl.ui'
+## Form generated from reading UI file 'EnterTCwqbg.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.5.0
 ##
@@ -30,6 +30,31 @@ class Ui_Enter(object):
 "background-color: rgb(255, 241, 191);")
         self.verticalLayout_4 = QVBoxLayout(Form)
         self.verticalLayout_4.setObjectName(u"verticalLayout_4")
+        self.verticalLayout_4.setContentsMargins(-1, -1, -1, 0)
+        self.backButton = QPushButton(Form)
+        self.backButton.setObjectName(u"backButton")
+        sizePolicy = QSizePolicy(QSizePolicy.Maximum, QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.backButton.sizePolicy().hasHeightForWidth())
+        self.backButton.setSizePolicy(sizePolicy)
+        font = QFont()
+        font.setFamilies([u"Manrope"])
+        font.setPointSize(15)
+        font.setBold(True)
+        font.setItalic(False)
+        self.backButton.setFont(font)
+        self.backButton.setStyleSheet(u"font-family: 'Manrope';\n"
+"font-style: normal;\n"
+"\n"
+"text-align: center;\n"
+"background-color: rgba(140, 101, 65, 0.7);\n"
+"border-radius: 10px;\n"
+"padding: 10px;\n"
+"border: 2px solid rgba(140, 101, 65, 0.7);")
+
+        self.verticalLayout_4.addWidget(self.backButton)
+
         self.horizontalLayout = QHBoxLayout()
         self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.Icon1 = QLabel(Form)
@@ -41,10 +66,10 @@ class Ui_Enter(object):
 
         self.Logo = QLabel(Form)
         self.Logo.setObjectName(u"Logo")
-        font = QFont()
-        font.setPointSize(45)
-        font.setBold(True)
-        self.Logo.setFont(font)
+        font1 = QFont()
+        font1.setPointSize(45)
+        font1.setBold(True)
+        self.Logo.setFont(font1)
         self.Logo.setStyleSheet(u"color: qconicalgradient(cx:0.5, cy:0.5, angle:0, stop:0 rgba(35, 40, 3, 255), stop:0.16 rgba(136, 106, 22, 255), stop:0.225 rgba(166, 140, 41, 255), stop:0.285 rgba(204, 181, 74, 255), stop:0.345 rgba(235, 219, 102, 255), stop:0.415 rgba(245, 236, 112, 255), stop:0.52 rgba(209, 190, 76, 255), stop:0.57 rgba(187, 156, 51, 255), stop:0.635 rgba(168, 142, 42, 255), stop:0.695 rgba(202, 174, 68, 255), stop:0.75 rgba(218, 202, 86, 255), stop:0.815 rgba(208, 187, 73, 255), stop:0.88 rgba(187, 156, 51, 255), stop:0.935 rgba(137, 108, 26, 255), stop:1 rgba(35, 40, 3, 255));")
         self.Logo.setAlignment(Qt.AlignCenter)
 
@@ -62,12 +87,12 @@ class Ui_Enter(object):
 
         self.Enter_Label = QLabel(Form)
         self.Enter_Label.setObjectName(u"Enter_Label")
-        font1 = QFont()
-        font1.setFamilies([u"Manrope"])
-        font1.setPointSize(20)
-        font1.setBold(True)
-        font1.setItalic(False)
-        self.Enter_Label.setFont(font1)
+        font2 = QFont()
+        font2.setFamilies([u"Manrope"])
+        font2.setPointSize(20)
+        font2.setBold(True)
+        font2.setItalic(False)
+        self.Enter_Label.setFont(font2)
         self.Enter_Label.setStyleSheet(u"position: absolute;\n"
 "width: 1061.33px;\n"
 "height: 154.46px;\n"
@@ -94,12 +119,7 @@ class Ui_Enter(object):
         self.formLayout.setVerticalSpacing(15)
         self.Email = QLabel(Form)
         self.Email.setObjectName(u"Email")
-        font2 = QFont()
-        font2.setFamilies([u"Manrope"])
-        font2.setPointSize(15)
-        font2.setBold(True)
-        font2.setItalic(False)
-        self.Email.setFont(font2)
+        self.Email.setFont(font)
         self.Email.setStyleSheet(u"position: absolute;\n"
 "width: 387.37px;\n"
 "height: 75.64px;\n"
@@ -121,13 +141,20 @@ class Ui_Enter(object):
 
         self.Edit_Email = QLineEdit(Form)
         self.Edit_Email.setObjectName(u"Edit_Email")
-        self.Edit_Email.setStyleSheet(u"background-color: rgb(244, 216, 116);")
+        font3 = QFont()
+        font3.setFamilies([u"Manrope"])
+        font3.setPointSize(15)
+        self.Edit_Email.setFont(font3)
+        self.Edit_Email.setStyleSheet(u"background-color: rgb(244, 216, 116);\n"
+"border-radius: 15px;\n"
+"padding: 10px;\n"
+"")
 
         self.formLayout.setWidget(0, QFormLayout.FieldRole, self.Edit_Email)
 
         self.Password = QLabel(Form)
         self.Password.setObjectName(u"Password")
-        self.Password.setFont(font2)
+        self.Password.setFont(font)
         self.Password.setStyleSheet(u"position: absolute;\n"
 "width: 387.37px;\n"
 "height: 75.64px;\n"
@@ -149,7 +176,10 @@ class Ui_Enter(object):
 
         self.Edit_Password = QLineEdit(Form)
         self.Edit_Password.setObjectName(u"Edit_Password")
-        self.Edit_Password.setStyleSheet(u"background-color: rgb(244, 216, 116);")
+        self.Edit_Password.setFont(font3)
+        self.Edit_Password.setStyleSheet(u"background-color: rgb(244, 216, 116);\n"
+"border-radius: 15px;\n"
+"padding: 10px;")
 
         self.formLayout.setWidget(1, QFormLayout.FieldRole, self.Edit_Password)
 
@@ -158,14 +188,15 @@ class Ui_Enter(object):
 
         self.Enter_Button = QPushButton(Form)
         self.Enter_Button.setObjectName(u"Enter_Button")
-        self.Enter_Button.setFont(font2)
+        self.Enter_Button.setFont(font)
         self.Enter_Button.setStyleSheet(u"font-family: 'Manrope';\n"
 "font-style: normal;\n"
 "\n"
 "text-align: center;\n"
-"background-color: rgb(244, 216, 116);\n"
-"\n"
-"")
+"background-color: rgba(140, 101, 65, 0.7);\n"
+"border-radius: 10px;\n"
+"padding: 10px;\n"
+"border: 2px solid rgba(140, 101, 65, 0.7);")
 
         self.verticalLayout_4.addWidget(self.Enter_Button)
 
@@ -191,6 +222,7 @@ class Ui_Enter(object):
 
     def retranslateUi(self, Form):
         Form.setWindowTitle(QCoreApplication.translate("Form", u"\u041c\u0438\u0440 \u0444\u0438\u0448\u0435\u043a", None))
+        self.backButton.setText(QCoreApplication.translate("Form", u"\u041d\u0410\u0417\u0410\u0414", None))
         self.Icon1.setText("")
         self.Logo.setText(QCoreApplication.translate("Form", u"\u041c\u0418\u0420  \u0424\u0418\u0428\u0415\u041a", None))
         self.Icon2.setText("")

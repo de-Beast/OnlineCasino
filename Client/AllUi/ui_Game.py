@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'GamebHPfay.ui'
+## Form generated from reading UI file 'GameEhxCkj.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.5.0
 ##
@@ -23,7 +23,7 @@ class Ui_Game(object):
     def setupUi(self, Form):
         if not Form.objectName():
             Form.setObjectName(u"Form")
-        Form.resize(839, 552)
+        Form.resize(861, 610)
         sizePolicy = QSizePolicy(QSizePolicy.Maximum, QSizePolicy.Maximum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -54,7 +54,9 @@ class Ui_Game(object):
         font1.setBold(True)
         self.backButton.setFont(font1)
         self.backButton.setStyleSheet(u"background-color: rgba(140, 101, 65, 0.6);\n"
-"border-radius: 13px;")
+"border-radius: 13px;\n"
+"padding: 5px;\n"
+"border: 2px solid rgba(140, 101, 65, 0.8);")
 
         self.horizontalLayout_2.addWidget(self.backButton)
 
@@ -63,7 +65,6 @@ class Ui_Game(object):
         self.balanceLabel.setFont(font1)
         self.balanceLabel.setStyleSheet(u"background: radial-gradient(50% 50% at 50% 50%, rgba(244, 216, 116, 0.63) 60.42%, rgba(244, 216, 116, 0) 100%);\n"
 "text-align: center;")
-        self.balanceLabel.setAlignment(Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignHCenter)
 
         self.horizontalLayout_2.addWidget(self.balanceLabel)
 
@@ -74,8 +75,9 @@ class Ui_Game(object):
         self.accountButton.setMinimumSize(QSize(120, 0))
         self.accountButton.setFont(font1)
         self.accountButton.setStyleSheet(u"border-radius: 25px;\n"
-"background-color: rgba(140, 101, 65, 0.6)\n"
-"")
+"background-color: rgba(140, 101, 65, 0.6);\n"
+"padding: 5px;\n"
+"border: 2px solid rgba(140, 101, 65, 0.8);")
 
         self.horizontalLayout_2.addWidget(self.accountButton)
 
@@ -146,6 +148,7 @@ class Ui_Game(object):
         self.betButtonsContainer.setFont(font4)
         self.horizontalLayout_5 = QHBoxLayout(self.betButtonsContainer)
         self.horizontalLayout_5.setObjectName(u"horizontalLayout_5")
+        self.horizontalLayout_5.setContentsMargins(0, -1, -1, -1)
         self.redBetButton = QPushButton(self.betButtonsContainer)
         self.redBetButton.setObjectName(u"redBetButton")
         self.redBetButton.setFont(font1)
@@ -236,6 +239,10 @@ class Ui_Game(object):
 
         self.redBets = QTextBrowser(self.widget_4)
         self.redBets.setObjectName(u"redBets")
+        font7 = QFont()
+        font7.setFamilies([u"Manrope"])
+        font7.setPointSize(10)
+        self.redBets.setFont(font7)
 
         self.verticalLayout_8.addWidget(self.redBets)
 
@@ -267,6 +274,7 @@ class Ui_Game(object):
 
         self.blackBets = QTextBrowser(self.widget_5)
         self.blackBets.setObjectName(u"blackBets")
+        self.blackBets.setFont(font7)
 
         self.verticalLayout_9.addWidget(self.blackBets)
 
@@ -297,6 +305,7 @@ class Ui_Game(object):
 
         self.greenBets = QTextBrowser(self.widget_6)
         self.greenBets.setObjectName(u"greenBets")
+        self.greenBets.setFont(font7)
 
         self.verticalLayout_10.addWidget(self.greenBets)
 
@@ -332,12 +341,14 @@ class Ui_Game(object):
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
         self.chat = QTextBrowser(self.widget_3)
         self.chat.setObjectName(u"chat")
+        self.chat.setFont(font7)
 
         self.verticalLayout_3.addWidget(self.chat)
 
         self.messageEdit = QLineEdit(self.widget_3)
         self.messageEdit.setObjectName(u"messageEdit")
         self.messageEdit.setMinimumSize(QSize(0, 30))
+        self.messageEdit.setFont(font7)
         self.messageEdit.setStyleSheet(u"background: rgba(255, 241, 191, 1);\n"
 "border-radius: 15px;")
 

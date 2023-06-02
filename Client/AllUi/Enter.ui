@@ -19,6 +19,40 @@
 background-color: rgb(255, 241, 191);</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_4">
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <item>
+    <widget class="QPushButton" name="backButton">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="font">
+      <font>
+       <family>Manrope</family>
+       <pointsize>15</pointsize>
+       <italic>false</italic>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">font-family: 'Manrope';
+font-style: normal;
+
+text-align: center;
+background-color: rgba(140, 101, 65, 0.7);
+border-radius: 10px;
+padding: 10px;
+border: 2px solid rgba(140, 101, 65, 0.7);</string>
+     </property>
+     <property name="text">
+      <string>НАЗАД</string>
+     </property>
+    </widget>
+   </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
@@ -147,8 +181,17 @@ color: #462208;</string>
      </item>
      <item row="0" column="1">
       <widget class="QLineEdit" name="Edit_Email">
+       <property name="font">
+        <font>
+         <family>Manrope</family>
+         <pointsize>15</pointsize>
+        </font>
+       </property>
        <property name="styleSheet">
-        <string notr="true">background-color: rgb(244, 216, 116);</string>
+        <string notr="true">background-color: rgb(244, 216, 116);
+border-radius: 15px;
+padding: 10px;
+</string>
        </property>
       </widget>
      </item>
@@ -187,8 +230,16 @@ color: #462208;</string>
      </item>
      <item row="1" column="1">
       <widget class="QLineEdit" name="Edit_Password">
+       <property name="font">
+        <font>
+         <family>Manrope</family>
+         <pointsize>15</pointsize>
+        </font>
+       </property>
        <property name="styleSheet">
-        <string notr="true">background-color: rgb(244, 216, 116);</string>
+        <string notr="true">background-color: rgb(244, 216, 116);
+border-radius: 15px;
+padding: 10px;</string>
        </property>
       </widget>
      </item>
@@ -209,9 +260,10 @@ color: #462208;</string>
 font-style: normal;
 
 text-align: center;
-background-color: rgb(244, 216, 116);
-
-</string>
+background-color: rgba(140, 101, 65, 0.7);
+border-radius: 10px;
+padding: 10px;
+border: 2px solid rgba(140, 101, 65, 0.7);</string>
      </property>
      <property name="text">
       <string>ВОЙТИ</string>
