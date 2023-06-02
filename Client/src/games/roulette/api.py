@@ -10,11 +10,13 @@ from Shared.games.roulette import RouletteBet, RouletteBetResponse, RouletteColo
 from Shared.sockets import SocketType
 
 from .containers import RouletteSocketContainer
+from Shared.games.roulette import RouletteState
 
 
 class RouletteAPI(APIBase):
     betResponse = Signal(RouletteBetResponse)
-    resultRecieved = Signal(RouletteColor)
+    resultRecieved = Signal(RouletteColor, int)
+    rouletteStateChanged = Signal(RouletteState)
     betRecieved = Signal(str, RouletteBet)
 
     @staticmethod
@@ -36,6 +38,7 @@ class RouletteAPI(APIBase):
             return
         container.betResponse.connect(self.betResponse.emit)
         container.resultRecieved.connect(self.resultRecieved.emit)
+        container.rouletteStateChanged.connect(self.rouletteStateChanged.emit)
         container.betRecieved.connect(self.betRecieved.emit)
 
     def connect_to_game(self) -> None:

@@ -17,7 +17,7 @@ class AccountAPI(APIBase):
     def save_login(self, container: SocketContainerBase, login: str, response: AccountInitialResponse) -> None:
         match response:
             case AccountInitialResponse.AUTH_SUCCESS | AccountInitialResponse.REGISTER_SUCCESS:
-                APIBase._login = login
+                self.login = login
 
         if isinstance(container, AccountInitialSocketContainer) or isinstance(container, AccountInfoSocketContainer):
             container.responseRecieved.disconnect(self.slot_storage.pop("save_login"))
@@ -25,9 +25,10 @@ class AccountAPI(APIBase):
     def on_container_added(self, socket_type: SocketType, *args) -> None:
         container = self.containers[socket_type]
         if isinstance(container, AccountInitialSocketContainer):
-            container.responseRecieved.connect(self.responseAccountInitial.emit)
+
             slot = self.slot_storage.create_and_store_slot("save_login", self.save_login, container, args[0])
             container.responseRecieved.connect(slot)
+            container.responseRecieved.connect(self.responseAccountInitial.emit)
         elif isinstance(container, AccountInfoSocketContainer):
             container.responseRecieved.connect(self.responseAccountInfo.emit)
         else:

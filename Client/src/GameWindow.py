@@ -8,7 +8,8 @@ from Shared.games.roulette.enums import RouletteColor
 from Shared.games.enums import GameType
 from chat.api import ChatAPI
 from account.api import AccountInfo
-from games.roulette.api import RouletteAPI, RouletteBet
+from account.api import AccountAPI
+from games.roulette.api import RouletteAPI, RouletteBet, RouletteState
 
 class GameWindow(object):
     def __init__(self):
@@ -20,13 +21,12 @@ class GameWindow(object):
         self.chatApi.recievedMessage.connect(self.OnMessageRecieved)
         self.UI.messageEdit.returnPressed.connect(self.SendMessage)
 
-        self.accountInfo = AccountInfo()
-        self.UI.balanceLabel.setText("БАЛАНС: " + str(self.accountInfo['balance']))
+        self.accountAPI = AccountAPI()
+        self.accountAPI.responseAccountInfo.connect(self.UpdateAccountInfo)
 
         self.rouletteAPI = RouletteAPI()
-        self.rouletteAPI.connect_to_game()
         self.rouletteAPI.betRecieved.connect(self.OnBetTaken)
-        self.rouletteAPI.resultRecieved
+        self.rouletteAPI.resultRecieved.connect(self.UpdateRouletteState)
 
         self.blackBet = 0
         self.redBet = 0
@@ -47,6 +47,19 @@ class GameWindow(object):
         self.UI.balanceLabel.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.UI.balanceLabel.setText("БАЛАНС: 21")
 
+    def UpdateAccountInfo(self, newInfo):
+        self.accountInfo = newInfo
+        self.UI.balanceLabel.setText("БАЛАНС: " + str(newInfo['balance']))
+
+    def UpdateRouletteState(self, color : RouletteColor, num : int):
+        self.PlayGif(num)
+
+    def UpdateRouletteStatus(self, status : RouletteState):
+        if status == RouletteState.SPINNING:
+            self.PlayGif(0)
+        elif status == RouletteState.STOPPED:
+            pass
+
     def RegisterGifs(self):
         self.gifs = []
         self.gifs.append(QMovie("gifs//infspinning.gif")) #0
@@ -60,7 +73,6 @@ class GameWindow(object):
         self.gifs.append(QMovie("gifs//zero2-stop.gif"))  #8
 
     def OnBetMaked(self, type : RouletteColor):
-        self.PlayGif(random.randint(0, len(self.gifs) - 1))
         self.rouletteAPI.bet(RouletteBet(total=int(self.UI.betEdit.toPlainText()), color=type))
 
     def OnBetTaken(self, nick : str, bet : RouletteBet):

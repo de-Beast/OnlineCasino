@@ -6,24 +6,11 @@
   <component name="ChangeListManager">
     <list default="true" id="c8a4d5d5-91d8-4665-893e-489d7ff6627b" name="Changes" comment="Simple ui">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/AllUi/Account.ui" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/AllUi/Enter.ui" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/AllUi/Game.ui" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/AllUi/Main.ui" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/AllUi/Registration.ui" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/AllUi/Start.ui" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/AllUi/ui_Account.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/AllUi/ui_Enter.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/AllUi/ui_Game.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/AllUi/ui_MainWindow.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/AllUi/ui_Registration.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/AllUi/ui_StartWidget.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/AccountWindow.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/AccountWindow.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/EnterWindow.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/EnterWindow.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Client/src/GameWindow.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/GameWindow.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Client/src/MainClient.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/MainClient.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/RegistrationWindow.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/RegistrationWindow.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/StartWindow.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/StartWindow.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/src/abstract/api.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/abstract/api.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/src/account/api.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/account/api.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/src/games/roulette/api.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/games/roulette/api.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,6 +34,9 @@
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="ProjectErrors" />
   </component>
   <component name="ProjectId" id="2M5H1YW9eYfZnQnOeEH0KbKeqjJ" />
   <component name="ProjectViewState">
@@ -209,5 +199,31 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Simple ui" />
     <option name="LAST_COMMIT_MESSAGE" value="Simple ui" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Server/src/chat/containers/chat.py</url>
+          <line>46</line>
+          <option name="timeStamp" value="27" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Server/src/account/containers/account_info.py</url>
+          <line>21</line>
+          <option name="timeStamp" value="29" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Server/src/chat/containers/chat.py</url>
+          <line>43</line>
+          <option name="timeStamp" value="32" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Client/src/chat/api.py</url>
+          <line>41</line>
+          <option name="timeStamp" value="33" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
