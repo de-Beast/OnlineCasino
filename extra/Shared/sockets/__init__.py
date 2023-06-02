@@ -1,8 +1,5 @@
 __all__ = [
-    "SocketThreadABC",
-    "SocketThreadType",
-    "enums"
+    "SocketType",
 ]
 
-from .ABC import SocketThreadABC
-from . import enums
+from .enums import SocketType

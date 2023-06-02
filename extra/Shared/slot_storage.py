@@ -72,12 +72,14 @@ class SlotStorage:
         self.__storage: dict[str, Slot] = {}
 
     @staticmethod
-    def create_slot(callable: SlotCallable, sender: QSender | None, *args, **kwargs) -> Slot:
+    def create_slot(callable: SlotCallable, sender: QSender | None = None, *args, **kwargs) -> Slot:
         """Только создаёт слот и возвращает его"""
 
         return partial(callable, sender, *args, **kwargs) if sender is not None else partial(callable, *args, **kwargs)
 
-    def create_and_store_slot(self, name: str, callable: SlotCallable, sender: QSender | None, *args, **kwargs) -> Slot:
+    def create_and_store_slot(
+        self, name: str, callable: SlotCallable, sender: QSender | None = None, *args, **kwargs
+    ) -> Slot:
         """Создаёт, сохраняет и возвращает слот"""
 
         slot = self.create_slot(callable, sender, *args, **kwargs)
@@ -110,7 +112,6 @@ class SlotStorage:
         ...
 
     def pop(self, name_or_slot: str | Slot) -> Slot:
-        
         """Возвращает сохраненный слот и удалаяет его из хранилища"""
 
         if isinstance(name_or_slot, str):
