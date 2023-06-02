@@ -41,6 +41,7 @@ class AccountInfoSocketContainer(SocketContainerBase):
         (info,) = data
 
         self.responseRecieved.emit(info)
+        self.quit()
 
     def get_account_info(self, login: str) -> None:
         self._requestInfo.emit(login)

@@ -27,4 +27,3 @@ class AccountInfoSocketContainer(SocketContainerBase):
 
         info = AccountsDB().get_account_info(login)
         self.send_data_package(info)
-        self.exit()

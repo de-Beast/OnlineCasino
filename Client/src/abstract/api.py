@@ -42,10 +42,10 @@ class APIBase(QObject, metaclass=QSingleton):
 
     @property
     def login(self) -> str:
-        if not self._login:
+        if not APIBase._login:
             raise RuntimeError("Login is not set")
 
-        return self._login
+        return APIBase._login
 
     @property
     def containers(self) -> dict[SocketType, SocketContainerBase]:

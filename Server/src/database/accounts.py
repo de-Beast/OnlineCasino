@@ -64,13 +64,13 @@ class AccountsDB(Database):
 
         if self.check_account(account) is not DB_CheckAccountResponse.WRONG_LOGIN:
             return False
-        extended_account = {**account, "balance": 0, "nickname": ""}
+        extended_account = {**account, "balance": 1000}
         self.accounts_collection.insert_one(extended_account)
         return True
 
     def get_account_info(self, login: str) -> AccountInfo | None:
         data: AccountInfo | None = self.accounts_collection.find_one(
-            {"login": login}, {"_id": 0, "balance": 1, "nickname": 1}
+            {"login": login}, {"_id": 0, "login": 1, "balance": 1}
         )
         return data
 

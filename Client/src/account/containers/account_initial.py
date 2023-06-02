@@ -41,4 +41,4 @@ class AccountInitialSocketContainer(SocketContainerBase):
         (response,) = data
 
         self.responseRecieved.emit(response)
-        self.exit()
+        self.quit()

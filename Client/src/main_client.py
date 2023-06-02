@@ -10,8 +10,11 @@ from PySide6.QtWidgets import (
     QVBoxLayout,
 )
 
+from account import AccountAPI
+from chat import ChatAPI
 from games import RouletteAPI
 from Shared.games.roulette import RouletteBet, RouletteBetResponse, RouletteColor
+from Shared.games import GameType
 
 
 class MainWindow(QDialog):
@@ -54,24 +57,21 @@ class MainWindow(QDialog):
 
         self.window_title = "Client"
         self._login_line_edit.set_focus()
-        
-        
 
     def connect_to_game(self) -> None:
         self._bet_response_label.text = ""
-        api = RouletteAPI()
-        api._login = self._login_line_edit.text
-        api.betResponse.connect(self.bet_response)
-        api.resultRecieved.connect(self.bet_result)
-        api.betRecieved.connect(self.others_bets)
-        api.connect_to_game()
+        api = AccountAPI()
+        api.auth(self._login_line_edit.text, self._bet_line_edit.text)
+        
+        capi = ChatAPI()
+        capi.recievedMessage.connect(self.bet_response)
+        capi.connect_to_chat_room(GameType.ROULETTE)
 
     def bet(self) -> None:
         self._bet_response_label.text = ""
 
-        api = RouletteAPI()
-        bet = RouletteBet(int(self._bet_line_edit.text), RouletteColor(self._color_line_edit.text))
-        api.bet(bet)
+        api = ChatAPI()
+        api.send_message(self._color_line_edit.text)
 
     def disconnect_from_chat_room(self) -> None:
         self._bet_response_label.text = ""
@@ -82,8 +82,11 @@ class MainWindow(QDialog):
         api.resultRecieved.disconnect(self.bet_result)
         api.betRecieved.disconnect(self.others_bets)
 
-    def bet_response(self, response: RouletteBetResponse) -> None:
-        self._bet_response_label.text = f"Ответ {response.value}"
+    # def bet_response(self, response: RouletteBetResponse) -> None:
+    #     self._bet_response_label.text = f"Ответ {response.value}"
+        
+    def bet_response(self, name: str, message: str) -> None:
+        self._bet_response_label.text = f"{name}: {message}"
 
     def bet_result(self, result: RouletteColor) -> None:
         self._result_label.text = f"Выпало {result.value}"
