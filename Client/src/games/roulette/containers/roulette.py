@@ -3,7 +3,12 @@ from __feature__ import snake_case, true_property  # type: ignore  # noqa: F401;
 from PySide6.QtCore import Signal
 
 from Shared.abstract import SocketContainerBase
-from Shared.games.roulette import RouletteBet, RouletteBetResponse, RouletteColor
+from Shared.games.roulette import (
+    RouletteBet,
+    RouletteBetResponse,
+    RouletteColor,
+    RouletteState,
+)
 from Shared.sockets import SocketType
 
 
@@ -11,7 +16,8 @@ class RouletteSocketContainer(SocketContainerBase):
     socket_type = SocketType.ROULETTE
 
     betResponse = Signal(RouletteBetResponse)
-    resultRecieved = Signal(RouletteColor)
+    resultRecieved = Signal(RouletteColor, int)
+    rouletteStateChanged = Signal(RouletteState)
     betRecieved = Signal(str, RouletteBet)
 
     _sendBet = Signal(str, RouletteBet)
@@ -24,15 +30,19 @@ class RouletteSocketContainer(SocketContainerBase):
         self._sendBet.connect(slot)
         self._start.connect(self.start)
 
+    def run(self) -> None:
+        self._start.emit()
+
     def start(self) -> None:
         slot = self.slot_storage.create_and_store_slot("recieve_bet", self.recieve_bet)
         self.socket.readyRead.connect(slot)
 
         slot = self.slot_storage.create_and_store_slot("recieve_result", self.recieve_result)
         self.socket.readyRead.connect(slot)
-
-    def run(self) -> None:
-        self._start.emit()
+        
+        slot = self.slot_storage.create_and_store_slot("recieve_roulette_state", self.recieve_roulette_state)
+        self.socket.readyRead.connect(slot)
+        self.send_data_package()
 
     def exit(self) -> None:
         super().exit()
@@ -65,9 +75,17 @@ class RouletteSocketContainer(SocketContainerBase):
         self.betRecieved.emit(login, bet)
 
     def recieve_result(self) -> None:
-        data: tuple[RouletteColor] | None = self.recieve_data_package(RouletteColor)
+        data: tuple[RouletteColor, int] | None = self.recieve_data_package(RouletteColor, int)
         if data is None:
             return
 
-        (result,) = data
-        self.resultRecieved.emit(result)
+        (result, sector) = data
+        self.resultRecieved.emit(result, sector)
+
+    def recieve_roulette_state(self) -> None:
+        data: tuple[RouletteState] | None = self.recieve_data_package(RouletteState)
+        if data is None:
+            return
+
+        (state,) = data
+        self.rouletteStateChanged.emit(state)
