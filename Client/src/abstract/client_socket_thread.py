@@ -7,7 +7,7 @@ from PySide6.QtCore import Signal
 from PySide6.QtNetwork import QHostAddress, QTcpSocket
 
 from Shared.abstract import SocketContainerBase, SocketThreadBase
-from Shared.sockets import SocketThreadType
+from Shared.sockets import SocketType
 
 
 class ClientSocketThread(SocketThreadBase):
@@ -19,7 +19,7 @@ class ClientSocketThread(SocketThreadBase):
     # Принимаемый(-ые) типы у наследников могут быть разные
     responseRecieved = Signal((str,), (dict,))  # type: ignore
 
-    _addContainer = Signal(SocketThreadType)
+    _addContainer = Signal(SocketType)
     containerAdded = Signal()
 
     client_token: ClassVar[str | None] = None
@@ -51,7 +51,7 @@ class ClientSocketThread(SocketThreadBase):
 
         return socket
 
-    def add_container(self, socket_type: SocketThreadType) -> None:
+    def add_container(self, socket_type: SocketType) -> None:
         if not self.is_running():
             self.start()
             while True:
@@ -60,7 +60,7 @@ class ClientSocketThread(SocketThreadBase):
 
         self._addContainer.emit(socket_type)
 
-    def _add_container(self, socket: QTcpSocket, socket_type: SocketThreadType) -> None:
+    def _add_container(self, socket: QTcpSocket, socket_type: SocketType) -> None:
         if socket_type in self.containers.keys():
             return
         SocketContainerBase.remove_finish_condition_from_socket_stream(socket)

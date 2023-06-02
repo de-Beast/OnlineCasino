@@ -10,8 +10,8 @@ from PySide6.QtWidgets import (
     QVBoxLayout,
 )
 
-from account import AccountAPI
-from chat import ChatAPI
+from games import RouletteAPI
+from Shared.games.roulette import RouletteBet, RouletteBetResponse, RouletteColor
 
 
 class MainWindow(QDialog):
@@ -19,72 +19,77 @@ class MainWindow(QDialog):
         super().__init__(parent)
 
         self._login_line_edit = QLineEdit()
-        self._password_line_edit = QLineEdit()
+        self._bet_line_edit = QLineEdit()
+        self._color_line_edit = QLineEdit()
 
-        self._sign_in_button = QPushButton("Sign in")
-        self._connect_button = QPushButton("Connect")
-        self._send_button = QPushButton("Send")
+        self._connect_to_game_button = QPushButton("Connect")
+        self._bet_button = QPushButton("Bet")
+        # self._send_button = QPushButton("Send")
         quit_button = QPushButton("Disconnect")
 
-        self._sign_in_button.clicked.connect(self.sign_in)
-        self._connect_button.clicked.connect(self.connect_to_chat_room)
-        self._send_button.clicked.connect(self.send)
+        self._connect_to_game_button.clicked.connect(self.connect_to_game)
+        self._bet_button.clicked.connect(self.bet)
+        # self._send_button.clicked.connect(self.send)
         quit_button.clicked.connect(self.disconnect_from_chat_room)
 
         button_box = QDialogButtonBox()
-        button_box.add_button(self._sign_in_button, QDialogButtonBox.ButtonRole.ActionRole)
-        button_box.add_button(self._connect_button, QDialogButtonBox.ButtonRole.ActionRole)
-        button_box.add_button(self._send_button, QDialogButtonBox.ButtonRole.ActionRole)
+        button_box.add_button(self._connect_to_game_button, QDialogButtonBox.ButtonRole.ActionRole)
+        button_box.add_button(self._bet_button, QDialogButtonBox.ButtonRole.ActionRole)
+        # button_box.add_button(self._send_button, QDialogButtonBox.ButtonRole.ActionRole)
         button_box.add_button(quit_button, QDialogButtonBox.ButtonRole.RejectRole)
 
-        self._answer_label = QLabel()
+        self._bet_response_label = QLabel()
+        self._result_label = QLabel()
+        self._others_bets_label = QLabel()
 
         main_layout = QVBoxLayout()
         main_layout.add_widget(self._login_line_edit)
-        main_layout.add_widget(self._password_line_edit)
+        main_layout.add_widget(self._bet_line_edit)
+        main_layout.add_widget(self._color_line_edit)
         main_layout.add_widget(button_box)
-        main_layout.add_widget(self._answer_label)
+        main_layout.add_widget(self._bet_response_label)
+        main_layout.add_widget(self._result_label)
+        main_layout.add_widget(self._others_bets_label)
         self.set_layout(main_layout)
 
         self.window_title = "Client"
         self._login_line_edit.set_focus()
+        
+        
 
-    def sign_in(self) -> None:
-        self._answer_label.text = ""
+    def connect_to_game(self) -> None:
+        self._bet_response_label.text = ""
+        api = RouletteAPI()
+        api._login = self._login_line_edit.text
+        api.betResponse.connect(self.bet_response)
+        api.resultRecieved.connect(self.bet_result)
+        api.betRecieved.connect(self.others_bets)
+        api.connect_to_game()
 
-        api = AccountAPI()
-        api.responseAccountInitial.connect(self.get_answer)
-        api.auth(self._login_line_edit.text, self._password_line_edit.text)
+    def bet(self) -> None:
+        self._bet_response_label.text = ""
 
-    def connect_to_chat_room(self) -> None:
-        self._answer_label.text = ""
-
-        api = ChatAPI()
-        api.recievedMessage.connect(self.get_answer)
-        api.connect_to_chat_room("roulette")
-
-    def send(self) -> None:
-        self._answer_label.text = ""
-
-        api = ChatAPI()
-        api.send_message(self._login_line_edit.text, self._password_line_edit.text)
+        api = RouletteAPI()
+        bet = RouletteBet(int(self._bet_line_edit.text), RouletteColor(self._color_line_edit.text))
+        api.bet(bet)
 
     def disconnect_from_chat_room(self) -> None:
-        self._answer_label.text = ""
+        self._bet_response_label.text = ""
 
-        api = ChatAPI()
-        api.disconnect_from_chat_room()
-        api.recievedMessage.disconnect(self.get_answer)
+        api = RouletteAPI()
+        api.disconnect_from_game()
+        api.betResponse.disconnect(self.bet_response)
+        api.resultRecieved.disconnect(self.bet_result)
+        api.betRecieved.disconnect(self.others_bets)
 
-    def get_answer(self, info: str, bonus_info: str | None = None) -> None:
-        # if isinstance(info, str):
-        #     self._answer_label.text = f"{info}"
-        # elif isinstance(info, dict):
-        #     self._answer_label.text = f"{info['nickname']}: {info['balance']}"
-        if bonus_info is not None:
-            self._answer_label.text = f"{info}: {bonus_info}"
-        else:
-            self._answer_label.text = f"{info}"
+    def bet_response(self, response: RouletteBetResponse) -> None:
+        self._bet_response_label.text = f"Ответ {response.value}"
+
+    def bet_result(self, result: RouletteColor) -> None:
+        self._result_label.text = f"Выпало {result.value}"
+
+    def others_bets(self, login: str, bet: RouletteBet) -> None:
+        self._others_bets_label.text = f"Другая ставка {login}: {bet.total} - {bet.color}"
 
 
 if __name__ == "__main__":

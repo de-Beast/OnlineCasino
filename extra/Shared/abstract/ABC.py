@@ -37,3 +37,39 @@ class QABC(ABC, metaclass=_ResolverMeta):
             )
 
         return super().__new__(cls, *args, **kwargs)
+
+
+class QSingleton(_ResolverMeta, type):
+    """
+    Singleton для классов, наследующихся от `QObject`
+    Использование:
+    >>> class MyClass(metaclass=Singleton):
+    >>>     ...
+    """
+
+    def __init__(cls, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        cls._instance = None
+
+    def __call__(cls, *args, **kwargs):
+        if cls._instance is None:
+            cls._instance = super().__call__(*args, **kwargs)
+        return cls._instance
+
+
+class Singleton(type):
+    """
+    Singleton для классов, наследующихся от `QObject`
+    Использование:
+    >>> class MyClass(metaclass=Singleton):
+    >>>     ...
+    """
+
+    def __init__(cls, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        cls._instance = None
+
+    def __call__(cls, *args, **kwargs):
+        if cls._instance is None:
+            cls._instance = super().__call__(*args, **kwargs)
+        return cls._instance

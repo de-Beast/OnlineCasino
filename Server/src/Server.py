@@ -5,6 +5,7 @@ from __feature__ import snake_case, true_property  # type: ignore  # noqa: F401
 from PySide6.QtNetwork import QTcpServer
 
 from abstract import ServerSocketThread
+from games.roulette import Roulette
 from Shared.slot_storage import SlotStorage
 
 
@@ -20,11 +21,10 @@ class Server(QTcpServer):
         else:
             print("Server started")
 
+        Roulette().start()
+
     def incoming_connection(self, handle: int) -> None:
         socket_thread = ServerSocketThread(handle)
         self._socket_threads.append(socket_thread)
-        socket_thread.finished.connect(SlotStorage.create_slot(self.remove, socket_thread))
+        socket_thread.finished.connect(SlotStorage.create_slot(self._socket_threads.remove, socket_thread))
         socket_thread.start()
-
-    def remove(self, socket_thread: ServerSocketThread) -> None:
-        self._socket_threads.remove(socket_thread)

@@ -8,6 +8,7 @@ from server import Server
 def setup():
     import account  # noqa: F401
     import chat  # noqa: F401
+    import games  # noqa: F401
 
 
 if __name__ == "__main__":

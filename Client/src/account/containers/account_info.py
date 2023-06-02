@@ -4,11 +4,11 @@ from PySide6.QtCore import Signal
 
 from Shared.abstract import SocketContainerBase
 from Shared.account import AccountInfo
-from Shared.sockets import SocketThreadType
+from Shared.sockets import SocketType
 
 
 class AccountInfoSocketContainer(SocketContainerBase):
-    socket_type = SocketThreadType.ACCOUNT_INFO
+    socket_type = SocketType.ACCOUNT_INFO
 
     responseRecieved = Signal(AccountInfo)
 

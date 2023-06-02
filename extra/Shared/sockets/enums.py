@@ -1,5 +1,5 @@
 __all__ = [
-    "SocketThreadType",
+    "SocketType",
 ]
 
 from enum import auto
@@ -7,7 +7,7 @@ from enum import auto
 from ..abstract import EnumBase
 
 
-class SocketThreadType(EnumBase):
+class SocketType(EnumBase):
     """
     Перечисление, определяющее различные типы сокетов для клиента и сервера
     """
@@ -15,3 +15,4 @@ class SocketThreadType(EnumBase):
     ACCOUNT_INITIAL = auto()
     ACCOUNT_INFO = auto()
     CHAT = auto()
+    ROULETTE = auto()

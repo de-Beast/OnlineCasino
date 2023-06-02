@@ -5,24 +5,13 @@ from __feature__ import snake_case, true_property  # type: ignore # noqa: F401
 from PySide6.QtCore import QObject
 
 from Shared import SlotStorage
+from Shared.abstract import QSingleton, SocketContainerBase
+from Shared.sockets import SocketType
 
 from .client_socket_thread import ClientSocketThread
 
-QT: type = type(QObject)
 
-
-class Singleton(QT, type):
-    def __init__(cls, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        cls._instance = None
-
-    def __call__(cls, *args, **kwargs):
-        if cls._instance is None:
-            cls._instance = super().__call__(*args, **kwargs)
-        return cls._instance
-
-
-class APIBase(QObject, metaclass=Singleton):
+class APIBase(QObject, metaclass=QSingleton):
     _socket_thread: ClientSocketThread
 
     def __new__(cls) -> Self:
@@ -35,6 +24,7 @@ class APIBase(QObject, metaclass=Singleton):
         super().__init__(*args, **kwargs)
 
         self._slot_storage = SlotStorage()
+        self._login: str | None = None
 
     @property
     def slot_storage(self) -> SlotStorage:
@@ -49,3 +39,14 @@ class APIBase(QObject, metaclass=Singleton):
             raise RuntimeError("Socket thread is not initialized")
 
         return APIBase._socket_thread
+
+    @property
+    def login(self) -> str:
+        if not self._login:
+            raise RuntimeError("Login is not set")
+
+        return self._login
+
+    @property
+    def containers(self) -> dict[SocketType, SocketContainerBase]:
+        return self.socket_thread.containers

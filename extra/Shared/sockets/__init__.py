@@ -1,5 +1,5 @@
 __all__ = [
-    "SocketThreadType",
+    "SocketType",
 ]
 
-from .enums import SocketThreadType
+from .enums import SocketType

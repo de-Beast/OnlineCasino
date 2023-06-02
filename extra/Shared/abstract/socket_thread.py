@@ -11,7 +11,7 @@ from PySide6.QtCore import QObject
 from PySide6.QtNetwork import QTcpSocket
 
 from Shared.slot_storage import SlotStorage
-from Shared.sockets import SocketThreadType
+from Shared.sockets import SocketType
 
 from .socket_container import SocketContainerBase
 from .thread import ThreadBase
@@ -33,14 +33,14 @@ class SocketThreadBase(ThreadBase, ABC):
         super().__init__(parent)
 
         self._slot_storage = SlotStorage()
-        self._containers: dict[SocketThreadType, SocketContainerBase] = {}
+        self._containers: dict[SocketType, SocketContainerBase] = {}
 
     @property
     def slot_storage(self) -> SlotStorage:
         return self._slot_storage
 
     @property
-    def containers(self) -> dict[SocketThreadType, SocketContainerBase]:
+    def containers(self) -> dict[SocketType, SocketContainerBase]:
         return self._containers
 
     def run(self) -> None:
@@ -53,7 +53,7 @@ class SocketThreadBase(ThreadBase, ABC):
 
         if (socket := self.create_socket()) is None:
             return
-        
+
         socket.disconnected.connect(self.stop_work)
 
         self._is_working = True

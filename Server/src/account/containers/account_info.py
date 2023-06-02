@@ -3,11 +3,11 @@ from __feature__ import snake_case, true_property  # type: ignore # noqa: F401
 
 from database import AccountsDB
 from Shared.abstract import SocketContainerBase
-from Shared.sockets import SocketThreadType
+from Shared.sockets import SocketType
 
 
 class AccountInfoSocketContainer(SocketContainerBase):
-    socket_type = SocketThreadType.ACCOUNT_INFO
+    socket_type = SocketType.ACCOUNT_INFO
 
     def run(self) -> None:
         slot = self.slot_storage.create_and_store_slot("recieve_request", self.recieve_request)

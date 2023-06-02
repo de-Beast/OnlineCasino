@@ -15,4 +15,4 @@ known_first_party = [
 
 [tool.ruff]
 ignore-init-module-imports = true
-ignore = ["F405", "F403"]
+ignore = ["F405", "F403", "E731"]

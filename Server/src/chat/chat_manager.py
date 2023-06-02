@@ -5,6 +5,7 @@ from __feature__ import snake_case, true_property  # type: ignore  # noqa: F401
 from PySide6.QtCore import QObject
 
 from Shared import SlotStorage
+from Shared.games import GameType
 
 if TYPE_CHECKING:
     from .containers import ChatSocketContainer
@@ -40,8 +41,8 @@ class ChatRoom(QObject):
 
 
 class ChatManager(QObject):
-    chat_rooms: dict[str, ChatRoom] = {"roulette": ChatRoom()}
+    chat_rooms: dict[str, ChatRoom] = {GameType.ROULETTE: ChatRoom()}
 
     @classmethod
-    def connect_to_chat_room(cls, socket_container: "ChatSocketContainer", room_id: str) -> None:
-        cls.chat_rooms[room_id].add_socket(socket_container)
+    def connect_to_chat_room(cls, socket_container: "ChatSocketContainer", game_room: GameType) -> None:
+        cls.chat_rooms[game_room].add_socket(socket_container)

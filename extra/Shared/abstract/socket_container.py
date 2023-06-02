@@ -11,7 +11,7 @@ from PySide6.QtCore import QByteArray, QDataStream, QObject, Signal
 from PySide6.QtNetwork import QTcpSocket
 
 from Shared.slot_storage import SlotStorage
-from Shared.sockets import SocketThreadType
+from Shared.sockets import SocketType
 
 from .ABC import QABC
 
@@ -19,9 +19,9 @@ T = TypeVar("T", bound=object)
 
 
 class SocketContainerBase(QABC, QObject):
-    __socket_type_bindings: dict[SocketThreadType, Type["SocketContainerBase"]] = {}
+    __socket_type_bindings: dict[SocketType, Type["SocketContainerBase"]] = {}
 
-    socket_type: ClassVar[SocketThreadType]
+    socket_type: ClassVar[SocketType]
 
     # Таймаут, используемый в `wait_` методах
     wait_timeout: int = 10_000  # milliseconds
@@ -37,7 +37,7 @@ class SocketContainerBase(QABC, QObject):
     def __init_subclass__(cls, **kwards) -> None:
         super().__init_subclass__(**kwards)
 
-        if not hasattr(cls, "socket_type") or not isinstance(cls.socket_type, SocketThreadType):
+        if not hasattr(cls, "socket_type") or not isinstance(cls.socket_type, SocketType):
             raise TypeError("socket_type must be a Class variable of SocketThreadType enum")
 
         if SocketContainerBase.__socket_type_bindings.get(cls.socket_type, None) is not None:
@@ -68,20 +68,20 @@ class SocketContainerBase(QABC, QObject):
         return self._slot_storage
 
     @staticmethod
-    def identify_socket_type(socket: QTcpSocket) -> tuple[SocketThreadType, bool] | None:
+    def identify_socket_type(socket: QTcpSocket) -> tuple[SocketType, bool] | None:
         recieve_stream = QDataStream(socket)
         recieve_stream.start_transaction()
         socket_type = recieve_stream.readQVariant()
         finish_cond = recieve_stream.readQVariant()
         recieve_stream.rollback_transaction()
-        if isinstance(socket_type, SocketThreadType):
+        if isinstance(socket_type, SocketType):
             return socket_type, isinstance(finish_cond, SocketContainerBase.Finished)
 
         return None
 
     @staticmethod
     def create_container(
-        socket: QTcpSocket, socket_type: SocketThreadType, parent: QObject | None = None
+        socket: QTcpSocket, socket_type: SocketType, parent: QObject | None = None
     ) -> "SocketContainerBase":
         """
         Создает контейнер сокета указанного типа, считывая из сокета его тип
@@ -103,7 +103,7 @@ class SocketContainerBase(QABC, QObject):
         recieve_stream.start_transaction()
         socket_type = recieve_stream.readQVariant()
         finish_cond = recieve_stream.readQVariant()
-        if isinstance(socket_type, SocketThreadType) and isinstance(finish_cond, SocketContainerBase.Finished):
+        if isinstance(socket_type, SocketType) and isinstance(finish_cond, SocketContainerBase.Finished):
             recieve_stream.commit_transaction()
             return True
 
@@ -231,7 +231,7 @@ class SocketContainerBase(QABC, QObject):
         recieve_stream = QDataStream(self.socket)
         recieve_stream.start_transaction()
         socket_type = recieve_stream.readQVariant()
-        if not isinstance(socket_type, SocketThreadType) or socket_type is not self.socket_type:
+        if not isinstance(socket_type, SocketType) or socket_type is not self.socket_type:
             recieve_stream.rollback_transaction()
             return None
 

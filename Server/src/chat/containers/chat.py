@@ -3,13 +3,13 @@ from __feature__ import snake_case, true_property  # type: ignore # noqa: F401
 from PySide6.QtCore import Signal
 
 from Shared.abstract import SocketContainerBase
-from Shared.sockets import SocketThreadType
+from Shared.sockets import SocketType
 
 from ..chat_manager import ChatManager
 
 
 class ChatSocketContainer(SocketContainerBase):
-    socket_type = SocketThreadType.CHAT
+    socket_type = SocketType.CHAT
 
     messageRecieved = Signal(str, str)
 
