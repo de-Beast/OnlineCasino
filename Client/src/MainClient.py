@@ -10,7 +10,10 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
 from PySide6.QtWidgets import (QApplication, QLabel, QMainWindow, QPushButton,
     QSizePolicy, QSpacerItem, QVBoxLayout, QWidget)
 
+import Client.src.chat.api
 from Client.AllUi.ui_MainWindow import Ui_MainWindow
+from Shared.account.enums import AccountInitialResponse, AccountInitialRequest
+
 
 from Client.src.AccountWindow import AccountWindow
 from Client.src.StartWindow import StartWindow
@@ -24,6 +27,7 @@ def SaveLastPageToHistory():
     SavePageToHistory(mainUi.stackedWidget.currentWidget())
 
 def GoBack():
+    GameWindow.chatApi.disconnect_from_chat_room()
     mainUi.stackedWidget.setCurrentWidget(history.pop())
 
 def ToRegistrWindow():
@@ -39,6 +43,7 @@ def ToAccountWindow():
     mainUi.stackedWidget.setCurrentWidget(AccountWindow.widget)
 
 def ToGameWindow():
+    GameWindow.chatApi.connect_to_chat_room(Client.src.chat.api.GameType.ROULETTE)
     SaveLastPageToHistory()
     mainUi.stackedWidget.setCurrentWidget(GameWindow.widget)
 
@@ -46,15 +51,29 @@ def RegisterNavigation():
     StartWindow.UI.EnterButton.clicked.connect(ToEnterWindow)
     StartWindow.UI.RegistrButton.clicked.connect(ToRegistrWindow)
 
-    EnterWindow.UI.Enter_Button.clicked.connect(ToGameWindow)
     EnterWindow.UI.backButton.clicked.connect(GoBack)
-
-    RegistrationWindow.UI.Sign_up.clicked.connect(ToGameWindow)
+    EnterWindow.accountAPI.responseAccountInitial.connect(OnEnterResponce)
 
     AccountWindow.UI.pushButton.clicked.connect(GoBack)
 
+    RegistrationWindow.accountAPI.responseAccountInitial.connect(OnRegisterResponce)
+
     GameWindow.UI.accountButton.clicked.connect(ToAccountWindow)
     GameWindow.UI.backButton.clicked.connect(GoBack)
+
+def OnRegisterResponce(responce : AccountInitialResponse):
+    print("reg: " + str(responce))
+    match responce:
+        case AccountInitialResponse.REGISTER_SUCCESS:
+            ToGameWindow()
+        case _:
+            pass
+
+def OnEnterResponce(responce : AccountInitialResponse):
+    print("enter: " + str(responce))
+    if responce == AccountInitialResponse.AUTH_SUCCESS:
+        print(responce)
+        ToGameWindow()
 
 history = []
 if __name__ == "__main__":

@@ -4,8 +4,10 @@ from PySide6 import QtCore, QtGui, QtWidgets
 from PySide6.QtGui import QMovie
 
 from Client.AllUi.ui_Game import Ui_Game
-from Client.src.client_sockets.socket_threads.chat import ChatSocketThread
-from Shared.sockets.enums.roulette import RouletteColor
+from Shared.games.roulette.enums import RouletteColor
+from Shared.games.enums import GameType
+from Client.src.chat.api import ChatAPI
+from Client.src.games.roulette.api import RouletteAPI, RouletteBet
 
 class GameWindow(object):
     def __init__(self):
@@ -13,11 +15,11 @@ class GameWindow(object):
         self.UI = Ui_Game()
         self.UI.setupUi(self.widget)
 
-
-        self.chatThread = ChatSocketThread()
-
-        self.chatThread.responseRecieved.connect(self.OnMessageRecieved)
+        self.chatApi = ChatAPI()
+        self.chatApi.recievedMessage.connect(self.OnMessageRecieved)
         self.UI.messageEdit.returnPressed.connect(self.SendMessage)
+
+        self.rouletteAPI = RouletteAPI()
 
         #TODO connect dis shit
         self.UI.blackBetButton.clicked.connect(lambda : self.OnBetMaked(RouletteColor.BLACK))
@@ -31,7 +33,6 @@ class GameWindow(object):
         self.UI.circle.setMovie(self.startGif)
         self.startGif.jumpToFrame(0)
 
-        self.OnBetTaken(RouletteColor.GREEN)
 
         self.UI.balanceLabel.setText("БАЛАНС: 21")
 
@@ -52,9 +53,9 @@ class GameWindow(object):
     def OnBetMaked(self, type : RouletteColor):
         ...
         self.PlayGif(random.randint(0, len(self.gifs) - 1))
-        self.OnBetTaken(type)
+        self.rouletteAPI.bet(RouletteBet(total=int(self.UI.betEdit.toPlainText()), color=type))
 
-    def OnBetTaken(self, type : RouletteColor):
+    def OnBetTaken(self, bet : RouletteBet):
         if type == RouletteColor.RED:
             betSum = self.UI.redBetsSum
             betCont = self.UI.redBets
@@ -78,9 +79,8 @@ class GameWindow(object):
         if self.UI.messageEdit.text() == "":
             return
 
-        self.chatThread.send_message("bagel", self.UI.messageEdit.text) #TODO get nickname
+        self.chatApi.send_message(self.UI.messageEdit.text)
 
-        self.OnMessageRecieved("bagel", self.UI.messageEdit.text())
         self.UI.messageEdit.clear()
 
     def PlayGif(self, indOfGif : int):

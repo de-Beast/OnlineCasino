@@ -17,7 +17,7 @@ class AccountAPI(APIBase):
     def save_login(self, container: SocketContainerBase, login: str, response: AccountInitialResponse) -> None:
         match response:
             case AccountInitialResponse.AUTH_SUCCESS | AccountInitialResponse.REGISTER_SUCCESS:
-                self._login = login
+                APIBase._login = login
 
         if isinstance(container, AccountInitialSocketContainer) or isinstance(container, AccountInfoSocketContainer):
             container.responseRecieved.disconnect(self.slot_storage.pop("save_login"))

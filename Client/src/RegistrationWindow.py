@@ -1,7 +1,7 @@
 from PySide6 import QtCore, QtGui, QtWidgets
 
 from Client.AllUi.ui_Registration import Ui_Registration
-from Client.src.client_sockets.socket_threads.account_initial import AccountInitialSocketThread
+from Client.src.account.api import AccountAPI
 
 class RegistrationWindow():
     def __init__(self):
@@ -9,9 +9,11 @@ class RegistrationWindow():
         self.UI = Ui_Registration()
         self.UI.setupUi(self.widget)
 
-        self.thread = AccountInitialSocketThread()
+        self.accountAPI = AccountAPI()
+
+        self.UI.Sign_up.clicked.connect(self.OnRegisterClicked)
 
     def OnRegisterClicked(self):
         email = self.UI.Edit_Email.text()
         password = self.UI.Edit_Password.text()
-        self.thread.register(email, password)
+        self.accountAPI.register(email, password)

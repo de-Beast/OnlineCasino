@@ -2,6 +2,7 @@ import PySide6  # type: ignore # noqa: F401
 from __feature__ import snake_case, true_property  # type: ignore # noqa: F401
 from PySide6.QtCore import Signal
 
+import Shared.games.enums
 from Shared.abstract import SocketContainerBase
 from Shared.sockets import SocketType
 
@@ -25,7 +26,7 @@ class ChatSocketContainer(SocketContainerBase):
         slot = self.slot_storage.create_and_store_slot("recieve_message", self.recieve_message)
         self.socket.readyRead.connect(slot)
 
-        data: tuple[str] | None = self.recieve_data_package(str)
+        data: tuple[Shared.games.enums.GameType] | None = self.recieve_data_package(Shared.games.enums.GameType)
         if data is None:
             return
 

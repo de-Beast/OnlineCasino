@@ -1,16 +1,12 @@
 from PySide6 import QtCore, QtGui, QtWidgets
 
 from Client.AllUi.ui_Account import Ui_Account
-from Client.src.client_sockets.socket_threads.account_info import AccountInfoSocketThread
 
 class AccountWindow():
     def __init__(self):
         self.widget = QtWidgets.QWidget()
         self.UI = Ui_Account()
         self.UI.setupUi(self.widget)
-
-        self.thread = AccountInfoSocketThread()
-        self.thread.responseRecieved.connect(self.OnUpdateAccountInfo)
 
     def OnUpdateAccountInfo(self, info : dict):
         self.UI.emailEdit.setText(info['login'])

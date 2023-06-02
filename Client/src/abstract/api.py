@@ -13,6 +13,7 @@ from .client_socket_thread import ClientSocketThread
 
 class APIBase(QObject, metaclass=QSingleton):
     _socket_thread: ClientSocketThread
+    _login: str | None = None
 
     def __new__(cls) -> Self:
         if not hasattr(APIBase, "_socket_thread"):
@@ -24,7 +25,6 @@ class APIBase(QObject, metaclass=QSingleton):
         super().__init__(*args, **kwargs)
 
         self._slot_storage = SlotStorage()
-        self._login: str | None = None
 
     @property
     def slot_storage(self) -> SlotStorage:
