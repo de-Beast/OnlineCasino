@@ -3,11 +3,12 @@ import random
 from PySide6 import QtCore, QtGui, QtWidgets
 from PySide6.QtGui import QMovie
 
-from Client.AllUi.ui_Game import Ui_Game
+from AllUi.ui_Game import Ui_Game
 from Shared.games.roulette.enums import RouletteColor
 from Shared.games.enums import GameType
-from Client.src.chat.api import ChatAPI
-from Client.src.games.roulette.api import RouletteAPI, RouletteBet
+from chat.api import ChatAPI
+from account.api import AccountInfo
+from games.roulette.api import RouletteAPI, RouletteBet
 
 class GameWindow(object):
     def __init__(self):
@@ -19,7 +20,17 @@ class GameWindow(object):
         self.chatApi.recievedMessage.connect(self.OnMessageRecieved)
         self.UI.messageEdit.returnPressed.connect(self.SendMessage)
 
+        self.accountInfo = AccountInfo()
+        self.UI.balanceLabel.setText("БАЛАНС: " + str(self.accountInfo['balance']))
+
         self.rouletteAPI = RouletteAPI()
+        self.rouletteAPI.connect_to_game()
+        self.rouletteAPI.betRecieved.connect(self.OnBetTaken)
+        self.rouletteAPI.resultRecieved
+
+        self.blackBet = 0
+        self.redBet = 0
+        self.greenBet = 0
 
         #TODO connect dis shit
         self.UI.blackBetButton.clicked.connect(lambda : self.OnBetMaked(RouletteColor.BLACK))
@@ -33,10 +44,8 @@ class GameWindow(object):
         self.UI.circle.setMovie(self.startGif)
         self.startGif.jumpToFrame(0)
 
-
+        self.UI.balanceLabel.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.UI.balanceLabel.setText("БАЛАНС: 21")
-
-        self.OnMessageRecieved("sopernik_vrazhina", "тебе конец!!!")
 
     def RegisterGifs(self):
         self.gifs = []
@@ -51,24 +60,29 @@ class GameWindow(object):
         self.gifs.append(QMovie("gifs//zero2-stop.gif"))  #8
 
     def OnBetMaked(self, type : RouletteColor):
-        ...
         self.PlayGif(random.randint(0, len(self.gifs) - 1))
         self.rouletteAPI.bet(RouletteBet(total=int(self.UI.betEdit.toPlainText()), color=type))
 
-    def OnBetTaken(self, bet : RouletteBet):
-        if type == RouletteColor.RED:
+    def OnBetTaken(self, nick : str, bet : RouletteBet):
+        if bet.color == RouletteColor.RED:
             betSum = self.UI.redBetsSum
             betCont = self.UI.redBets
-        elif type == RouletteColor.BLACK:
+            self.redBet += bet.total
+            betSize = self.redBet
+        elif bet.color == RouletteColor.BLACK:
             betSum = self.UI.blackBetsSum
             betCont = self.UI.blackBets
+            self.blackBet += bet.total
+            betSize = self.blackBet
         else:
+            self.greenBet += bet.total
             betSum = self.UI.greenBetsSum
             betCont = self.UI.greenBets
+            betSize = self.greenBet
 
-        betSize = 333
+
         betSum.setText("ОБЩАЯ СТАВКА: " + str(betSize))
-        betCont.append("<b>nick:</b> " + str(betSize))
+        betCont.append("<b>" + nick + ":</b> " + str(bet.total))
 
     def OnMessageRecieved(self, nickname : str, message : str):
         self.UI.chat.append("<b>" + nickname + ":</b>")
@@ -79,8 +93,7 @@ class GameWindow(object):
         if self.UI.messageEdit.text() == "":
             return
 
-        self.chatApi.send_message(self.UI.messageEdit.text)
-
+        self.chatApi.send_message(self.UI.messageEdit.text())
         self.UI.messageEdit.clear()
 
     def PlayGif(self, indOfGif : int):

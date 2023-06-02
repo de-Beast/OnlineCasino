@@ -1,7 +1,7 @@
 from PySide6 import QtCore, QtGui, QtWidgets
 
-from Client.AllUi.ui_Enter import Ui_Enter
-from Client.src.account.api import AccountAPI
+from AllUi.ui_Enter import Ui_Enter
+from account.api import AccountAPI
 
 class EnterWindow():
     def __init__(self):

@@ -1,6 +1,6 @@
 from PySide6 import QtCore, QtGui, QtWidgets
 
-from Client.AllUi.ui_StartWidget import Ui_Start
+from AllUi.ui_StartWidget import Ui_Start
 
 class StartWindow():
     def __init__(self):

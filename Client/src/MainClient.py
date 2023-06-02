@@ -10,16 +10,17 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
 from PySide6.QtWidgets import (QApplication, QLabel, QMainWindow, QPushButton,
     QSizePolicy, QSpacerItem, QVBoxLayout, QWidget)
 
-import Client.src.chat.api
-from Client.AllUi.ui_MainWindow import Ui_MainWindow
+#import Client.src.chat.api
 from Shared.account.enums import AccountInitialResponse, AccountInitialRequest
 
+from chat.api import GameType
 
-from Client.src.AccountWindow import AccountWindow
-from Client.src.StartWindow import StartWindow
-from Client.src.EnterWindow import EnterWindow
-from Client.src.RegistrationWindow import RegistrationWindow
-from Client.src.GameWindow import GameWindow
+from AllUi.ui_MainWindow import Ui_MainWindow
+from AccountWindow import AccountWindow
+from StartWindow import StartWindow
+from EnterWindow import EnterWindow
+from RegistrationWindow import RegistrationWindow
+from GameWindow import GameWindow
 
 def SavePageToHistory(widget : QWidget):
     history.append(widget)
@@ -43,7 +44,7 @@ def ToAccountWindow():
     mainUi.stackedWidget.setCurrentWidget(AccountWindow.widget)
 
 def ToGameWindow():
-    GameWindow.chatApi.connect_to_chat_room(Client.src.chat.api.GameType.ROULETTE)
+    GameWindow.chatApi.connect_to_chat_room(GameType.ROULETTE)
     SaveLastPageToHistory()
     mainUi.stackedWidget.setCurrentWidget(GameWindow.widget)
 
@@ -97,7 +98,6 @@ if __name__ == "__main__":
     mainUi.stackedWidget.addWidget(GameWindow.widget)
 
     RegisterNavigation()
-
 
 
     MainWindow.show()

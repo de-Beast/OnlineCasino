@@ -1,6 +1,6 @@
 from PySide6 import QtCore, QtGui, QtWidgets
 
-from Client.AllUi.ui_Account import Ui_Account
+from AllUi.ui_Account import Ui_Account
 
 class AccountWindow():
     def __init__(self):

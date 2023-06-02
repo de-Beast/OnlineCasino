@@ -1,7 +1,7 @@
 from PySide6 import QtCore, QtGui, QtWidgets
 
-from Client.AllUi.ui_Registration import Ui_Registration
-from Client.src.account.api import AccountAPI
+from AllUi.ui_Registration import Ui_Registration
+from account.api import AccountAPI
 
 class RegistrationWindow():
     def __init__(self):
