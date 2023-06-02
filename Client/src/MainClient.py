@@ -49,7 +49,7 @@ def ToGameWindow():
     mainUi.stackedWidget.setCurrentWidget(GameWindow.widget)
 
     GameWindow.accountAPI.get_account_info()
-    #GameWindow.rouletteAPI.connect_to_game()
+    GameWindow.rouletteAPI.connect_to_game()
 
 def RegisterNavigation():
     StartWindow.UI.EnterButton.clicked.connect(ToEnterWindow)

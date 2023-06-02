@@ -23,6 +23,7 @@ class RouletteSocketContainer(SocketContainerBase):
         self.roulette.stateChanged.connect(self.send_roulette_state)
 
         self.socket.readyRead.connect(self.slot_storage.create_and_store_slot("recieve_bet", self.recieve_bet))
+        self.recieve_data_package()
         self.send_roulette_state(self.roulette.state)
 
     def exit(self) -> None:

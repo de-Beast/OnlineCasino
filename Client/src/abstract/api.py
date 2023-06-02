@@ -13,7 +13,7 @@ from .client_socket_thread import ClientSocketThread
 
 class APIBase(QObject, metaclass=QSingleton):
     _socket_thread: ClientSocketThread
-    login: str | None = None
+    _login: str | None = None
 
     def __new__(cls) -> Self:
         if not hasattr(APIBase, "_socket_thread"):
@@ -40,12 +40,12 @@ class APIBase(QObject, metaclass=QSingleton):
 
         return APIBase._socket_thread
 
-    #@property
-    #def login(self) -> str:
-    #    if not self._login:
-    #        raise RuntimeError("Login is not set")
+    @property
+    def login(self) -> str:
+       if not APIBase._login:
+           raise RuntimeError("Login is not set")
 
-    #    return self._login
+       return APIBase._login
 
     @property
     def containers(self) -> dict[SocketType, SocketContainerBase]:
