@@ -24,8 +24,6 @@ class ChatSocketContainer(SocketContainerBase):
         self._connectToRoom.connect(slot)
 
     def run(self, game_room: GameType = GameType.ROULETTE) -> None:
-        slot = self.slot_storage.create_and_store_slot("recieve_message", self.recieve_message)
-        self.socket.readyRead.connect(slot)
         self._connectToRoom.emit(game_room)
 
     def exit(self) -> None:
@@ -34,6 +32,8 @@ class ChatSocketContainer(SocketContainerBase):
 
     def connect_to_room(self, game_room: GameType) -> None:
         self._connectToRoom.disconnect(self.slot_storage.pop("connect_to_room"))
+        slot = self.slot_storage.create_and_store_slot("recieve_message", self.recieve_message)
+        self.socket.readyRead.connect(slot)
         self.send_data_package(game_room)
 
     def send_message(self, nickname: str, message: str) -> None:

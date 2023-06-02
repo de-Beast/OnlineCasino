@@ -28,7 +28,6 @@ class AccountInitialSocketContainer(SocketContainerBase):
 
         response = self.proccess_authorization(method, login, password)
         self.send_data_package(response)
-        self.exit()
 
     def proccess_authorization(
         self, method: AccountInitialRequest, login: str, password: str

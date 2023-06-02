@@ -3,6 +3,7 @@ from __feature__ import snake_case, true_property  # type: ignore # noqa: F401
 from PySide6.QtCore import Signal
 
 from Shared.abstract import SocketContainerBase
+from Shared.games import GameType
 from Shared.sockets import SocketType
 
 from ..chat_manager import ChatManager
@@ -25,7 +26,7 @@ class ChatSocketContainer(SocketContainerBase):
         slot = self.slot_storage.create_and_store_slot("recieve_message", self.recieve_message)
         self.socket.readyRead.connect(slot)
 
-        data: tuple[str] | None = self.recieve_data_package(str)
+        data: tuple[GameType] | None = self.recieve_data_package(GameType)
         if data is None:
             return
 
