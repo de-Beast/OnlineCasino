@@ -16,9 +16,9 @@ class RouletteSocketContainer(SocketContainerBase):
     socket_type = SocketType.ROULETTE
 
     betResponse = Signal(RouletteBetResponse)
-    resultRecieved = Signal(RouletteColor, int)
+    resultReceived = Signal(RouletteColor, int)
     rouletteStateChanged = Signal(RouletteState)
-    betRecieved = Signal(str, RouletteBet)
+    betReceived = Signal(str, RouletteBet)
 
     _sendBet = Signal(str, RouletteBet)
     _start = Signal()
@@ -34,56 +34,59 @@ class RouletteSocketContainer(SocketContainerBase):
         self._start.emit()
 
     def start(self) -> None:
-        slot = self.slot_storage.create_and_store_slot("recieve_bet", self.recieve_bet)
+        slot = self.slot_storage.create_and_store_slot("receive_bet", self.receive_bet)
         self.socket.readyRead.connect(slot)
 
-        slot = self.slot_storage.create_and_store_slot("recieve_result", self.recieve_result)
+        slot = self.slot_storage.create_and_store_slot("receive_result", self.receive_result)
         self.socket.readyRead.connect(slot)
-        
-        slot = self.slot_storage.create_and_store_slot("recieve_roulette_state", self.recieve_roulette_state)
+
+        slot = self.slot_storage.create_and_store_slot("receive_roulette_state", self.receive_roulette_state)
         self.socket.readyRead.connect(slot)
-        self.send_data_package()
+        self.connect_to_game()
 
     def exit(self) -> None:
         super().exit()
-        self.socket.readyRead.disconnect(self.slot_storage.pop("recieve_bet"))
-        self.socket.readyRead.disconnect(self.slot_storage.pop("recieve_result"))
-        self.socket.readyRead.disconnect(self.recieve_bet_response)
+        self.socket.readyRead.disconnect(self.slot_storage.pop("receive_bet"))
+        self.socket.readyRead.disconnect(self.slot_storage.pop("receive_result"))
+        self.socket.readyRead.disconnect(self.receive_bet_response)
+
+    def connect_to_game(self) -> None:
+        self.send_data_package(SocketContainerBase.ContainerRequest.CONNECT)
 
     def send_bet(self, login: str, bet: RouletteBet) -> None:
         self._sendBet.emit(login, bet)
 
     def _send_bet(self, login: str, bet: RouletteBet) -> None:
         self.send_data_package(login, bet)
-        self.socket.readyRead.connect(self.recieve_bet_response)
+        self.socket.readyRead.connect(self.receive_bet_response)
 
-    def recieve_bet_response(self) -> None:
-        data: tuple[RouletteBetResponse] | None = self.recieve_data_package(RouletteBetResponse)
+    def receive_bet_response(self) -> None:
+        data: tuple[RouletteBetResponse] | None = self.receive_data_package(RouletteBetResponse)
         if data is None:
             return
-        self.socket.readyRead.disconnect(self.recieve_bet_response)
+        self.socket.readyRead.disconnect(self.receive_bet_response)
 
         (bet_response,) = data
         self.betResponse.emit(bet_response)
 
-    def recieve_bet(self) -> None:
-        data: tuple[str, RouletteBet] | None = self.recieve_data_package(str, RouletteBet)
+    def receive_bet(self) -> None:
+        data: tuple[str, RouletteBet] | None = self.receive_data_package(str, RouletteBet)
         if data is None:
             return
 
         login, bet = data
-        self.betRecieved.emit(login, bet)
+        self.betReceived.emit(login, bet)
 
-    def recieve_result(self) -> None:
-        data: tuple[RouletteColor, int] | None = self.recieve_data_package(RouletteColor, int)
+    def receive_result(self) -> None:
+        data: tuple[RouletteColor, int] | None = self.receive_data_package(RouletteColor, int)
         if data is None:
             return
 
         (result, sector) = data
-        self.resultRecieved.emit(result, sector)
+        self.resultReceived.emit(result, sector)
 
-    def recieve_roulette_state(self) -> None:
-        data: tuple[RouletteState] | None = self.recieve_data_package(RouletteState)
+    def receive_roulette_state(self) -> None:
+        data: tuple[RouletteState] | None = self.receive_data_package(RouletteState)
         if data is None:
             return
 

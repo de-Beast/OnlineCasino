@@ -4,29 +4,27 @@ from PySide6.QtCore import Signal
 
 from abstract import APIBase
 from Shared.games import GameType
-from Shared.sockets import SocketType
 
 from .containers import ChatSocketContainer
 
 
 class ChatAPI(APIBase):
-    recievedMessage = Signal(str, str)
+    messageReceived = Signal(str, str)
 
-    def on_container_added(self, socket_type: SocketType, *args) -> None:
-        container: ChatSocketContainer = self.containers[socket_type]
-        if not isinstance(container, ChatSocketContainer):
-            return
-        container.messageRecieved.connect(self.recievedMessage.emit)
-
-        self.socket_thread.containerAdded.disconnect(self.slot_storage.pop("on_container_added"))
-        container.run(*args)
+    @APIBase.on_container_added(slot_name="setup_ChatSocketContainer")
+    def setup_ChatSocketContainer(self, container: ChatSocketContainer) -> None:
+        container.messageReceived.connect(self.messageReceived.emit)
 
     def connect_to_chat_room(self, game_room: GameType) -> None:
         if ChatSocketContainer.socket_type in self.containers.keys():
             return
 
         slot = self.slot_storage.create_and_store_slot(
-            "on_container_added", self.on_container_added, None, ChatSocketContainer.socket_type, game_room
+            "setup_ChatSocketContainer",
+            self.setup_ChatSocketContainer,
+            None,
+            ChatSocketContainer,
+            game_room,
         )
         self.socket_thread.containerAdded.connect(slot)
         self.socket_thread.add_container(ChatSocketContainer.socket_type)

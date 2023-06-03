@@ -3,9 +3,8 @@ __all__ = [
     "AccountInitialResponse",
 ]
 
-from enum import auto
 
-from ..abstract import EnumBase
+from ..abstract import EnumBase, auto
 
 
 class AccountInitialRequest(EnumBase):

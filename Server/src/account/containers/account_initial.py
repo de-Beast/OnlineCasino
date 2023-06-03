@@ -11,16 +11,17 @@ class AccountInitialSocketContainer(SocketContainerBase):
     socket_type = SocketType.ACCOUNT_INITIAL
 
     def run(self) -> None:
-        slot = self.slot_storage.create_and_store_slot("recieve_request", self.recieve_request)
+        self.receive_request()
+        
+        slot = self.slot_storage.create_and_store_slot("receive_request", self.receive_request)
         self.socket.readyRead.connect(slot)
-        self.recieve_request()
 
     def exit(self) -> None:
+        self.socket.readyRead.disconnect(self.slot_storage.pop("receive_request"))
         super().exit()
-        self.socket.readyRead.disconnect(self.slot_storage.pop("recieve_request"))
 
-    def recieve_request(self) -> None:
-        data: tuple[AccountInitialRequest, str, str] | None = self.recieve_data_package(AccountInitialRequest, str, str)
+    def receive_request(self) -> None:
+        data: tuple[AccountInitialRequest, str, str] | None = self.receive_data_package(AccountInitialRequest, str, str)
         if data is None:
             return
 
