@@ -13,8 +13,8 @@ from PySide6.QtWidgets import (
 from account import AccountAPI
 from chat import ChatAPI
 from games import RouletteAPI
-from Shared.games.roulette import RouletteBet, RouletteBetResponse, RouletteColor
 from Shared.games import GameType
+from Shared.games.roulette import RouletteBet, RouletteBetResponse, RouletteColor
 
 
 class MainWindow(QDialog):
@@ -62,9 +62,9 @@ class MainWindow(QDialog):
         self._bet_response_label.text = ""
         api = AccountAPI()
         api.auth(self._login_line_edit.text, self._bet_line_edit.text)
-        
+
         capi = ChatAPI()
-        capi.recievedMessage.connect(self.bet_response)
+        capi.messageReceived.connect(self.bet_response)
         capi.connect_to_chat_room(GameType.ROULETTE)
 
     def bet(self) -> None:
@@ -79,12 +79,12 @@ class MainWindow(QDialog):
         api = RouletteAPI()
         api.disconnect_from_game()
         api.betResponse.disconnect(self.bet_response)
-        api.resultRecieved.disconnect(self.bet_result)
-        api.betRecieved.disconnect(self.others_bets)
+        api.resultReceived.disconnect(self.bet_result)
+        api.betReceived.disconnect(self.others_bets)
 
     # def bet_response(self, response: RouletteBetResponse) -> None:
     #     self._bet_response_label.text = f"Ответ {response.value}"
-        
+
     def bet_response(self, name: str, message: str) -> None:
         self._bet_response_label.text = f"{name}: {message}"
 
