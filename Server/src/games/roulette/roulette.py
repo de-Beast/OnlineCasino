@@ -1,4 +1,6 @@
 import random
+from collections import deque
+from typing import TYPE_CHECKING
 
 import PySide6  # type: ignore # noqa: F401
 from __feature__ import snake_case, true_property  # type: ignore # noqa: F401
@@ -6,7 +8,7 @@ from PySide6.QtCore import QTimer, Signal
 
 from database import AccountsDB
 from Shared import SlotStorage
-from Shared.abstract import QSingleton, ThreadBase
+from Shared.abstract import QSingleton, SocketContainerBase, ThreadBase
 from Shared.games.roulette import (
     RouletteBet,
     RouletteBetResponse,
@@ -14,14 +16,16 @@ from Shared.games.roulette import (
     RouletteState,
 )
 
+if TYPE_CHECKING:
+    from .containers import RouletteSocketContainer
+
 
 class Roulette(ThreadBase, metaclass=QSingleton):
     result = Signal(RouletteColor, int)
     betMade = Signal(str, RouletteBet)
-    betResponse = Signal(RouletteBetResponse)
     stateChanged = Signal(RouletteState)
 
-    makeBet = Signal(str, RouletteBet)
+    makeBet = Signal(SocketContainerBase, str, RouletteBet)
 
     bet_interval = 10_000
     spin_interval = 10_000
@@ -31,6 +35,7 @@ class Roulette(ThreadBase, metaclass=QSingleton):
 
         self._slot_storage = SlotStorage()
         self.bets: dict[str, RouletteBet] = {}
+        self.last_results: deque[RouletteColor] = deque(maxlen=10)
 
         self.state = RouletteState.STOPPED
 
@@ -68,8 +73,8 @@ class Roulette(ThreadBase, metaclass=QSingleton):
         self.stateChanged.emit(self.state)
         spin_timer.start()
 
-    def closed_bets(self) -> None:
-        self.betResponse.emit(RouletteBetResponse.CLOSED)
+    def closed_bets(self, container: "RouletteSocketContainer", *args) -> None:
+        container.betResponse.emit(RouletteBetResponse.CLOSED)
 
     def end_spin(self, bet_timer: QTimer) -> None:
         self.makeBet.disconnect(self.closed_bets)
@@ -81,18 +86,18 @@ class Roulette(ThreadBase, metaclass=QSingleton):
         self.makeBet.connect(self.add_bet)
         bet_timer.start()
 
-    def add_bet(self, login: str, bet: RouletteBet) -> None:
+    def add_bet(self, container: "RouletteSocketContainer", login: str, bet: RouletteBet) -> None:
         if login in self.bets.keys():
-            self.betResponse.emit(RouletteBetResponse.ALREADY_BET)
+            container.betResponse.emit(RouletteBetResponse.ALREADY_BET)
             return
 
         balance = AccountsDB().get_balance(login)
         if balance is None or balance < bet.total:
-            self.betResponse.emit(RouletteBetResponse.OUT_OF_BALANCE)
+            container.betResponse.emit(RouletteBetResponse.OUT_OF_BALANCE)
             return
 
         self.bets[login] = bet
-        self.betResponse.emit(RouletteBetResponse.SUCCESS)
+        container.betResponse.emit(RouletteBetResponse.SUCCESS)
         self.betMade.emit(login, bet)
 
     def calculate(self) -> tuple[RouletteColor, int]:
@@ -121,4 +126,5 @@ class Roulette(ThreadBase, metaclass=QSingleton):
 
         self.bets.clear()
 
+        self.last_results.append(result)
         self.result.emit(result, sector)

@@ -10,7 +10,7 @@ from Shared.sockets import SocketType
 class AccountInfoSocketContainer(SocketContainerBase):
     socket_type = SocketType.ACCOUNT_INFO
 
-    responseRecieved = Signal(AccountInfo)
+    responseReceived = Signal(AccountInfo)
 
     _requestInfo = Signal(str)
 
@@ -24,8 +24,8 @@ class AccountInfoSocketContainer(SocketContainerBase):
         self._requestInfo.emit(login)
 
     def exit(self) -> None:
-        super().exit()
         self.socket.readyRead.disconnect(self.slot_storage.pop("get_response"))
+        super().exit()
 
     def make_request(self, login: str) -> None:
         slot = self.slot_storage.create_and_store_slot("get_response", self.get_response)
@@ -34,14 +34,11 @@ class AccountInfoSocketContainer(SocketContainerBase):
         self.send_data_package(login)
 
     def get_response(self) -> None:
-        data: tuple[AccountInfo] | None = self.recieve_data_package(dict)
+        data: tuple[AccountInfo] | None = self.receive_data_package(dict)
         if data is None:
             return
 
         (info,) = data
 
-        self.responseRecieved.emit(info)
+        self.responseReceived.emit(info)
         self.quit()
-
-    def get_account_info(self, login: str) -> None:
-        self._requestInfo.emit(login)

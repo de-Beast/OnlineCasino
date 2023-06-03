@@ -10,6 +10,7 @@ from __feature__ import snake_case, true_property  # type: ignore # noqa: F401
 from PySide6.QtCore import QByteArray, QDataStream, QObject, Signal
 from PySide6.QtNetwork import QTcpSocket
 
+from Shared.abstract import EnumBase, auto
 from Shared.slot_storage import SlotStorage
 from Shared.sockets import SocketType
 
@@ -26,12 +27,13 @@ class SocketContainerBase(QABC, QObject):
     # Таймаут, используемый в `wait_` методах
     wait_timeout: int = 10_000  # milliseconds
 
-    finished = Signal()
+    disconnected = Signal()
 
     _exit = Signal()
 
-    class Finished:
-        pass
+    class ContainerRequest(EnumBase):
+        CONNECT = auto()
+        DISCONNECT = auto()
 
     @classmethod
     def __init_subclass__(cls, **kwards) -> None:
@@ -51,7 +53,7 @@ class SocketContainerBase(QABC, QObject):
         self._socket = socket
         self._slot_storage = SlotStorage()
 
-        self._finished_recieved = False
+        self._disconnect_request_received = False
         self._socket.readyRead.connect(self.check_for_finished)
 
         self._exit.connect(self.exit)
@@ -69,13 +71,13 @@ class SocketContainerBase(QABC, QObject):
 
     @staticmethod
     def identify_socket_type(socket: QTcpSocket) -> tuple[SocketType, bool] | None:
-        recieve_stream = QDataStream(socket)
-        recieve_stream.start_transaction()
-        socket_type = recieve_stream.readQVariant()
-        finish_cond = recieve_stream.readQVariant()
-        recieve_stream.rollback_transaction()
+        receive_stream = QDataStream(socket)
+        receive_stream.start_transaction()
+        socket_type = receive_stream.readQVariant()
+        disconnect_request = receive_stream.readQVariant()
+        receive_stream.rollback_transaction()
         if isinstance(socket_type, SocketType):
-            return socket_type, isinstance(finish_cond, SocketContainerBase.Finished)
+            return socket_type, disconnect_request is SocketContainerBase.ContainerRequest.DISCONNECT
 
         return None
 
@@ -98,16 +100,19 @@ class SocketContainerBase(QABC, QObject):
         return SocketContainerBase.__socket_type_bindings[socket_type](socket, parent)  # type: ignore
 
     @staticmethod
-    def remove_finish_condition_from_socket_stream(socket: QTcpSocket) -> bool:
-        recieve_stream = QDataStream(socket)
-        recieve_stream.start_transaction()
-        socket_type = recieve_stream.readQVariant()
-        finish_cond = recieve_stream.readQVariant()
-        if isinstance(socket_type, SocketType) and isinstance(finish_cond, SocketContainerBase.Finished):
-            recieve_stream.commit_transaction()
+    def remove_disconnect_container_request(socket: QTcpSocket) -> bool:
+        receive_stream = QDataStream(socket)
+        receive_stream.start_transaction()
+        socket_type = receive_stream.readQVariant()
+        disconnect_request = receive_stream.readQVariant()
+        if (
+            isinstance(socket_type, SocketType)
+            and disconnect_request is SocketContainerBase.ContainerRequest.DISCONNECT
+        ):
+            receive_stream.commit_transaction()
             return True
 
-        recieve_stream.rollback_transaction()
+        receive_stream.rollback_transaction()
         return False
 
     @abstractmethod
@@ -118,15 +123,21 @@ class SocketContainerBase(QABC, QObject):
         self._exit.emit()
 
     def exit(self) -> None:
-        self.finished.emit()
-        if not self._finished_recieved:
-            self.send_data_package(SocketContainerBase.Finished())
+        self.disconnected.emit()
+        if not self._disconnect_request_received:
+            self.send_data_package(SocketContainerBase.ContainerRequest.DISCONNECT)
         self._socket.readyRead.disconnect(self.check_for_finished)
 
     def check_for_finished(self) -> None:
-        data: tuple[SocketContainerBase.Finished] | None = self.recieve_data_package(SocketContainerBase.Finished)
-        if data is not None:
-            self._finished_recieved = True
+        data: tuple[SocketContainerBase.ContainerRequest] | None = self.receive_data_package(
+            SocketContainerBase.ContainerRequest
+        )
+        if data is None:
+            return
+
+        (request,) = data
+        if request is SocketContainerBase.ContainerRequest.DISCONNECT:
+            self._disconnect_request_received = True
             self.exit()
 
     def wait_for_readyRead(self, msecs: int | None = None) -> bool:
@@ -152,12 +163,12 @@ class SocketContainerBase(QABC, QObject):
         >>>
         >>> def on_readyRead(self):
         >>>     socket = self.get_socket()
-        >>>     recieve_stream = QDataStream(socket)
-        >>>     recieve_stream.start_transaction()
-        >>>     socket_thread_type_value = recieve_stream.read_int32()
-        >>>     socket_thread_type_value = recieve_stream.read_bool()
-        >>>     socket_thread_type_value = recieve_stream.read_string()
-        >>>     if not recieve_stream.commit_transaction():
+        >>>     receive_stream = QDataStream(socket)
+        >>>     receive_stream.start_transaction()
+        >>>     socket_thread_type_value = receive_stream.read_int32()
+        >>>     socket_thread_type_value = receive_stream.read_bool()
+        >>>     socket_thread_type_value = receive_stream.read_string()
+        >>>     if not receive_stream.commit_transaction():
         >>>         return
         """
 
@@ -198,7 +209,7 @@ class SocketContainerBase(QABC, QObject):
         self.socket.write(block)
         self.socket.wait_for_bytes_written(self.wait_timeout)
 
-    def recieve_data_package(self, *args: Type[T]) -> tuple[T] | None:
+    def receive_data_package(self, *args: Type[T]) -> tuple[T] | None:
         """
         Получает пакет данных из `QTcpSocket` и возвращает его в виде кортежа.
 
@@ -206,7 +217,7 @@ class SocketContainerBase(QABC, QObject):
 
         Чтобы при расспаковке переменные были соответствующего типа,
         следует предварительно сделать аннотацию для кортежа:
-        #>>> data: tuple[int, int, str, float] | None = self.recieve_data_package(socket, int, int, str, float)
+        #>>> data: tuple[int, int, str, float] | None = self.receive_data_package(socket, int, int, str, float)
         #>>> if data is None:
         #>>>     return
         #>>> num, index, string, delta = data
@@ -228,31 +239,31 @@ class SocketContainerBase(QABC, QObject):
 
         """  # noqa: E501
 
-        recieve_stream = QDataStream(self.socket)
-        recieve_stream.start_transaction()
-        socket_type = recieve_stream.readQVariant()
+        receive_stream = QDataStream(self.socket)
+        receive_stream.start_transaction()
+        socket_type = receive_stream.readQVariant()
         if not isinstance(socket_type, SocketType) or socket_type is not self.socket_type:
-            recieve_stream.rollback_transaction()
+            receive_stream.rollback_transaction()
             return None
 
         data: list = []
         for type in args:
             if type is bool:
-                data.append(recieve_stream.read_bool())
+                data.append(receive_stream.read_bool())
             elif type is int:
-                data.append(recieve_stream.read_int32())
+                data.append(receive_stream.read_int32())
             elif type is float:
-                data.append(recieve_stream.read_float())
+                data.append(receive_stream.read_float())
             elif type is str:
-                data.append(recieve_stream.read_string())
+                data.append(receive_stream.read_string())
             else:
-                data.append(recieve_stream.readQVariant())
+                data.append(receive_stream.readQVariant())
 
             if not isinstance(data[-1], type):
-                recieve_stream.rollback_transaction()
+                receive_stream.rollback_transaction()
                 return None
 
-        if not recieve_stream.commit_transaction():
+        if not receive_stream.commit_transaction():
             return None
 
         return_value: tuple[T] = tuple(data)  # type: ignore

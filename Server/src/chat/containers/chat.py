@@ -12,7 +12,7 @@ from ..chat_manager import ChatManager
 class ChatSocketContainer(SocketContainerBase):
     socket_type = SocketType.CHAT
 
-    messageRecieved = Signal(str, str)
+    messageReceived = Signal(str, str)
 
     _sendMessage = Signal(str, str)
 
@@ -23,19 +23,24 @@ class ChatSocketContainer(SocketContainerBase):
         self._sendMessage.connect(slot)
 
     def run(self) -> None:
-        slot = self.slot_storage.create_and_store_slot("recieve_message", self.recieve_message)
-        self.socket.readyRead.connect(slot)
+        self.socket.readyRead.connect(self.connect_to_chat_room)
+        self.connect_to_chat_room()
 
-        data: tuple[GameType] | None = self.recieve_data_package(GameType)
+    def connect_to_chat_room(self) -> None:
+        data: tuple[GameType] | None = self.receive_data_package(GameType)
         if data is None:
             return
+        self.socket.readyRead.disconnect(self.connect_to_chat_room)
 
         (room_id,) = data
         ChatManager.connect_to_chat_room(self, room_id)
 
+        slot = self.slot_storage.create_and_store_slot("receive_message", self.receive_message)
+        self.socket.readyRead.connect(slot)
+
     def exit(self) -> None:
         super().exit()
-        self.socket.readyRead.disconnect(self.slot_storage.pop("recieve_message"))
+        self.socket.readyRead.disconnect(self.slot_storage.pop("receive_message"))
 
     def send_message(self, nickname: str, message: str) -> None:
         self._sendMessage.emit(nickname, message)
@@ -43,10 +48,10 @@ class ChatSocketContainer(SocketContainerBase):
     def _send_message(self, nickname: str, message: str) -> None:
         self.send_data_package(nickname, message)
 
-    def recieve_message(self) -> None:
-        data: tuple[str, str] | None = self.recieve_data_package(str, str)
+    def receive_message(self) -> None:
+        data: tuple[str, str] | None = self.receive_data_package(str, str)
         if data is None:
             return
 
         (nickname, message) = data
-        self.messageRecieved.emit(nickname, message)
+        self.messageReceived.emit(nickname, message)

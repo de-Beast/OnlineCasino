@@ -5,7 +5,6 @@ from PySide6.QtCore import Signal
 from abstract import APIBase
 from Shared.abstract import SocketContainerBase
 from Shared.account import AccountInfo, AccountInitialRequest, AccountInitialResponse
-from Shared.sockets import SocketType
 
 from .containers import AccountInfoSocketContainer, AccountInitialSocketContainer
 
@@ -14,41 +13,40 @@ class AccountAPI(APIBase):
     responseAccountInitial = Signal(AccountInitialResponse)
     responseAccountInfo = Signal(AccountInfo)
 
-    def save_login(self, container: SocketContainerBase, login: str, response: AccountInitialResponse) -> None:
+    def save_login(self, container: SocketContainerBase, response: AccountInitialResponse) -> None:
         match response:
             case AccountInitialResponse.AUTH_SUCCESS | AccountInitialResponse.REGISTER_SUCCESS:
-                APIBase._login = login
+                pass
+            case _:
+                APIBase._login = None
 
         if isinstance(container, AccountInitialSocketContainer) or isinstance(container, AccountInfoSocketContainer):
-            container.responseRecieved.disconnect(self.slot_storage.pop("save_login"))
+            container.responseReceived.disconnect(self.slot_storage.pop("save_login"))
 
-    def on_container_added(self, socket_type: SocketType, *args) -> None:
-        container = self.containers[socket_type]
-        if isinstance(container, AccountInitialSocketContainer):
-            container.responseRecieved.connect(self.responseAccountInitial.emit)
-            slot = self.slot_storage.create_and_store_slot("save_login", self.save_login, container, args[0])
-            container.responseRecieved.connect(slot)
-        elif isinstance(container, AccountInfoSocketContainer):
-            container.responseRecieved.connect(self.responseAccountInfo.emit)
-        else:
-            return
+    @APIBase.on_container_added(slot_name="setup_AccountInitialSocketContainer")
+    def setup_AccountInitialSocketContainer(self, container: AccountInitialSocketContainer) -> None:
+        slot = self.slot_storage.create_and_store_slot("save_login", self.save_login, container)
+        container.responseReceived.connect(slot)
+        container.responseReceived.connect(self.responseAccountInitial.emit)
 
-        self.socket_thread.containerAdded.disconnect(self.slot_storage.pop("on_container_added"))
-        container.run(*args)
+    @APIBase.on_container_added(slot_name="setup_AccountInfoSocketContainer")
+    def setup_AccountInfoSocketContainer(self, container: AccountInitialSocketContainer) -> None:
+        container.responseReceived.connect(self.responseAccountInfo.emit)
 
     def auth(self, login: str, password: str) -> None:
         if container := self.containers.get(AccountInitialSocketContainer.socket_type, None):
             container.quit()
 
         slot = self.slot_storage.create_and_store_slot(
-            "on_container_added",
-            self.on_container_added,
+            "setup_AccountInitialSocketContainer",
+            self.setup_AccountInitialSocketContainer,
             None,
-            AccountInitialSocketContainer.socket_type,
+            AccountInitialSocketContainer,
             login,
             password,
             AccountInitialRequest.AUTH,
         )
+        APIBase._login = login
         self.socket_thread.containerAdded.connect(slot)
         self.socket_thread.add_container(AccountInitialSocketContainer.socket_type)
 
@@ -57,14 +55,15 @@ class AccountAPI(APIBase):
             container.quit()
 
         slot = self.slot_storage.create_and_store_slot(
-            "on_container_added",
-            self.on_container_added,
+            "setup_AccountInitialSocketContainer",
+            self.setup_AccountInitialSocketContainer,
             None,
-            AccountInitialSocketContainer.socket_type,
+            AccountInitialSocketContainer,
             login,
             password,
             AccountInitialRequest.REGISTER,
         )
+        APIBase._login = login
         self.socket_thread.containerAdded.connect(slot)
         self.socket_thread.add_container(AccountInitialSocketContainer.socket_type)
 
@@ -73,10 +72,10 @@ class AccountAPI(APIBase):
             container.quit()
 
         slot = self.slot_storage.create_and_store_slot(
-            "on_container_added",
-            self.on_container_added,
+            "setup_AccountInfoSocketContainer",
+            self.setup_AccountInfoSocketContainer,
             None,
-            AccountInfoSocketContainer.socket_type,
+            AccountInfoSocketContainer,
             self.login,
         )
         self.socket_thread.containerAdded.connect(slot)

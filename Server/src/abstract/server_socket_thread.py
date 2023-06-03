@@ -4,6 +4,7 @@ from PySide6.QtCore import QMutexLocker, QObject
 from PySide6.QtNetwork import QTcpSocket
 
 from Shared.abstract import SocketContainerBase, SocketThreadBase
+from Shared.sockets import SocketType
 
 
 class ServerSocketThread(SocketThreadBase):
@@ -53,18 +54,21 @@ class ServerSocketThread(SocketThreadBase):
         return socket
 
     def check_containers(self, socket: QTcpSocket) -> None:
-        socket_type, finish_cond = SocketContainerBase.identify_socket_type(socket)
+        socket_type, is_disconnect_request = SocketContainerBase.identify_socket_type(socket)
         if socket_type is None or socket_type in self.containers.keys():
             return
-        if finish_cond and SocketContainerBase.remove_finish_condition_from_socket_stream(socket):
+        if is_disconnect_request and SocketContainerBase.remove_disconnect_container_request(socket):
             return
 
+        self.add_container(socket, socket_type)
+
+    def add_container(self, socket: QTcpSocket, socket_type: SocketType) -> None:
         container: SocketContainerBase = SocketContainerBase.create_container(socket, socket_type)
         slot = self.slot_storage.create_and_store_slot(f"{socket_type}", self.delete_container, container)
-        container.finished.connect(slot)
+        container.disconnected.connect(slot)
         self.containers.update({socket_type: container})
         container.run()
 
     def delete_container(self, container: SocketContainerBase) -> None:
         del self.containers[container.socket_type]
-        container.finished.disconnect(self.slot_storage.pop(f"{container.socket_type}"))
+        container.disconnected.disconnect(self.slot_storage.pop(f"{container.socket_type}"))

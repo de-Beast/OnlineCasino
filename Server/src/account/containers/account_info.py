@@ -10,16 +10,17 @@ class AccountInfoSocketContainer(SocketContainerBase):
     socket_type = SocketType.ACCOUNT_INFO
 
     def run(self) -> None:
-        slot = self.slot_storage.create_and_store_slot("recieve_request", self.recieve_request)
+        self.receive_request()
+
+        slot = self.slot_storage.create_and_store_slot("receive_request", self.receive_request)
         self.socket.readyRead.connect(slot)
-        self.recieve_request()
 
     def exit(self) -> None:
+        self.socket.readyRead.disconnect(self.slot_storage.pop("receive_request"))
         super().exit()
-        self.socket.readyRead.disconnect(self.slot_storage.pop("recieve_request"))
 
-    def recieve_request(self) -> None:
-        data: tuple[str] | None = self.recieve_data_package(str)
+    def receive_request(self) -> None:
+        data: tuple[str] | None = self.receive_data_package(str)
         if data is None:
             return
 

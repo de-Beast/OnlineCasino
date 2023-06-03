@@ -4,9 +4,7 @@ __all__ = [
     "RouletteState",
 ]
 
-from enum import auto
-
-from ...abstract import EnumBase
+from ...abstract import EnumBase, auto
 
 
 class RouletteColor(EnumBase):
@@ -20,6 +18,7 @@ class RouletteBetResponse(EnumBase):
     CLOSED = auto()
     OUT_OF_BALANCE = auto()
     ALREADY_BET = auto()
+
 
 class RouletteState(EnumBase):
     STOPPED = auto()

@@ -1,49 +1,40 @@
-from typing import Callable, Self
-
 import PySide6  # type: ignore # noqa: F401
 from __feature__ import snake_case, true_property  # type: ignore # noqa: F401
 from PySide6.QtCore import Signal
 
 from abstract import APIBase
-from Shared.abstract import SocketContainerBase
-from Shared.games.roulette import RouletteBet, RouletteBetResponse, RouletteColor
-from Shared.sockets import SocketType
+from Shared.games.roulette import (
+    RouletteBet,
+    RouletteBetResponse,
+    RouletteColor,
+    RouletteState,
+)
 
 from .containers import RouletteSocketContainer
 
 
 class RouletteAPI(APIBase):
     betResponse = Signal(RouletteBetResponse)
-    resultRecieved = Signal(RouletteColor)
-    betRecieved = Signal(str, RouletteBet)
+    resultReceived = Signal(RouletteColor, int)
+    rouletteStateChanged = Signal(RouletteState)
+    betReceived = Signal(str, RouletteBet)
 
-    @staticmethod
-    def on_container_added(*, slot_name: str):
-        def inner(func: Callable):
-            def wrapper(self: Self, socket_type: SocketType, *args) -> None:
-                container = self.containers[socket_type]
-                func(self, container)
-                self.socket_thread.containerAdded.disconnect(self.slot_storage.pop(slot_name))
-                container.run(*args)
-
-            return wrapper
-
-        return inner
-
-    @on_container_added(slot_name="setup_container")
-    def setup_container(self, container: SocketContainerBase) -> None:
-        if not isinstance(container, RouletteSocketContainer):
-            return
+    @APIBase.on_container_added(slot_name="setup_container")
+    def setup_container(self, container: RouletteSocketContainer) -> None:
         container.betResponse.connect(self.betResponse.emit)
-        container.resultRecieved.connect(self.resultRecieved.emit)
-        container.betRecieved.connect(self.betRecieved.emit)
+        container.resultReceived.connect(self.resultReceived.emit)
+        container.rouletteStateChanged.connect(self.rouletteStateChanged.emit)
+        container.betReceived.connect(self.betReceived.emit)
 
     def connect_to_game(self) -> None:
         if RouletteSocketContainer.socket_type in self.socket_thread.containers.keys():
             return
 
         slot = self.slot_storage.create_and_store_slot(
-            "setup_container", self.setup_container, None, RouletteSocketContainer.socket_type
+            "setup_container",
+            self.setup_container,
+            None,
+            RouletteSocketContainer
         )
         self.socket_thread.containerAdded.connect(slot)
         self.socket_thread.add_container(RouletteSocketContainer.socket_type)

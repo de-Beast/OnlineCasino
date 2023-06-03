@@ -87,10 +87,10 @@ class SlotStorage:
 
         return slot
 
-    def peek(self, name: str) -> Slot:
+    def peek(self, name: str) -> Slot | None:
         """Возвращает стол, не удаляя его из хранилища"""
 
-        return self.__storage[name]
+        return self.__storage.get(name, None)
 
     def store(self, name: str, value: Slot) -> None:
         """Сохраняет слот"""
@@ -104,18 +104,18 @@ class SlotStorage:
         self.__storage.update({name: value})
 
     @overload
-    def pop(self, name_or_slot: str) -> Slot:
+    def pop(self, name_or_slot: str) -> Slot | None:
         ...
 
     @overload
-    def pop(self, name_or_slot: Slot) -> Slot:
+    def pop(self, name_or_slot: Slot) -> Slot | None:
         ...
 
-    def pop(self, name_or_slot: str | Slot) -> Slot:
+    def pop(self, name_or_slot: str | Slot) -> Slot | None:
         """Возвращает сохраненный слот и удалаяет его из хранилища"""
 
         if isinstance(name_or_slot, str):
-            return self.__storage.pop(name_or_slot)
+            return self.__storage.pop(name_or_slot, None)
 
         if isinstance(name_or_slot, partial):
             slot = name_or_slot

@@ -27,17 +27,21 @@ class ChatRoom(QObject):
         return self._socket_containers
 
     def add_socket(self, socket_container: "ChatSocketContainer") -> None:
+        slot = self.slot_storage.create_and_store_slot("remove_container", self.remove_container, socket_container)
+        socket_container.disconnected.connect(slot)
+
+        socket_container.messageReceived.connect(self.message_received)
+
         self.socket_containers.append(socket_container)
 
-        slot = self.slot_storage.create_slot(self.socket_containers.remove, socket_container)
-        socket_container.finished.connect(slot)
-
-        slot = self.slot_storage.create_slot(self.message_recieved)
-        socket_container.messageRecieved.connect(slot)
-
-    def message_recieved(self, nickname: str, message: str) -> None:
+    def message_received(self, nickname: str, message: str) -> None:
         for socket_thread in self.socket_containers:
             socket_thread.send_message(nickname, message)
+
+    def remove_container(self, socket_container: "ChatSocketContainer") -> None:
+        socket_container.disconnected.disconnect(self.slot_storage.pop("remove_container"))
+        socket_container.messageReceived.disconnect(self.message_received)
+        self.socket_containers.remove(socket_container)
 
 
 class ChatManager(QObject):

@@ -2,9 +2,8 @@ __all__ = [
     "SocketType",
 ]
 
-from enum import auto
 
-from ..abstract import EnumBase
+from ..abstract import EnumBase, auto
 
 
 class SocketType(EnumBase):

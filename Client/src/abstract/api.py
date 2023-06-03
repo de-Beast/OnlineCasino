@@ -1,4 +1,4 @@
-from typing import Self
+from typing import Callable, Self, Type, TypeVar
 
 import PySide6  # type: ignore # noqa: F401
 from __feature__ import snake_case, true_property  # type: ignore # noqa: F401
@@ -9,6 +9,8 @@ from Shared.abstract import QSingleton, SocketContainerBase
 from Shared.sockets import SocketType
 
 from .client_socket_thread import ClientSocketThread
+
+T = TypeVar("T", bound=SocketContainerBase, covariant=True)
 
 
 class APIBase(QObject, metaclass=QSingleton):
@@ -50,3 +52,27 @@ class APIBase(QObject, metaclass=QSingleton):
     @property
     def containers(self) -> dict[SocketType, SocketContainerBase]:
         return self.socket_thread.containers
+
+    @staticmethod
+    def on_container_added(*, slot_name: str):
+        def inner(func: Callable[[Self, T], None]):
+            if slot_name != func.__name__:
+                raise ValueError("Slot name does not match function name")
+
+            def wrapper(self: Self, container_class: Type[T], *args) -> None:
+                container = args[-1]
+
+                if not isinstance(container, SocketContainerBase):
+                    raise ValueError("No container received")
+
+                if not isinstance(container, container_class):
+                    return
+
+                func(self, container)
+                self.socket_thread.containerAdded.disconnect(self.slot_storage.pop(slot_name))
+                container_args = [arg for arg in args if arg is not container]
+                container.run(*container_args)
+
+            return wrapper
+
+        return inner

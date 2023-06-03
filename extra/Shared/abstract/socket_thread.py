@@ -59,6 +59,7 @@ class SocketThreadBase(ThreadBase, ABC):
         self._is_working = True
         self.thread_workflow(socket)
         self._is_working = False
+        self._containers.clear()
         self._disconnect_socket(socket)
 
     @abstractmethod
