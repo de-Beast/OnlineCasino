@@ -6,11 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="c8a4d5d5-91d8-4665-893e-489d7ff6627b" name="Changes" comment="Simple ui">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/GameWindow.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/GameWindow.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/MainClient.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/MainClient.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/abstract/api.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/abstract/api.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/account/api.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/account/api.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/games/roulette/api.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/games/roulette/api.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/src/AccountWindow.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/AccountWindow.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/src/AllUi/Account.ui" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/AllUi/Account.ui" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/src/AllUi/ui_Account.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/AllUi/ui_Account.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main_server.py" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/main_server.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,15 +42,15 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "last_opened_file_path": "D:/Projects/OnlineCasino/Client/src",
-    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/Projects/OnlineCasino/Client/src&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\Projects\OnlineCasino\Client\src" />

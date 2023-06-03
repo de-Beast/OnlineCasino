@@ -1,6 +1,8 @@
 from PySide6 import QtCore, QtGui, QtWidgets
 
 from AllUi.ui_Account import Ui_Account
+from account.api import AccountAPI
+from account.api import AccountInfo
 
 class AccountWindow():
     def __init__(self):
@@ -8,9 +10,11 @@ class AccountWindow():
         self.UI = Ui_Account()
         self.UI.setupUi(self.widget)
 
-    def OnUpdateAccountInfo(self, info : dict):
+        self.accountAPI = AccountAPI()
+        self.accountAPI.responseAccountInfo.connect(self.OnUpdateAccountInfo)
+
+    def OnUpdateAccountInfo(self, info : AccountInfo):
         self.UI.emailEdit.setText(info['login'])
-        self.UI.passwordEdit.setText(info['password'])
         self.UI.balanceLabel.setText(str(info['balance']))
 
         #history = self.UI.historyTable
