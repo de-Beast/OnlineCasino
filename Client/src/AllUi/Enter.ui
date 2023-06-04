@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>671</width>
+    <width>602</width>
     <height>614</height>
    </rect>
   </property>
@@ -72,6 +72,7 @@ border: 2px solid rgba(140, 101, 65, 0.7);</string>
       <widget class="QLabel" name="Logo">
        <property name="font">
         <font>
+         <family>Manrope</family>
          <pointsize>45</pointsize>
          <bold>true</bold>
         </font>
@@ -175,7 +176,7 @@ text-align: center;
 color: #462208;</string>
        </property>
        <property name="text">
-        <string>Адрес почты</string>
+        <string>Логин</string>
        </property>
       </widget>
      </item>
@@ -293,7 +294,7 @@ top: 686px;
   </layout>
  </widget>
  <resources>
-  <include location="../images/project.qrc"/>
+  <include location="../../images/project.qrc"/>
  </resources>
  <connections/>
 </ui>

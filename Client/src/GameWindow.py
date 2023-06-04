@@ -1,3 +1,5 @@
+from PySide6.QtWidgets import QSizePolicy
+
 from AllUi.ui_Game import Ui_Game
 from PySide6 import QtCore, QtWidgets
 from PySide6.QtGui import QMovie
@@ -54,7 +56,7 @@ class GameWindow(object):
         self.UI.balanceLabel.setText("БАЛАНС:")
 
     def OnBetEdit(self):
-        if not self.UI.betEdit.toPlainText().isnumeric():
+        if not self.UI.betEdit.toPlainText().isnumeric() and not (self.UI.betEdit.toPlainText() == ""):
             self.UI.betEdit.undo()
 
     def UpdateAccountInfo(self, newInfo):
@@ -63,6 +65,22 @@ class GameWindow(object):
     def UpdateRouletteState(self, color: RouletteColor, num: int):
         if num >= 0:
             self.PlayGif(num)
+        else:
+            record = QtWidgets.QLabel("")
+            record.setMinimumWidth(30)
+            record.setMinimumHeight(30)
+            record.setSizePolicy(QSizePolicy.Policy.Maximum, QSizePolicy.Policy.Maximum)
+            match color:
+                case RouletteColor.RED:
+                    record.setStyleSheet("background: rgb(217, 73, 73);\nborder-radius: 15px;")
+                    pass
+                case RouletteColor.BLACK:
+                    record.setStyleSheet("background: rgb(255, 241, 191);\nborder-radius: 15px;")
+                    pass
+                case RouletteColor.GREEN:
+                    record.setStyleSheet("background: rgb(87, 187, 52);\nborder-radius: 15px;")
+                    pass
+            self.UI.horizontalLayout_6.addWidget(record)
 
     def UpdateRouletteStatus(self, status: RouletteState):
         if status == RouletteState.SPINNING:
@@ -82,6 +100,16 @@ class GameWindow(object):
         self.gifs.append(QMovie("gifs//red3-stop.gif"))  # 6
         self.gifs.append(QMovie("gifs//zero-stop.gif"))  # 7
         self.gifs.append(QMovie("gifs//zero2-stop.gif"))  # 8
+
+    def ClearLayout(self, layout):
+        if layout is not None:
+            while layout.count():
+                item = layout.takeAt(0)
+                widget = item.widget()
+                if widget is not None:
+                    widget.deleteLater()
+                else:
+                    self.ClearLayout(item.layout())
 
     def OnBetMaked(self, type: RouletteColor):
         if self.UI.betEdit.toPlainText() == "":

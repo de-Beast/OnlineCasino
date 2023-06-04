@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'GameEhxCkj.ui'
+## Form generated from reading UI file 'GameHGZEuS.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.5.0
 ##
@@ -16,8 +16,8 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QHBoxLayout, QLabel, QLineEdit,
-    QListWidget, QListWidgetItem, QPushButton, QSizePolicy,
-    QTextBrowser, QTextEdit, QVBoxLayout, QWidget)
+    QPushButton, QScrollArea, QSizePolicy, QTextBrowser,
+    QTextEdit, QVBoxLayout, QWidget)
 
 class Ui_Game(object):
     def setupUi(self, Form):
@@ -189,10 +189,27 @@ class Ui_Game(object):
 
         self.verticalLayout_7.addWidget(self.label_3)
 
-        self.history = QListWidget(self.tools)
+        self.history = QScrollArea(self.tools)
         self.history.setObjectName(u"history")
         sizePolicy2.setHeightForWidth(self.history.sizePolicy().hasHeightForWidth())
         self.history.setSizePolicy(sizePolicy2)
+        self.history.setWidgetResizable(True)
+        self.scrollAreaWidgetContents = QWidget()
+        self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 291, 69))
+        self.horizontalLayout_6 = QHBoxLayout(self.scrollAreaWidgetContents)
+        self.horizontalLayout_6.setObjectName(u"horizontalLayout_6")
+        self.label = QLabel(self.scrollAreaWidgetContents)
+        self.label.setObjectName(u"label")
+        sizePolicy.setHeightForWidth(self.label.sizePolicy().hasHeightForWidth())
+        self.label.setSizePolicy(sizePolicy)
+        self.label.setMinimumSize(QSize(30, 30))
+        self.label.setStyleSheet(u"background: rgb(217, 73, 73);\n"
+"border-radius: 15px;")
+
+        self.horizontalLayout_6.addWidget(self.label)
+
+        self.history.setWidget(self.scrollAreaWidgetContents)
 
         self.verticalLayout_7.addWidget(self.history)
 
@@ -374,10 +391,11 @@ class Ui_Game(object):
 "\u041a\u0410\u0411\u0418\u041d\u0415\u0422", None))
         self.circle.setText(QCoreApplication.translate("Form", u"Circle", None))
         self.label_2.setText(QCoreApplication.translate("Form", u"\u0421\u0414\u0415\u041b\u0410\u0422\u042c \u0421\u0422\u0410\u0412\u041a\u0423", None))
-        self.redBetButton.setText(QCoreApplication.translate("Form", u"\u0416\u041c\u0418", None))
-        self.blackBetButton.setText(QCoreApplication.translate("Form", u"\u0416\u041c\u0418", None))
-        self.greenBetButton.setText(QCoreApplication.translate("Form", u"\u0416\u041c\u0418", None))
+        self.redBetButton.setText(QCoreApplication.translate("Form", u"x2", None))
+        self.blackBetButton.setText(QCoreApplication.translate("Form", u"x2", None))
+        self.greenBetButton.setText(QCoreApplication.translate("Form", u"x14", None))
         self.label_3.setText(QCoreApplication.translate("Form", u"\u0418\u0421\u0422\u041e\u0420\u0418\u042f \u0412\u042b\u041f\u0410\u0414\u0415\u041d\u0418\u0419", None))
+        self.label.setText("")
         self.redBetsSum.setText(QCoreApplication.translate("Form", u"\u041e\u0411\u0429\u0410\u042f \u0421\u0422\u0410\u0412\u041a\u0410", None))
         self.blackBetsSum.setText(QCoreApplication.translate("Form", u"\u041e\u0411\u0429\u0410\u042f \u0421\u0422\u0410\u0412\u041a\u0410", None))
         self.greenBetsSum.setText(QCoreApplication.translate("Form", u"\u041e\u0411\u0429\u0410\u042f \u0421\u0422\u0410\u0412\u041a\u0410", None))

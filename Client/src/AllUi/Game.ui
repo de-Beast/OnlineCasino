@@ -238,7 +238,7 @@ color: rgba(255, 241, 191, 1);
 </string>
                   </property>
                   <property name="text">
-                   <string>ЖМИ</string>
+                   <string>x2</string>
                   </property>
                  </widget>
                 </item>
@@ -258,7 +258,7 @@ color: rgba(255, 241, 191, 1);
 </string>
                   </property>
                   <property name="text">
-                   <string>ЖМИ</string>
+                   <string>x2</string>
                   </property>
                  </widget>
                 </item>
@@ -278,7 +278,7 @@ color: rgba(255, 241, 191, 1);
 </string>
                   </property>
                   <property name="text">
-                   <string>ЖМИ</string>
+                   <string>x14</string>
                   </property>
                  </widget>
                 </item>
@@ -303,13 +303,51 @@ color: rgba(255, 241, 191, 1);
               </widget>
              </item>
              <item>
-              <widget class="QListWidget" name="history">
+              <widget class="QScrollArea" name="history">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                  <horstretch>0</horstretch>
                  <verstretch>0</verstretch>
                 </sizepolicy>
                </property>
+               <property name="widgetResizable">
+                <bool>true</bool>
+               </property>
+               <widget class="QWidget" name="scrollAreaWidgetContents">
+                <property name="geometry">
+                 <rect>
+                  <x>0</x>
+                  <y>0</y>
+                  <width>291</width>
+                  <height>69</height>
+                 </rect>
+                </property>
+                <layout class="QHBoxLayout" name="horizontalLayout_6">
+                 <item>
+                  <widget class="QLabel" name="label">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="minimumSize">
+                    <size>
+                     <width>30</width>
+                     <height>30</height>
+                    </size>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">background: rgb(217, 73, 73);
+border-radius: 15px;</string>
+                   </property>
+                   <property name="text">
+                    <string/>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
               </widget>
              </item>
             </layout>

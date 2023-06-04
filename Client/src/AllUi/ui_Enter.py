@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'EnterTCwqbg.ui'
+## Form generated from reading UI file 'EnterJyICHS.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.5.0
 ##
@@ -24,7 +24,7 @@ class Ui_Enter(object):
     def setupUi(self, Form):
         if not Form.objectName():
             Form.setObjectName(u"Form")
-        Form.resize(671, 614)
+        Form.resize(602, 614)
         Form.setStyleSheet(u"\n"
 "\n"
 "background-color: rgb(255, 241, 191);")
@@ -67,6 +67,7 @@ class Ui_Enter(object):
         self.Logo = QLabel(Form)
         self.Logo.setObjectName(u"Logo")
         font1 = QFont()
+        font1.setFamilies([u"Manrope"])
         font1.setPointSize(45)
         font1.setBold(True)
         self.Logo.setFont(font1)
@@ -227,7 +228,7 @@ class Ui_Enter(object):
         self.Logo.setText(QCoreApplication.translate("Form", u"\u041c\u0418\u0420  \u0424\u0418\u0428\u0415\u041a", None))
         self.Icon2.setText("")
         self.Enter_Label.setText(QCoreApplication.translate("Form", u"\u0412\u0425\u041e\u0414 \u0412 \u041b\u0418\u0427\u041d\u042b\u0419 \u041a\u0410\u0411\u0418\u041d\u0415\u0422", None))
-        self.Email.setText(QCoreApplication.translate("Form", u"\u0410\u0434\u0440\u0435\u0441 \u043f\u043e\u0447\u0442\u044b", None))
+        self.Email.setText(QCoreApplication.translate("Form", u"\u041b\u043e\u0433\u0438\u043d", None))
         self.Password.setText(QCoreApplication.translate("Form", u"\u041f\u0430\u0440\u043e\u043b\u044c", None))
         self.Enter_Button.setText(QCoreApplication.translate("Form", u"\u0412\u041e\u0419\u0422\u0418", None))
         self.Chips.setText("")

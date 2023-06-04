@@ -6,10 +6,12 @@
   <component name="ChangeListManager">
     <list default="true" id="c8a4d5d5-91d8-4665-893e-489d7ff6627b" name="Changes" comment="Simple ui">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/AccountWindow.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/AccountWindow.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/AllUi/Account.ui" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/AllUi/Account.ui" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/AllUi/ui_Account.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/AllUi/ui_Account.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/src/main_server.py" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/main_server.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/src/AllUi/Enter.ui" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/AllUi/Enter.ui" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/src/AllUi/Game.ui" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/AllUi/Game.ui" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/src/AllUi/ui_Enter.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/AllUi/ui_Enter.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/src/AllUi/ui_Game.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/AllUi/ui_Game.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/src/GameWindow.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/GameWindow.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/src/MainClient.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/MainClient.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -204,22 +206,22 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Server/src/chat/containers/chat.py</url>
-          <line>46</line>
+          <line>51</line>
           <option name="timeStamp" value="27" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Server/src/account/containers/account_info.py</url>
-          <line>21</line>
+          <line>22</line>
           <option name="timeStamp" value="29" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Server/src/chat/containers/chat.py</url>
-          <line>43</line>
+          <line>48</line>
           <option name="timeStamp" value="32" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Client/src/chat/api.py</url>
-          <line>41</line>
+          <line>39</line>
           <option name="timeStamp" value="33" />
         </line-breakpoint>
       </breakpoints>

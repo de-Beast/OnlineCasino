@@ -48,6 +48,8 @@ def ToGameWindow():
     Game_Window.accountAPI.get_account_info()
     Game_Window.rouletteAPI.connect_to_game()
 
+    Game_Window.ClearLayout(Game_Window.UI.horizontalLayout_6) #clear history
+
 
 def RegisterNavigation():
     Start_Window.UI.EnterButton.clicked.connect(ToEnterWindow)
