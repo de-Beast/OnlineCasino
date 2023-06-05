@@ -36,7 +36,7 @@ class ClientSocketThread(SocketThreadBase):
         QTcpSocket или None, если не удалось присоединиться к хосту
         """
 
-        host = QHostAddress(QHostAddress.SpecialAddress.LocalHost)
+        host = "192.168.100.72"
         port = 8888
 
         socket = QTcpSocket()

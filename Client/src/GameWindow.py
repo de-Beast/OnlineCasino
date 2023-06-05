@@ -75,7 +75,7 @@ class GameWindow(object):
                     record.setStyleSheet("background: rgb(217, 73, 73);\nborder-radius: 15px;")
                     pass
                 case RouletteColor.BLACK:
-                    record.setStyleSheet("background: rgb(255, 241, 191);\nborder-radius: 15px;")
+                    record.setStyleSheet("background: rgb(41, 20, 4);\nborder-radius: 15px;")
                     pass
                 case RouletteColor.GREEN:
                     record.setStyleSheet("background: rgb(87, 187, 52);\nborder-radius: 15px;")
@@ -86,8 +86,8 @@ class GameWindow(object):
         if status == RouletteState.SPINNING:
             self.PlayGif(0)
         elif status == RouletteState.STOPPED:
-            self.accountAPI.get_account_info()
             self.ClearBets()
+            self.accountAPI.get_account_info()
 
     def RegisterGifs(self) -> None:
         self.gifs: list[QMovie] = []
@@ -169,5 +169,5 @@ class GameWindow(object):
         self.UI.messageEdit.clear()
 
     def PlayGif(self, indOfGif: int):
-        self.UI.circle.setMovie(self.gifs[indOfGif])  # TODO create movie from MaxGrig's gif
+        self.UI.circle.setMovie(self.gifs[indOfGif])
         self.gifs[indOfGif].start()

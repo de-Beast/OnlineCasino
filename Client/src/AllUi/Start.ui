@@ -6,18 +6,22 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>682</width>
-    <height>416</height>
+    <width>823</width>
+    <height>525</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
    <item>
     <widget class="QLabel" name="MainLogo">
      <property name="font">
       <font>
+       <family>Manrope</family>
        <pointsize>40</pointsize>
        <bold>true</bold>
       </font>
@@ -37,16 +41,17 @@
     <widget class="QLabel" name="Win">
      <property name="font">
       <font>
+       <family>Manrope</family>
        <pointsize>15</pointsize>
        <italic>false</italic>
        <bold>false</bold>
       </font>
      </property>
      <property name="styleSheet">
-      <string notr="true"/>
+      <string notr="true">border-image: url(:/Money/registr.png)</string>
      </property>
      <property name="text">
-      <string>ЛУЧШИЕ ИГРЫ И ЧЕСТНЫЕ ВЫИГРЫШИ</string>
+      <string/>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
@@ -54,30 +59,19 @@
     </widget>
    </item>
    <item>
-    <spacer name="verticalSpacer">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>471</width>
-       <height>24</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
-   <item>
     <widget class="QPushButton" name="EnterButton">
      <property name="font">
       <font>
-       <pointsize>15</pointsize>
+       <family>Manrope</family>
+       <pointsize>20</pointsize>
        <bold>true</bold>
       </font>
      </property>
      <property name="styleSheet">
       <string notr="true">background: rgba(140, 101, 65, 0.6);
 border: 4px solid rgba(140, 101, 65, 0.38);
-border-radius: 30px;</string>
+border-radius: 15px;
+</string>
      </property>
      <property name="text">
       <string>ВХОД</string>
@@ -88,34 +82,31 @@ border-radius: 30px;</string>
     <widget class="QPushButton" name="RegistrButton">
      <property name="font">
       <font>
+       <family>Manrope</family>
        <pointsize>20</pointsize>
        <bold>true</bold>
       </font>
      </property>
      <property name="styleSheet">
       <string notr="true">background: #F4D874;
-border-radius: 30px;</string>
+border-radius: 15px;</string>
      </property>
      <property name="text">
-      <string>РЕГИСТРИРУЙСЯ ПРЯМО СЕЙЧАС!</string>
+      <string>РЕГИСТРИРАЦИЯ</string>
      </property>
     </widget>
    </item>
    <item>
-    <spacer name="verticalSpacer_2">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
+    <widget class="QWidget" name="widget" native="true">
+     <property name="styleSheet">
+      <string notr="true">border-image: url(:/Money/money.png)</string>
      </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>471</width>
-       <height>249</height>
-      </size>
-     </property>
-    </spacer>
+    </widget>
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../../images/project.qrc"/>
+ </resources>
  <connections/>
 </ui>

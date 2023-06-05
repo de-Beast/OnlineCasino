@@ -1,4 +1,4 @@
-from AllUi.ui_StartWidget import Ui_Start
+from AllUi.ui_Start import Ui_Start
 from PySide6 import QtWidgets
 
 

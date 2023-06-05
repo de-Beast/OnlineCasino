@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>683</width>
-    <height>512</height>
+    <width>838</width>
+    <height>625</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -22,6 +22,38 @@ background-color: rgb(255, 241, 191);</string>
    <property name="bottomMargin">
     <number>0</number>
    </property>
+   <item>
+    <widget class="QPushButton" name="backButton">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="font">
+      <font>
+       <family>Manrope</family>
+       <pointsize>15</pointsize>
+       <italic>false</italic>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">font-family: 'Manrope';
+font-style: normal;
+
+text-align: center;
+
+background: rgba(140, 101, 65, 0.7);
+border: 2px solid rgba(140, 101, 65, 0.7);
+border-radius: 10px;
+padding: 3px;</string>
+     </property>
+     <property name="text">
+      <string>НАЗАД</string>
+     </property>
+    </widget>
+   </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
@@ -70,7 +102,7 @@ object-fit: none;</string>
         </sizepolicy>
        </property>
        <property name="styleSheet">
-        <string notr="true">background: url(:/Money/pngegg (1) 1.png);
+        <string notr="true">border-image: url(:/Money/pngegg (1) 1.png);
 background-fit: fit;</string>
        </property>
        <property name="text">
@@ -159,7 +191,7 @@ text-align: center;
 color: #462208;</string>
        </property>
        <property name="text">
-        <string>Адрес почты</string>
+        <string>Логин</string>
        </property>
       </widget>
      </item>
@@ -254,7 +286,7 @@ border-radius: 10px;</string>
    <item>
     <widget class="QLabel" name="Chips">
      <property name="styleSheet">
-      <string notr="true">background: url(:/Money/money.png)</string>
+      <string notr="true">border-image: url(:/Money/money.png)</string>
      </property>
      <property name="text">
       <string/>
@@ -267,7 +299,7 @@ border-radius: 10px;</string>
   </layout>
  </widget>
  <resources>
-  <include location="../images/project.qrc"/>
+  <include location="../../images/project.qrc"/>
  </resources>
  <connections/>
 </ui>

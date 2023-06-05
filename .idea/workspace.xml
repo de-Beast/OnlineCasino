@@ -6,12 +6,14 @@
   <component name="ChangeListManager">
     <list default="true" id="c8a4d5d5-91d8-4665-893e-489d7ff6627b" name="Changes" comment="Simple ui">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/AllUi/Enter.ui" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/AllUi/Enter.ui" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/AllUi/Game.ui" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/AllUi/Game.ui" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/AllUi/ui_Enter.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/AllUi/ui_Enter.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/AllUi/ui_Game.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/AllUi/ui_Game.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/src/AllUi/Registration.ui" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/AllUi/Registration.ui" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/src/AllUi/Start.ui" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/AllUi/Start.ui" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/src/AllUi/ui_Registration.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/AllUi/ui_Registration.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/src/AllUi/ui_StartWidget.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Client/src/GameWindow.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/GameWindow.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Client/src/MainClient.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/MainClient.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/src/StartWindow.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/StartWindow.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/src/abstract/client_socket_thread.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/abstract/client_socket_thread.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,7 +39,7 @@
     <option name="stateVersion" value="1" />
   </component>
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="ProjectErrors" />
+    <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectId" id="2M5H1YW9eYfZnQnOeEH0KbKeqjJ" />
   <component name="ProjectViewState">
