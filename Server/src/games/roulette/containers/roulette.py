@@ -1,8 +1,8 @@
 import PySide6  # type: ignore # noqa: F401
 from __feature__ import snake_case, true_property  # type: ignore # noqa: F401
-from PySide6.QtCore import Signal
+from PySide6.QtCore import QMutex, QMutexLocker, Signal
 
-from Shared.abstract import SocketContainerBase
+from abstract import ServerSocketContainer
 from Shared.games.roulette import (
     RouletteBet,
     RouletteBetResponse,
@@ -14,7 +14,7 @@ from Shared.sockets import SocketType
 from ..roulette import Roulette
 
 
-class RouletteSocketContainer(SocketContainerBase):
+class RouletteSocketContainer(ServerSocketContainer):
     socket_type = SocketType.ROULETTE
 
     betResponse = Signal(RouletteBetResponse)
@@ -23,37 +23,33 @@ class RouletteSocketContainer(SocketContainerBase):
         super().__init__(*args, **kwargs)
 
         self.roulette = Roulette()
+        self.mutex = QMutex()
 
-    def run(self) -> None:
-        self.socket.readyRead.connect(self.connect_to_game)
-        self.connect_to_game()
+    def on_start(self) -> None:
+        self.send_current_roulette_info()
 
-    def exit(self) -> None:
-        self.socket.readyRead.disconnect(self.slot_storage.pop("receive_bet"))
-        super().exit()
-
-    def connect_to_game(self) -> None:
-        data: tuple[SocketContainerBase.ContainerRequest] | None = self.receive_data_package(
-            SocketContainerBase.ContainerRequest
-        )
-        if data is None:
-            return
-        self.socket.readyRead.disconnect(self.connect_to_game)
-
-        (request,) = data
-        if request is not SocketContainerBase.ContainerRequest.CONNECT:
-            return
-        
+        self.readyRead.connect(self.receive_bet)
         self.betResponse.connect(self.send_bet_response)
+
         self.roulette.result.connect(self.send_result)
         self.roulette.betMade.connect(self.send_new_bet)
         self.roulette.stateChanged.connect(self.send_roulette_state)
-        self.socket.readyRead.connect(self.slot_storage.create_and_store_slot("receive_bet", self.receive_bet))
 
-        self.send_roulette_state(self.roulette.state)
-        for login, bet in self.roulette.bets.items():
+    def on_exit(self) -> None:
+        self.roulette.result.disconnect(self.send_result)
+        self.roulette.betMade.disconnect(self.send_new_bet)
+        self.roulette.stateChanged.disconnect(self.send_roulette_state)
+
+    def send_current_roulette_info(self) -> None:
+        with QMutexLocker(self.mutex):
+            state = self.roulette.state
+            bets = self.roulette.bets
+            last_results = self.roulette.last_results
+
+        self.send_roulette_state(state)
+        for login, bet in bets.items():
             self.send_new_bet(login, bet)
-        for result in self.roulette.last_results:
+        for result in last_results:
             self.send_result(result, -1)
 
     def receive_bet(self) -> None:

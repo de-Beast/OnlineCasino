@@ -48,7 +48,7 @@ class AccountAPI(APIBase):
         )
         APIBase._login = login
         self.socket_thread.containerAdded.connect(slot)
-        self.socket_thread.add_container(AccountInitialSocketContainer.socket_type)
+        self.socket_thread.append_container(AccountInitialSocketContainer.socket_type)
 
     def register(self, login: str, password: str) -> None:
         if container := self.containers.get(AccountInitialSocketContainer.socket_type, None):
@@ -65,7 +65,7 @@ class AccountAPI(APIBase):
         )
         APIBase._login = login
         self.socket_thread.containerAdded.connect(slot)
-        self.socket_thread.add_container(AccountInitialSocketContainer.socket_type)
+        self.socket_thread.append_container(AccountInitialSocketContainer.socket_type)
 
     def get_account_info(self) -> None:
         if container := self.containers.get(AccountInfoSocketContainer.socket_type, None):
@@ -79,4 +79,4 @@ class AccountAPI(APIBase):
             self.login,
         )
         self.socket_thread.containerAdded.connect(slot)
-        self.socket_thread.add_container(AccountInfoSocketContainer.socket_type)
+        self.socket_thread.append_container(AccountInfoSocketContainer.socket_type)

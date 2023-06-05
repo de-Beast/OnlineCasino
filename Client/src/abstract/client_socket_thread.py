@@ -20,9 +20,8 @@ class ClientSocketThread(SocketThreadBase):
     containerAdded = Signal(SocketContainerBase)
 
     def thread_workflow(self, socket: QTcpSocket) -> None:
-        slot = self.slot_storage.create_slot(self._add_container, socket)
+        slot = self.slot_storage.create_slot(self.add_container, socket)
         self._addContainer.connect(slot)
-        socket.readyRead.connect(self.slot_storage.create_slot(self.check_containers, socket))
         self.exec()
         self._addContainer.disconnect(slot)
 
@@ -36,7 +35,8 @@ class ClientSocketThread(SocketThreadBase):
         QTcpSocket или None, если не удалось присоединиться к хосту
         """
 
-        host = "192.168.100.72"
+        # host = "192.168.100.72"
+        host = "localhost"
         port = 8888
 
         socket = QTcpSocket()
@@ -47,32 +47,18 @@ class ClientSocketThread(SocketThreadBase):
 
         return socket
 
-    def check_containers(self, socket: QTcpSocket) -> None:
-        socket_type, _ = SocketContainerBase.identify_socket_type(socket)
-        if socket_type is None or socket_type in self.containers.keys():
-            return
-
-        socket.read_all()
-
-    def add_container(self, socket_type: SocketType) -> None:
-        if not self.is_running():
-            self.start()
-            while True:
-                if self.is_working:
-                    break
-
-        self._addContainer.emit(socket_type)
-
-    def _add_container(self, socket: QTcpSocket, socket_type: SocketType) -> None:
+    def append_container(self, socket_type: SocketType) -> None:
         if socket_type in self.containers.keys():
             return
 
-        container: SocketContainerBase = SocketContainerBase.create_container(socket, socket_type)
-        slot = self.slot_storage.create_and_store_slot(f"{socket_type}", self.delete_container, container)
-        container.disconnected.connect(slot)
-        self.containers.update({socket_type: container})
-        self.containerAdded.emit(container)
+        if not self.is_running():
+            slot = self.slot_storage.create_slot(self._addContainer.emit, None, socket_type)
+            self.workStarted.connect(slot)
+            self.start()
+            return
 
-    def delete_container(self, container: SocketContainerBase) -> None:
-        del self.containers[container.socket_type]
-        container.disconnected.disconnect(self.slot_storage.pop(f"{container.socket_type}"))
+        self._addContainer.emit(socket_type)
+
+    def add_container(self, socket: QTcpSocket, socket_type: SocketType) -> None:
+        container = super().add_container(socket, socket_type)
+        self.containerAdded.emit(container)

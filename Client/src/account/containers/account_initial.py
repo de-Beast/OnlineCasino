@@ -2,39 +2,27 @@ import PySide6  # type: ignore # noqa: F401
 from __feature__ import snake_case, true_property  # type: ignore  # noqa: F401;
 from PySide6.QtCore import Signal
 
-from Shared.abstract import SocketContainerBase
+from abstract import ClientSocketContainer
 from Shared.account import AccountInitialRequest, AccountInitialResponse
 from Shared.sockets import SocketType
 
 
-class AccountInitialSocketContainer(SocketContainerBase):
+class AccountInitialSocketContainer(ClientSocketContainer):
     socket_type = SocketType.ACCOUNT_INITIAL
 
     responseReceived = Signal(AccountInitialResponse)
 
-    _accountRequest = Signal(str, str, AccountInitialRequest)
+    start = Signal(str, str, AccountInitialRequest)
 
-    def __init__(self, *args, **kwargs) -> None:
-        super().__init__(*args, **kwargs)
+    def on_start(self, login: str, password: str, method: AccountInitialRequest) -> None:
+        super().on_start()
 
-        slot = self.slot_storage.create_slot(self.make_request)
-        self._accountRequest.connect(slot)
+        self.readyRead.connect(self.get_response)
 
-    def run(self, login: str, password: str, method: AccountInitialRequest) -> None:
-        self._accountRequest.emit(login, password, method)
-
-    def exit(self) -> None:
-        self.socket.readyRead.disconnect(self.slot_storage.pop("get_response"))
-        super().exit()
-
-    def make_request(self, login: str, password: str, method: AccountInitialRequest) -> None:
-        slot = self.slot_storage.create_and_store_slot("get_response", self.get_response)
-        self.socket.readyRead.connect(slot)
-
-        self.send_data_package(method, login, password)
+        self.send_data_package(login, password, method)
 
     def get_response(self) -> None:
-        data: tuple[AccountInitialResponse] | None = self.receive_data_package(AccountInitialResponse)
+        data = self.receive_data_package(AccountInitialResponse)
         if data is None:
             return
 

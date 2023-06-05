@@ -1,37 +1,30 @@
 import PySide6  # type: ignore # noqa: F401
 from __feature__ import snake_case, true_property  # type: ignore # noqa: F401
 
+from abstract import ServerSocketContainer
 from database import AccountsDB, DB_CheckAccountResponse
-from Shared.abstract import SocketContainerBase
 from Shared.account import AccountInitialRequest, AccountInitialResponse
 from Shared.sockets import SocketType
 
 
-class AccountInitialSocketContainer(SocketContainerBase):
+class AccountInitialSocketContainer(ServerSocketContainer):
     socket_type = SocketType.ACCOUNT_INITIAL
 
-    def run(self) -> None:
-        self.receive_request()
-        
-        slot = self.slot_storage.create_and_store_slot("receive_request", self.receive_request)
-        self.socket.readyRead.connect(slot)
-
-    def exit(self) -> None:
-        self.socket.readyRead.disconnect(self.slot_storage.pop("receive_request"))
-        super().exit()
+    def on_start(self) -> None:
+        self.readyRead.connect(self.receive_request)
 
     def receive_request(self) -> None:
-        data: tuple[AccountInitialRequest, str, str] | None = self.receive_data_package(AccountInitialRequest, str, str)
+        data: tuple[str, str, AccountInitialRequest] | None = self.receive_data_package(str, str, AccountInitialRequest)
         if data is None:
             return
 
-        method, login, password = data
+        login, password, method = data
 
-        response = self.proccess_authorization(method, login, password)
+        response = self.proccess_authorization(login, password, method)
         self.send_data_package(response)
 
     def proccess_authorization(
-        self, method: AccountInitialRequest, login: str, password: str
+        self, login: str, password: str, method: AccountInitialRequest
     ) -> AccountInitialResponse:
         db = AccountsDB()
         account = {"login": login, "password": password}

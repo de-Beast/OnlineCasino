@@ -2,45 +2,34 @@ import PySide6  # type: ignore # noqa: F401
 from __feature__ import snake_case, true_property  # type: ignore # noqa: F401
 from PySide6.QtCore import Signal
 
-from Shared.abstract import SocketContainerBase
+from abstract import ServerSocketContainer
 from Shared.games import GameType
 from Shared.sockets import SocketType
 
 from ..chat_manager import ChatManager
 
 
-class ChatSocketContainer(SocketContainerBase):
+class ChatSocketContainer(ServerSocketContainer):
     socket_type = SocketType.CHAT
 
     messageReceived = Signal(str, str)
 
     _sendMessage = Signal(str, str)
 
-    def __init__(self, *args, **kwargs) -> None:
-        super().__init__(*args, **kwargs)
-
-        slot = self.slot_storage.create_slot(self._send_message)
-        self._sendMessage.connect(slot)
-
-    def run(self) -> None:
-        self.socket.readyRead.connect(self.connect_to_chat_room)
-        self.connect_to_chat_room()
+    def on_start(self) -> None:
+        self._sendMessage.connect(self._send_message)
+        self.readyRead.connect(self.connect_to_chat_room)
 
     def connect_to_chat_room(self) -> None:
-        data: tuple[GameType] | None = self.receive_data_package(GameType)
+        data = self.receive_data_package(GameType)
         if data is None:
             return
-        self.socket.readyRead.disconnect(self.connect_to_chat_room)
+        self.readyRead.disconnect(self.connect_to_chat_room)
 
         (room_id,) = data
         ChatManager.connect_to_chat_room(self, room_id)
 
-        slot = self.slot_storage.create_and_store_slot("receive_message", self.receive_message)
-        self.socket.readyRead.connect(slot)
-
-    def exit(self) -> None:
-        super().exit()
-        self.socket.readyRead.disconnect(self.slot_storage.pop("receive_message"))
+        self.readyRead.connect(self.receive_message)
 
     def send_message(self, nickname: str, message: str) -> None:
         self._sendMessage.emit(nickname, message)

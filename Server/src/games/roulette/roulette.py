@@ -35,7 +35,7 @@ class Roulette(ThreadBase, metaclass=QSingleton):
 
         self._slot_storage = SlotStorage()
         self.bets: dict[str, RouletteBet] = {}
-        self.last_results: deque[RouletteColor] = deque(maxlen=10)
+        self.last_results: deque[RouletteColor] = deque(maxlen=12)
 
         self.state = RouletteState.STOPPED
 

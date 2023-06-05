@@ -62,8 +62,12 @@ class AccountsDB(Database):
         `False`, если пользователь с таким логином уже есть в базе данных
         """
 
+        if account["login"] == "" or account["password"] == "":
+            return False
+
         if self.check_account(account) is not DB_CheckAccountResponse.WRONG_LOGIN:
             return False
+
         extended_account = {**account, "balance": 1000}
         self.accounts_collection.insert_one(extended_account)
         return True

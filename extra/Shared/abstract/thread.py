@@ -2,7 +2,14 @@ from abc import abstractmethod
 
 import PySide6  # type: ignore # noqa: F401
 from __feature__ import snake_case, true_property  # type: ignore  # noqa: F401;
-from PySide6.QtCore import QMutex, QMutexLocker, QObject, QThread, QWaitCondition
+from PySide6.QtCore import (
+    QMutex,
+    QMutexLocker,
+    QObject,
+    QThread,
+    QWaitCondition,
+    Signal,
+)
 
 from .ABC import QABC
 
@@ -15,6 +22,8 @@ class ThreadBase(QABC, QThread):
     ### Абстрактные методы
     >>> def thread_workflow(self, *args, **kwargs) -> None: ...
     """
+
+    workStarted = Signal()
 
     @abstractmethod
     def thread_workflow(self, *args, **kwargs) -> None:
@@ -53,6 +62,7 @@ class ThreadBase(QABC, QThread):
             debugpy.debug_this_thread()
 
         self._is_working = True
+        self.workStarted.emit()
         self.thread_workflow()
         self._is_working = False
 
@@ -98,6 +108,6 @@ class ThreadBase(QABC, QThread):
 
         self._is_working = False
         self.quit()
-        
+
         with QMutexLocker(self.mutex):
             self.cond.wake_one()

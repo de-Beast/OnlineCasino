@@ -31,13 +31,10 @@ class RouletteAPI(APIBase):
             return
 
         slot = self.slot_storage.create_and_store_slot(
-            "setup_container",
-            self.setup_container,
-            None,
-            RouletteSocketContainer
+            "setup_container", self.setup_container, None, RouletteSocketContainer
         )
         self.socket_thread.containerAdded.connect(slot)
-        self.socket_thread.add_container(RouletteSocketContainer.socket_type)
+        self.socket_thread.append_container(RouletteSocketContainer.socket_type)
 
     def bet(self, bet: RouletteBet) -> None:
         if container := self.containers.get(RouletteSocketContainer.socket_type, None):

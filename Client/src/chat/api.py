@@ -27,7 +27,7 @@ class ChatAPI(APIBase):
             game_room,
         )
         self.socket_thread.containerAdded.connect(slot)
-        self.socket_thread.add_container(ChatSocketContainer.socket_type)
+        self.socket_thread.append_container(ChatSocketContainer.socket_type)
 
     def disconnect_from_chat_room(self) -> None:
         if container := self.containers.get(ChatSocketContainer.socket_type, None):

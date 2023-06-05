@@ -67,9 +67,10 @@ class APIBase(QObject, metaclass=QSingleton):
 
                 if not isinstance(container, container_class):
                     return
+                
+                self.socket_thread.containerAdded.disconnect(self.slot_storage.pop(slot_name))
 
                 func(self, container)
-                self.socket_thread.containerAdded.disconnect(self.slot_storage.pop(slot_name))
                 container_args = [arg for arg in args if arg is not container]
                 container.run(*container_args)
 

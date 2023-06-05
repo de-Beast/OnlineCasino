@@ -1,8 +1,7 @@
-from PySide6.QtWidgets import QSizePolicy
-
 from AllUi.ui_Game import Ui_Game
 from PySide6 import QtCore, QtWidgets
 from PySide6.QtGui import QMovie
+from PySide6.QtWidgets import QSizePolicy
 
 from account.api import AccountAPI
 from chat.api import ChatAPI
@@ -40,12 +39,12 @@ class GameWindow(object):
         self.redBet = 0
         self.greenBet = 0
 
-        # TODO connect dis shit
         self.UI.blackBetButton.clicked.connect(lambda: self.OnBetMaked(RouletteColor.BLACK))
         self.UI.redBetButton.clicked.connect(lambda: self.OnBetMaked(RouletteColor.RED))
         self.UI.greenBetButton.clicked.connect(lambda: self.OnBetMaked(RouletteColor.GREEN))
 
         self.RegisterGifs()
+        self.ClearBets()
 
         self.startGif = QMovie("gifs//spinning.gif")
         self.UI.circle.setScaledContents(True)
@@ -55,32 +54,25 @@ class GameWindow(object):
         self.UI.balanceLabel.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.UI.balanceLabel.setText("БАЛАНС:")
 
-    def OnBetEdit(self):
-        if not self.UI.betEdit.toPlainText().isnumeric() and not (self.UI.betEdit.toPlainText() == ""):
-            self.UI.betEdit.undo()
-
     def UpdateAccountInfo(self, newInfo):
         self.UI.balanceLabel.setText("БАЛАНС: " + str(newInfo["balance"]))
 
     def UpdateRouletteState(self, color: RouletteColor, num: int):
         if num >= 0:
             self.PlayGif(num)
-        else:
-            record = QtWidgets.QLabel("")
-            record.setMinimumWidth(30)
-            record.setMinimumHeight(30)
-            record.setSizePolicy(QSizePolicy.Policy.Maximum, QSizePolicy.Policy.Maximum)
-            match color:
-                case RouletteColor.RED:
-                    record.setStyleSheet("background: rgb(217, 73, 73);\nborder-radius: 15px;")
-                    pass
-                case RouletteColor.BLACK:
-                    record.setStyleSheet("background: rgb(41, 20, 4);\nborder-radius: 15px;")
-                    pass
-                case RouletteColor.GREEN:
-                    record.setStyleSheet("background: rgb(87, 187, 52);\nborder-radius: 15px;")
-                    pass
-            self.UI.horizontalLayout_6.addWidget(record)
+
+        record = QtWidgets.QLabel("")
+        record.setMinimumWidth(30)
+        record.setMinimumHeight(30)
+        record.setSizePolicy(QSizePolicy.Policy.Maximum, QSizePolicy.Policy.Maximum)
+        match color:
+            case RouletteColor.RED:
+                record.setStyleSheet("background: rgb(217, 73, 73);\nborder-radius: 15px;")
+            case RouletteColor.BLACK:
+                record.setStyleSheet("background: rgb(41, 20, 4);\nborder-radius: 15px;")
+            case RouletteColor.GREEN:
+                record.setStyleSheet("background: rgb(87, 187, 52);\nborder-radius: 15px;")
+        self.UI.horizontalLayout_6.addWidget(record)
 
     def UpdateRouletteStatus(self, status: RouletteState):
         if status == RouletteState.SPINNING:
@@ -117,6 +109,10 @@ class GameWindow(object):
 
         bet = RouletteBet(int(self.UI.betEdit.toPlainText()), type)
         self.rouletteAPI.bet(bet)
+
+    def OnBetEdit(self):
+        if not self.UI.betEdit.toPlainText().isnumeric() and not self.UI.betEdit.toPlainText() == "":
+            self.UI.betEdit.undo()
 
     def OnBetResponse(self, bet_response: RouletteBetResponse):
         match bet_response:
