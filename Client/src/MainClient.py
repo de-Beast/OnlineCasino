@@ -20,9 +20,13 @@ def SaveLastPageToHistory():
 
 
 def GoBack():
+    mainUi.stackedWidget.setCurrentWidget(history.pop())
+
+def DisconnectFromGame():
     Game_Window.chatApi.disconnect_from_chat_room()
     Game_Window.rouletteAPI.disconnect_from_game()
-    mainUi.stackedWidget.setCurrentWidget(history.pop())
+
+    Game_Window.ClearBets()
 
 
 def ToRegistrWindow():
@@ -65,6 +69,7 @@ def RegisterNavigation():
 
     Game_Window.UI.accountButton.clicked.connect(ToAccountWindow)
     Game_Window.UI.backButton.clicked.connect(GoBack)
+    Game_Window.UI.backButton.clicked.connect(DisconnectFromGame)
 
 
 def OnRegisterResponce(responce: AccountInitialResponse):

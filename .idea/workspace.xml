@@ -6,14 +6,13 @@
   <component name="ChangeListManager">
     <list default="true" id="c8a4d5d5-91d8-4665-893e-489d7ff6627b" name="Changes" comment="Simple ui">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/AllUi/Registration.ui" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/AllUi/Registration.ui" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/AllUi/Start.ui" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/AllUi/Start.ui" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/AllUi/ui_Registration.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/AllUi/ui_Registration.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/AllUi/ui_StartWidget.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/GameWindow.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/GameWindow.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/src/AllUi/Account.ui" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/AllUi/Account.ui" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/src/AllUi/Registration_ui.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/src/AllUi/Start_ui.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/src/AllUi/ui_Account.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/AllUi/ui_Account.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Client/src/MainClient.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/MainClient.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/StartWindow.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/StartWindow.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Client/src/abstract/client_socket_thread.py" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/abstract/client_socket_thread.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/Server.py" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/server.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -208,17 +207,17 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Server/src/chat/containers/chat.py</url>
-          <line>51</line>
+          <line>40</line>
           <option name="timeStamp" value="27" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Server/src/account/containers/account_info.py</url>
-          <line>22</line>
+          <line>15</line>
           <option name="timeStamp" value="29" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Server/src/chat/containers/chat.py</url>
-          <line>48</line>
+          <line>37</line>
           <option name="timeStamp" value="32" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">

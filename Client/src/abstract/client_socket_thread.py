@@ -35,8 +35,8 @@ class ClientSocketThread(SocketThreadBase):
         QTcpSocket или None, если не удалось присоединиться к хосту
         """
 
-        # host = "192.168.100.72"
-        host = "localhost"
+        host = "192.168.0.107"
+        # host = "localhost"
         port = 8888
 
         socket = QTcpSocket()
