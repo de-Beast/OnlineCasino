@@ -1,1 +1,7 @@
 PySide6
+
+debugpy
+
+pymongo
+
+-e ./extra

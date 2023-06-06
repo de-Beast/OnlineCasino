@@ -1,0 +1,7 @@
+<RCC>
+  <qresource prefix="Money">
+    <file>pngegg (1) 1.png</file>
+    <file>registr.png</file>
+    <file>money.png</file>
+  </qresource>
+</RCC>
